@@ -5,6 +5,6 @@ username <- Sys.info()[["user"]]
 if(tolower(username) == "daniell") {
   setwd("M:/Leandro/FGV/02 - Analise Exploratoria de Dados/Trabalho Final")
 } else if (tolower(username) == "leandro") {
-  setwd("D:/OneDrive/FGV/04_Modulos/02 - Analise Exploratoria de Dados/TrabalhoFinal")
+  setwd("D:/OneDrive/FGV/04_Modulos/02 - Analise Exploratoria de Dados/TrabalhoFinal") 
 }
 getwd()
