@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1559942893774.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "9220017E",
+    "lastKnownWriteTime" : 1559960022,
+    "last_content_update" : 1559960022005,
+    "path" : "D:/OneDrive/FGV/04_Módulos/02 - Análise Exploratória de Dados/TrabalhoFinal/scripts/berka_bank_analysis.R",
+    "project_path" : "scripts/berka_bank_analysis.R",
+    "properties" : {
+        "cursorPosition" : "38,0",
+        "scrollLine" : "4"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

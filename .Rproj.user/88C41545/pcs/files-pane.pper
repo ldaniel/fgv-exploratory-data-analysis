@@ -1,0 +1,13 @@
+{
+    "path" : "D:/OneDrive/FGV/04_Módulos/02 - Análise Exploratória de Dados/TrabalhoFinal/scripts",
+    "sortOrder" : [
+        {
+            "ascending" : false,
+            "columnIndex" : 1
+        },
+        {
+            "ascending" : true,
+            "columnIndex" : 2
+        }
+    ]
+}
