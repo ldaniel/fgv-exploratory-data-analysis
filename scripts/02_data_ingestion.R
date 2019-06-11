@@ -1,21 +1,22 @@
 # performing data loading -----------------------------------------------------
 dataDirectory <- "data/"
 
-client         <- read.csv2(paste(dataDirectory, "client.asc", sep = ""), stringsAsFactors = FALSE)
-disposition    <- read.csv2(paste(dataDirectory, "disp.asc", sep = ""), stringsAsFactors = FALSE)
-district       <- read.csv2(paste(dataDirectory, "district.asc", sep = ""), stringsAsFactors = FALSE)
-creditcard     <- read.csv2(paste(dataDirectory, "card.asc", sep = ""), stringsAsFactors = FALSE)
-account        <- read.csv2(paste(dataDirectory, "account.asc", sep = ""), stringsAsFactors = FALSE)
-loan           <- read.csv2(paste(dataDirectory, "loan.asc", sep = ""), stringsAsFactors = FALSE)
-permanentorder <- read.csv2(paste(dataDirectory, "order.asc", sep = ""), stringsAsFactors = FALSE)
-transaction    <- read.csv2(paste(dataDirectory, "trans.asc", sep = ""), stringsAsFactors = FALSE)
+client          <- read.csv2(paste(dataDirectory, "client.asc", sep = ""), stringsAsFactors = FALSE)
+disposition     <- read.csv2(paste(dataDirectory, "disp.asc", sep = ""), stringsAsFactors = FALSE)
+district        <- read.csv2(paste(dataDirectory, "district.asc", sep = ""), stringsAsFactors = FALSE)
+creditcard      <- read.csv2(paste(dataDirectory, "card.asc", sep = ""), stringsAsFactors = FALSE)
+account         <- read.csv2(paste(dataDirectory, "account.asc", sep = ""), stringsAsFactors = FALSE)
+loan            <- read.csv2(paste(dataDirectory, "loan.asc", sep = ""), stringsAsFactors = FALSE)
+permanent_order <- read.csv2(paste(dataDirectory, "order.asc", sep = ""), stringsAsFactors = FALSE)
+transaction     <- read.csv2(paste(dataDirectory, "trans.asc", sep = ""), stringsAsFactors = FALSE)
 
 # performing data casting, cleaning and small touch-ups --------------------
 
 # get gender and birthday from birth_number column in client table
 client <- client %>% 
   mutate(gender = GetGenderFromBirthnumber(birth_number)) %>% 
-  mutate(birth_date = GetBirthdateFromBirthnumber(birth_number, gender))
+  mutate(birth_date = GetBirthdateFromBirthnumber(birth_number, gender)) %>% 
+  mutate(age = GetAgeFromBirthnumber(birth_number))
 
 # renaming columns in district table 
 names(district)[names(district) == "A1"] <- "district_id"
@@ -58,7 +59,7 @@ loan <- loan %>%
   mutate(payments = as.double(payments))
 
 # casting columns with decimal values in permanent order table
-permanentorder <- permanentorder %>% 
+permanent_order <- permanent_order %>% 
   mutate(amount = as.double(amount))
 
 # casting columns in table transaction to the right data types

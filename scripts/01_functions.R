@@ -36,3 +36,14 @@ ConvertToDate <- function(var_date) {
   
   return(result)
 }
+
+#------------------------------------------------------------------------------
+# The objective of this function is to get age given the birth_number.
+GetAgeFromBirthnumber <- function(var_birth_number) {
+  
+  base_year <- 99 # considering 1999 as the base year for this exercise
+  year <- substr(var_birth_number, 1, 2)
+  result <- base_year - as.integer(year)
+  
+  return(result)
+}
