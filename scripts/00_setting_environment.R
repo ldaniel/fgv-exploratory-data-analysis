@@ -9,6 +9,8 @@ if(tolower(username) == "daniell") {
 } else if (tolower(username) == "a57622988") {
   setwd("C:/Users/A57622988/Desktop/Aula") 
 } else {
-  setwd("~/") 
+  directoryPath <- dirname(rstudioapi::getSourceEditorContext()$path)
+  directoryPath <- str_replace(directoryPath, "/scripts", "")
+  setwd(directoryPath) 
 }
 getwd()

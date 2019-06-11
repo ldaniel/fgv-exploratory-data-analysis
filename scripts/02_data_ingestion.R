@@ -74,5 +74,5 @@ transaction <- transaction %>%
 # View(creditcard)
 # View(account)
 # View(loan)
-# View(permanentorder)
+# View(permanent_order)
 # View(transaction)

@@ -4,6 +4,7 @@ library(ggplot2)
 library(tidyr)
 library(lubridate)
 library(ggalluvial)
+library(stringr)
 
 # loading other scripts do be used here ---------------------------------------
 source("./scripts/00_setting_environment.R")
@@ -14,11 +15,12 @@ source("./scripts/02_data_ingestion.R")
 
 # gender distribution of clients in the bank
 ggplot(data = client) +
-  aes(x = gender) +
-  geom_bar(fill = "#188977") +
+  aes(x = gender, fill = gender) +
+  geom_bar() +
   labs(title = "Gender distribution of clients in the bank",
-    x = "Gender (m = men, w = women)",
-    y = "Total clients") +
+       subtitle = "A well balanced bank",
+       x = "Gender",
+       y = "Total clients") +
   theme_minimal()
 
 # gender distribution of clients in the bank over the decades
@@ -32,7 +34,7 @@ ggplot(data = clientGenderOverDecades) +
   geom_bar() +
   geom_line(aes(y = n, color = gender)) +
   labs(title = "Gender distribution of clients in the bank over the decades",
-       subtitle = "Gender (m = men, w = women)",
+       subtitle = "Equality at its finest",
        x = "Decades",
        y = "Total clients") +
   theme_minimal() +
@@ -46,15 +48,14 @@ clientGenderAgeGroupByRegion <- client %>%
   count()
   
 ggplot(data = clientGenderAgeGroupByRegion, aes(axis1 = region, axis2 = age_group, y = n)) +
-  scale_x_discrete(limits = c("region", "age group"), expand = c(.1, .05)) +
+  scale_x_discrete(limits = c("region", "age group"), expand = c(.1, .1)) +
   xlab("Demographic") +
-  geom_alluvium(aes(fill = gender)) +
+  geom_alluvium(aes(fill = gender), knot.pos = 0) +
   geom_stratum() + 
   geom_text(stat = "stratum", label.strata = TRUE) +
   theme_minimal() +
-  ggtitle("Alluvial diagram representation",
-          "Gender and Age Group by Region")
-
+  ggtitle("Region and age group by gender", "Equality is everywhere") 
+  
 
 
 

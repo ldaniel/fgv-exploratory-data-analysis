@@ -5,7 +5,7 @@
 GetGenderFromBirthnumber <- function(var_birth_number) {
   
   month <- substr(var_birth_number, 3, 4)
-  result <- ifelse(as.integer(month) > 50, "w", "m")
+  result <- ifelse(as.integer(month) > 50, "female", "male")
   
   return(result)
 }
