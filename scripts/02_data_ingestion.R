@@ -2,15 +2,15 @@
 dataDirectory <- "data/"
 
 client          <- read.csv2(paste(dataDirectory, "client.asc", sep = ""), stringsAsFactors = FALSE)
-disposition     <- read.csv2(paste(dataDirectory, "disp.asc", sep = ""), stringsAsFactors = FALSE)
-district        <- read.csv2(paste(dataDirectory, "district.asc", sep = ""), stringsAsFactors = FALSE)
-creditcard      <- read.csv2(paste(dataDirectory, "card.asc", sep = ""), stringsAsFactors = FALSE)
-account         <- read.csv2(paste(dataDirectory, "account.asc", sep = ""), stringsAsFactors = FALSE)
-loan            <- read.csv2(paste(dataDirectory, "loan.asc", sep = ""), stringsAsFactors = FALSE)
-permanent_order <- read.csv2(paste(dataDirectory, "order.asc", sep = ""), stringsAsFactors = FALSE)
-transaction     <- read.csv2(paste(dataDirectory, "trans.asc", sep = ""), stringsAsFactors = FALSE)
+disposition     <- read.csv2(paste(dataDirectory, "disp.asc", sep = ""), stringsAsFactors = TRUE)
+district        <- read.csv2(paste(dataDirectory, "district.asc", sep = ""), stringsAsFactors = TRUE)
+creditcard      <- read.csv2(paste(dataDirectory, "card.asc", sep = ""), stringsAsFactors = TRUE)
+account         <- read.csv2(paste(dataDirectory, "account.asc", sep = ""), stringsAsFactors = TRUE)
+loan            <- read.csv2(paste(dataDirectory, "loan.asc", sep = ""), stringsAsFactors = TRUE)
+permanent_order <- read.csv2(paste(dataDirectory, "order.asc", sep = ""), stringsAsFactors = TRUE)
+transaction     <- read.csv2(paste(dataDirectory, "trans.asc", sep = ""), stringsAsFactors = TRUE)
 
-# performing data casting, cleaning and small touch-ups --------------------
+# performing data casting, column renaming and small touch-ups --------------------
 
 # get gender and birthday from birth_number column in client table
 client <- client %>% 

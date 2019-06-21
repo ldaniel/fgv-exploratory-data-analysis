@@ -7,7 +7,7 @@ GetGenderFromBirthnumber <- function(var_birth_number) {
   month <- substr(var_birth_number, 3, 4)
   result <- ifelse(as.integer(month) > 50, "female", "male")
   
-  return(result)
+  return(as.factor(result))
 }
 
 #------------------------------------------------------------------------------
@@ -17,7 +17,7 @@ GetGenderFromBirthnumber <- function(var_birth_number) {
 GetBirthdateFromBirthnumber <- function(var_birth_number, var_gender) {
  
   year <- paste("19", substr(var_birth_number, 1, 2), sep="")
-  month <- ifelse(var_gender == "m", substr(var_birth_number, 3, 4), as.integer(substr(var_birth_number, 3, 4)) - 50)
+  month <- ifelse(var_gender == "male", substr(var_birth_number, 3, 4), as.integer(substr(var_birth_number, 3, 4)) - 50)
   day <- substr(var_birth_number, 5, 6)
   result <- as.Date(paste(year, "-", month, "-", day, sep=""), format = "%Y-%m-%d")
   
