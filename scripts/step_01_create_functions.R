@@ -1,4 +1,4 @@
-#------------------------------------------------------------------------------
+# GetGenderFromBirthnumber ----------------------------------------------------
 # The birth_number column is given in the form of YYMMDD for men,
 # and YYMM+50DD for women. The objective of this function is to return
 # the gender of the client via the birth_number.
@@ -10,7 +10,7 @@ GetGenderFromBirthnumber <- function(var_birth_number) {
   return(as.factor(result))
 }
 
-#------------------------------------------------------------------------------
+# GetBirthdateFromBirthnumber -------------------------------------------------
 # The birth_number column is given in the form of YYMMDD for men,
 # and YYMM+50DD for women. The objective of this function is to return
 # the final birthday as Date.
@@ -24,7 +24,7 @@ GetBirthdateFromBirthnumber <- function(var_birth_number, var_gender) {
   return(result)
 }
 
-#------------------------------------------------------------------------------
+# ConvertToDate ---------------------------------------------------------------
 # The objective of this function is to convert the strange bank date style 
 # to the regular R Date datatype.
 ConvertToDate <- function(var_date) {
@@ -37,7 +37,7 @@ ConvertToDate <- function(var_date) {
   return(result)
 }
 
-#------------------------------------------------------------------------------
+# GetAgeFromBirthnumber -------------------------------------------------------
 # The objective of this function is to get age given the birth_number.
 GetAgeFromBirthnumber <- function(var_birth_number) {
   

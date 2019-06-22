@@ -9,10 +9,10 @@ library(VIM)
 library(psych)
 
 # loading other scripts do be used here ---------------------------------------
-source("./scripts/00_setting_environment.R")
-source("./scripts/01_functions.R")
-source("./scripts/02_data_ingestion.R")
-source("./scripts/03_data_cleaning.R")
+source("./scripts/step_00_setting_environment.R")
+source("./scripts/step_01_create_functions.R")
+source("./scripts/step_02_data_ingestion.R")
+source("./scripts/step_03_data_cleaning.R")
 
 # performing data analysis ----------------------------------------------------
 

@@ -10,7 +10,7 @@ loan            <- read.csv2(paste(dataDirectory, "loan.asc", sep = ""), strings
 permanent_order <- read.csv2(paste(dataDirectory, "order.asc", sep = ""), stringsAsFactors = TRUE)
 transaction     <- read.csv2(paste(dataDirectory, "trans.asc", sep = ""), stringsAsFactors = TRUE)
 
-# performing data casting, column renaming and small touch-ups --------------------
+# performing data casting, column renaming and small touch-ups ----------------
 
 # get gender and birthday from birth_number column in client table
 client <- client %>% 
