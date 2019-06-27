@@ -3,16 +3,19 @@ options(encoding = "UTF-8")
 
 username <- Sys.info()[["user"]]
 if(tolower(username) == "daniell") {
-  setwd("M:/Leandro/FGV/02 - Analise Exploratoria de Dados/Trabalho Final")
+  wd = "M:/Leandro/FGV/02 - Analise Exploratoria de Dados/Trabalho Final"
 } else if (tolower(username) == "leandro") {
-  setwd("D:/OneDrive/FGV/04_Modulos/02 - Analise Exploratoria de Dados/TrabalhoFinal")
+  wd = "D:/OneDrive/FGV/04_Modulos/02 - Analise Exploratoria de Dados/TrabalhoFinal"
 } else if (tolower(username) == "rodri") {
-  setwd("C:\Users\rodri\OneDrive\My R Projects\R_Bank_Berka")
+  wd = "C:/Users/rodri/OneDrive/My R Projects/R_Bank_Berka"
 } else if (tolower(username) == "a57622988") {
-  setwd("C:/Users/A57622988/Desktop/Aula") 
+  wd = "C:/Users/A57622988/Desktop/Aula"
 } else {
   directoryPath <- dirname(rstudioapi::getSourceEditorContext()$path)
   directoryPath <- str_replace(directoryPath, "/scripts", "")
-  setwd(directoryPath) 
+  wd = directoryPath
 }
+return(getwd())
+
+setwd(wd)
 getwd()
