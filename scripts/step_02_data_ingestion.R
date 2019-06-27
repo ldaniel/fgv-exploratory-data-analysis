@@ -1,7 +1,7 @@
 # performing data loading -----------------------------------------------------
 dataDirectory <- "data/"
 
-client          <- read.csv2(paste(dataDirectory, "client.asc", sep = ""), stringsAsFactors = FALSE)
+client          <- read.csv2(paste(dataDirectory, "client.asc", sep = ""), stringsAsFactors = TRUE)
 disposition     <- read.csv2(paste(dataDirectory, "disp.asc", sep = ""), stringsAsFactors = TRUE)
 district        <- read.csv2(paste(dataDirectory, "district.asc", sep = ""), stringsAsFactors = TRUE)
 creditcard      <- read.csv2(paste(dataDirectory, "card.asc", sep = ""), stringsAsFactors = TRUE)
