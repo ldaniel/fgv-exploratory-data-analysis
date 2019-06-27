@@ -7,12 +7,14 @@ library(ggalluvial)
 library(stringr)
 library(VIM)
 library(psych)
+library(ggthemes)
 
 # loading other scripts do be used here ---------------------------------------
 source("./scripts/step_00_config_environment.R")
 source("./scripts/step_01_create_functions.R")
 source("./scripts/step_02_data_ingestion.R")
 source("./scripts/step_03_data_cleaning.R")
+source("./scripts/step_04_label_translation.R")
 
 # performing data analysis ----------------------------------------------------
 
@@ -59,7 +61,99 @@ ggplot(data = clientGenderAgeGroupByRegion, aes(axis1 = region, axis2 = age_grou
   theme_minimal() +
   ggtitle("Region and age group by gender", "Equality is everywhere") 
 
+# Loan Analisys - Delinquency Rate by Region
 
+loan <- mutate(loan, defaulter = as.logical( plyr::mapvalues(status, c ('A','B','C','D'), c(FALSE,TRUE,FALSE,TRUE))),
+               contract_status = plyr::mapvalues(status, c ('A','B','C','D'), c('finished','finished','running','running')),
+               type = 'Owner')
 
+left_join(loan, disposition, by = 'account_id') %>% 
+  left_join(client, by = 'client_id') %>% 
+  left_join(district, by = 'district_id') %>% 
+  group_by(region, contract_status, defaulter) %>% 
+  summarise(count = n(),
+            amount = sum(amount)) %>% 
+  group_by(region, contract_status) %>% 
+  mutate(count_contract_status = sum(count),
+         amount_contract_status = sum(amount)) %>% 
+  group_by(region) %>% 
+  mutate(count_region = sum(count),
+         amount_region = sum(amount)) %>% 
+  ggplot(aes(x = defaulter, y = contract_status, fill = count / count_region)) +
+  geom_bin2d(stat = 'identity') +
+  geom_text(aes(label = paste(round(count / count_region * 100, 2), '%')), color = 'white') +
+  facet_wrap(~region) +
+  theme_economist() +
+  theme(legend.position = 'none', panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+  labs(x = 'Defaulter', y = 'Contract Status', title = 'Loan Contract Status by Region Heatmap')
 
+# Loan Analisys - Delinquency Rate by Age Group
 
+client <- mutate(client, age_bin = paste(findInterval(age, c(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) * 10,'+'))
+  
+left_join(loan, disposition, by = 'account_id') %>%
+  left_join(client, by = 'client_id') %>% 
+  left_join(district, by = 'district_id') %>% 
+  group_by(age_bin, contract_status, defaulter) %>% 
+  summarise(count = n(),
+            amount = sum(amount)) %>% 
+  group_by(age_bin, contract_status) %>% 
+  mutate(count_contract_status = sum(count),
+         amount_contract_status = sum(amount)) %>% 
+  group_by(age_bin) %>% 
+  mutate(count_age_bin = sum(count),
+         amount_age_bin = sum(amount)) %>% 
+  ggplot(aes(x = defaulter, y = contract_status, fill = count / count_age_bin)) +
+    geom_bin2d(stat = 'identity') +
+    geom_text(aes(label = paste(round(count / count_age_bin * 100, 2), '%')), color = 'white') +
+    facet_wrap(~age_bin) +
+    theme_economist() +
+    theme(legend.position = 'none', panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+    labs(x = 'Defaulter',
+         y = 'Contract Status',
+         title = 'Loan Contract Status by Age Group Heatmap')
+
+# Loan Analisys - Delinquency Rate by Gender
+
+left_join(loan, disposition, by = 'account_id') %>%
+  left_join(client, by = 'client_id') %>% 
+  left_join(district, by = 'district_id') %>% 
+  group_by(gender, contract_status, defaulter) %>% 
+  summarise(count = n(),
+            amount = sum(amount)) %>% 
+  group_by(gender, contract_status) %>% 
+  mutate(count_contract_status = sum(count),
+         amount_contract_status = sum(amount)) %>% 
+  group_by(gender) %>% 
+  mutate(count_gender = sum(count),
+         amount_gender = sum(amount)) %>% 
+  ggplot(aes(x = defaulter, y = contract_status, fill = count / count_gender)) +
+    geom_bin2d(stat = 'identity') +
+    geom_text(aes(label = paste(round(count / count_gender * 100, 2), '%')), color = 'white') +
+    facet_wrap(~gender) +
+    theme_economist() +
+    theme(legend.position = 'none', panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+    labs(x = 'Defaulter',
+         y = 'Contract Status',
+         title = 'Loan Contract Status by Gender Heatmap')
+
+# Account Balance Analisys
+  
+account_balance <- arrange(transaction, desc(date), account_id) %>%
+  group_by(account_id) %>%
+  mutate(avg_balance = mean(balance)) %>%
+  filter(row_number() == 1) %>% 
+  select(account_id, date, balance, avg_balance)
+
+colnames(account_balance) <- c("account_id", "last_transaction_date", 'account_balance', 'avg_balance')
+
+left_join(account_balance, disposition, by = 'account_id') %>%
+  left_join(client, by = 'client_id') %>% 
+  left_join(district, by = 'district_id') %>% 
+  filter(type == 'Owner') %>% 
+  ggplot(aes(avg_balance)) +
+    geom_density(alpha = 0.5, aes(fill = gender)) +
+    scale_x_continuous(labels = scales::comma) +
+    labs(title = 'Average Account Balance Distribution by Gender and Region') +
+    theme_economist() +
+    facet_wrap(~region)
