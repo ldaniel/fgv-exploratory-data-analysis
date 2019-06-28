@@ -10,6 +10,8 @@ output: html_document
 #knitr::opts_knit$set(root.dir = wd)
 #source("./scripts/berka_bank_analysis.R")
 
+library(tidyverse)
+
 ```
 
 
@@ -32,12 +34,12 @@ A mere application of discovery tool will not be convincing for them.
 ## Data Model
 
 ```{r data_model_pic, echo=FALSE, out.width = '100%'}
-knitr::include_graphics("./images/data_model.png")
+knitr::include_graphics("../images/data_model.png")
 ```
 
 ## Loan Exploration
 
-```{r Loan_status_by_region, echo=TRUE, out.width = '100%'}
+```{r Loan_status_by_region, echo=TRUE, out.width = '100%', error=TRUE}
 left_join(loan, disposition, by = 'account_id') %>% 
   left_join(client, by = 'client_id') %>% 
   left_join(district, by = 'district_id') %>% 
@@ -60,7 +62,7 @@ left_join(loan, disposition, by = 'account_id') %>%
 
 ```
 
-```{r Loan_status_by_gender, echo=TRUE, out.width = '100%'}
+```{r Loan_status_by_gender, echo=TRUE, out.width = '100%', error=TRUE}
 left_join(loan, disposition, by = 'account_id') %>%
   left_join(client, by = 'client_id') %>% 
   left_join(district, by = 'district_id') %>% 
@@ -84,7 +86,7 @@ left_join(loan, disposition, by = 'account_id') %>%
          title = 'Loan Contract Status by Gender Heatmap')
 ```
 
-```{r Loan_status_by_age_bin, echo=TRUE, out.width = '100%'}
+```{r Loan_status_by_age_bin, echo=TRUE, out.width = '100%', error=TRUE}
 left_join(loan, disposition, by = 'account_id') %>%
   left_join(client, by = 'client_id') %>% 
   left_join(district, by = 'district_id') %>% 
@@ -110,7 +112,7 @@ left_join(loan, disposition, by = 'account_id') %>%
 
 ## Account Balance Exploration
 
-```{r avg_account_balance_by_gender_and_region, echo=TRUE, out.width = '100%'}
+```{r avg_account_balance_by_gender_and_region, echo=TRUE, out.width = '100%', error=TRUE}
 account_balance <- arrange(transaction, desc(date), account_id) %>%
   group_by(account_id) %>%
   mutate(avg_balance = mean(balance)) %>%
