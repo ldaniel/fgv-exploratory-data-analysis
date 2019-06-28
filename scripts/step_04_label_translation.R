@@ -1,4 +1,4 @@
-# Translating arelevant labels and domains to english -----------------------
+# Translating relevant labels and domains to english --------------------------
 
 disposition$type <- plyr::mapvalues(disposition$type, c('OWNER', 'DISPONENT'), c('Owner', 'User'))
 
