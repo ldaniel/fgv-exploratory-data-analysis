@@ -1,4 +1,25 @@
-.Rproj.user
+# History files
 .Rhistory
+.Rapp.history
+
+# RStudio files
+.Rproj.user/
+
+# Session Data files
 .RData
 .Ruserdata
+
+# Output files from R CMD build
+/*.tar.gz
+
+# produced vignettes
+vignettes/*.html
+vignettes/*.pdf
+
+# Temporary files created by R markdown
+*.utf8.md
+*.knit.md
+.Rproj.user
+
+# System files
+*.DS_Store
