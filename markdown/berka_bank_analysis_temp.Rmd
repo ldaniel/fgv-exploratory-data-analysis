@@ -26,17 +26,16 @@ library(ggthemes)
 source("./scripts/step_01_create_functions.R")
 source("./scripts/step_02_data_ingestion.R")
 #source("./scripts/step_03_data_cleaning.R")
-#source("./scripts/step_04_label_translation.R")
-#source("./scripts/step_05_data_enhancement.R")
+source("./scripts/step_04_label_translation.R")
+source("./scripts/step_05_data_enhancement.R")
 ```
 
-# Berka Bank Analysis
+# 1 - Berka Bank (setting the scene)
 
-## Domain
-Onde upon a time, there was a bank offering services to private persons.
-The services include managing of accounts, offerings loans, etc.
+## 1.1 - Domain
+Onde upon a time, there was a bank offering services to private persons. The services include managing of accounts, offerings loans, etc.
 
-## Task Descripion
+## 1.2 - Task descripion
 
 The bank wants to improve their services. For instance, the bank managers have only vague idea, who is a good client (whom to offer some additional services) and who is a bad client (whom to watch carefully to monimize the bank loses).
 
@@ -46,17 +45,30 @@ The bank managers hope to improve their undestanding of customers and seed speci
 
 A mere application of discovery tool will not be convincing for them.
 
-## Data Model
+## 1.3 - Data description
 ```{r data_model_pic, echo=FALSE, out.width = '800px'}
 knitr::include_graphics("../images/data_model.png")
 ```
 
-## Gender Exploration
+# 2 - Data ingestion, cleaning, translation and Enhancement
 
-At first glance, gender equality is well balanced in the bank, even when observed over the decades. Even
-more impressive, gender equility is everywhere in the country.
+```
+sapply(transaction, function(x) sum(is.na(x))) 
 
-```{r general_gender_distribution, echo=TRUE, out.width = '100%'}
+```
+
+```
+sapply(permanent_order, function(x) table(as.character(x) =="")["TRUE"]) 
+```
+
+# 3 - The Berka Bank Analysis
+
+## 3.1 - Gender Exploration
+
+At first glance, gender equality is well balanced in the bank, even when observed over the decades. Even more impressive, gender equality is everywhere in the country.
+
+```{r gender_distribution_analysis, echo=TRUE, out.width = '100%'}
+# gender distribution of clients in the bank
 ggplot(data = client) +
   aes(x = gender, fill = gender) +
   geom_bar() +
@@ -65,13 +77,12 @@ ggplot(data = client) +
        x = "Gender",
        y = "Total clients") +
   theme_economist()
-```
 
-```{r gender_distribution_over_decades, echo=TRUE, out.width = '100%'}
 clientGenderOverDecades <- client %>% 
   group_by(decade = as.integer(substr(client$birth_number, 1,1)) * 10, gender = client$gender) %>% 
   count()
 
+# gender distribution of clients in the bank over the decades
 ggplot(data = clientGenderOverDecades) +
   aes(x = decade, fill = gender, weight = n) +
   scale_x_continuous(breaks = c(0, 10, 20, 30, 40, 50, 60, 70, 80)) +
@@ -83,9 +94,8 @@ ggplot(data = clientGenderOverDecades) +
        y = "Total clients") +
   theme_economist() +
   facet_wrap(vars(gender))
-```
 
-```{r gender_distribution_by_age_region, echo=TRUE, out.width = '100%'}
+# alluvial diagram representation of gender, age group and region
 clientGenderAgeGroupByRegion <- client %>% 
   mutate(age_group = ifelse(age < 21, "young", ifelse(age >= 21 & age <= 60, "adult", "senior"))) %>% 
   inner_join(district, by = "district_id") %>% 
@@ -100,4 +110,100 @@ ggplot(data = clientGenderAgeGroupByRegion, aes(axis1 = region, axis2 = age_grou
   geom_text(stat = "stratum", label.strata = TRUE) +
   theme_economist() +
   ggtitle("Region and age group by gender", "Equality is everywhere") 
+```
+
+## 3.2 - Loan Exploration
+
+```{r Loan_status_by_region, echo=TRUE, out.width = '100%'}
+left_join(loan, disposition, by = 'account_id') %>% 
+  left_join(client, by = 'client_id') %>% 
+  left_join(district, by = 'district_id') %>% 
+  group_by(region, contract_status, defaulter) %>% 
+  summarise(count = n(),
+            amount = sum(amount)) %>% 
+  group_by(region, contract_status) %>% 
+  mutate(count_contract_status = sum(count),
+         amount_contract_status = sum(amount)) %>% 
+  group_by(region) %>% 
+  mutate(count_region = sum(count),
+         amount_region = sum(amount)) %>% 
+  ggplot(aes(x = defaulter, y = contract_status, fill = count / count_region)) +
+  geom_bin2d(stat = 'identity') +
+  geom_text(aes(label = paste(round(count / count_region * 100, 2), '%')), color = 'white') +
+  facet_wrap(~region) +
+  theme_economist() +
+  theme(legend.position = 'none', panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+  labs(x = 'Defaulter', y = 'Contract Status', title = 'Loan Contract Status by Region Heatmap')
+```
+
+```{r Loan_status_by_gender, echo=TRUE, out.width = '100%'}
+left_join(loan, disposition, by = 'account_id') %>%
+  left_join(client, by = 'client_id') %>% 
+  left_join(district, by = 'district_id') %>% 
+  group_by(gender, contract_status, defaulter) %>% 
+  summarise(count = n(),
+            amount = sum(amount)) %>% 
+  group_by(gender, contract_status) %>% 
+  mutate(count_contract_status = sum(count),
+         amount_contract_status = sum(amount)) %>% 
+  group_by(gender) %>% 
+  mutate(count_gender = sum(count),
+         amount_gender = sum(amount)) %>% 
+  ggplot(aes(x = defaulter, y = contract_status, fill = count / count_gender)) +
+    geom_bin2d(stat = 'identity') +
+    geom_text(aes(label = paste(round(count / count_gender * 100, 2), '%')), color = 'white') +
+    facet_wrap(~gender) +
+    theme_economist() +
+    theme(legend.position = 'none', panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+    labs(x = 'Defaulter',
+         y = 'Contract Status',
+         title = 'Loan Contract Status by Gender Heatmap')
+```
+
+```{r Loan_status_by_age_bin, echo=TRUE, out.width = '100%'}
+left_join(loan, disposition, by = 'account_id') %>%
+  left_join(client, by = 'client_id') %>% 
+  left_join(district, by = 'district_id') %>% 
+  group_by(age_bin, contract_status, defaulter) %>% 
+  summarise(count = n(),
+            amount = sum(amount)) %>% 
+  group_by(age_bin, contract_status) %>% 
+  mutate(count_contract_status = sum(count),
+         amount_contract_status = sum(amount)) %>% 
+  group_by(age_bin) %>% 
+  mutate(count_age_bin = sum(count),
+         amount_age_bin = sum(amount)) %>% 
+  ggplot(aes(x = defaulter, y = contract_status, fill = count / count_age_bin)) +
+    geom_bin2d(stat = 'identity') +
+    geom_text(aes(label = paste(round(count / count_age_bin * 100, 2), '%')), color = 'white') +
+    facet_wrap(~age_bin) +
+    theme_economist() +
+    theme(legend.position = 'none', panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+    labs(x = 'Defaulter',
+         y = 'Contract Status',
+         title = 'Loan Contract Status by Age Group Heatmap')
+```
+
+## 3.3 - Account Balance Exploration
+
+```{r avg_account_balance_by_gender_and_region, echo=TRUE, out.width = '100%'}
+account_balance <- arrange(transaction, desc(date), account_id) %>%
+  group_by(account_id) %>%
+  mutate(avg_balance = mean(balance)) %>%
+  filter(row_number() == 1) %>% 
+  select(account_id, date, balance, avg_balance)
+
+colnames(account_balance) <- c("account_id", "last_transaction_date", 'account_balance', 'avg_balance')
+
+left_join(account_balance, disposition, by = 'account_id') %>%
+  left_join(client, by = 'client_id') %>% 
+  left_join(district, by = 'district_id') %>% 
+  filter(type == 'Owner') %>% 
+  ggplot(aes(avg_balance)) +
+    geom_density(alpha = 0.5, aes(fill = gender)) +
+    scale_x_continuous(labels = scales::comma) +
+    labs(title = 'Average Account Balance Distribution by Gender and Region') +
+    theme_economist() +
+    facet_wrap(~region)
+
 ```
