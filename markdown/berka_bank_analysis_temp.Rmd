@@ -1,0 +1,103 @@
+---
+title: "Trabalho de Análise Exploratória de Dados"
+author: "Leandro Daniel"
+date: "6/29/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_knit$set(root.dir = "../")
+
+# loading required libraries
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+library(lubridate)
+library(ggalluvial)
+library(stringr)
+library(VIM)
+library(psych)
+library(ggthemes)
+```
+
+```{r include=FALSE}
+# loading required steps before performing the analysis
+source("./scripts/step_01_create_functions.R")
+source("./scripts/step_02_data_ingestion.R")
+#source("./scripts/step_03_data_cleaning.R")
+#source("./scripts/step_04_label_translation.R")
+#source("./scripts/step_05_data_enhancement.R")
+```
+
+# Berka Bank Analysis
+
+## Domain
+Onde upon a time, there was a bank offering services to private persons.
+The services include managing of accounts, offerings loans, etc.
+
+## Task Descripion
+
+The bank wants to improve their services. For instance, the bank managers have only vague idea, who is a good client (whom to offer some additional services) and who is a bad client (whom to watch carefully to monimize the bank loses).
+
+Fortunately, the bank stores data about their clients, the accounts (transactions within several months), the loans already granted, the credit cards issued.
+
+The bank managers hope to improve their undestanding of customers and seed specific actions to improve services.
+
+A mere application of discovery tool will not be convincing for them.
+
+## Data Model
+```{r data_model_pic, echo=FALSE, out.width = '800px'}
+knitr::include_graphics("../images/data_model.png")
+```
+
+## Gender Exploration
+
+At first glance, gender equality is well balanced in the bank, even when observed over the decades. Even
+more impressive, gender equility is everywhere in the country.
+
+```{r general_gender_distribution, echo=TRUE, out.width = '100%'}
+ggplot(data = client) +
+  aes(x = gender, fill = gender) +
+  geom_bar() +
+  labs(title = "Gender distribution of clients in the bank",
+       subtitle = "A well balanced bank",
+       x = "Gender",
+       y = "Total clients") +
+  theme_economist()
+```
+
+```{r gender_distribution_over_decades, echo=TRUE, out.width = '100%'}
+clientGenderOverDecades <- client %>% 
+  group_by(decade = as.integer(substr(client$birth_number, 1,1)) * 10, gender = client$gender) %>% 
+  count()
+
+ggplot(data = clientGenderOverDecades) +
+  aes(x = decade, fill = gender, weight = n) +
+  scale_x_continuous(breaks = c(0, 10, 20, 30, 40, 50, 60, 70, 80)) +
+  geom_bar() +
+  geom_line(aes(y = n, color = gender)) +
+  labs(title = "Gender distribution of clients in the bank over the decades",
+       subtitle = "Equality at its finest",
+       x = "Decades",
+       y = "Total clients") +
+  theme_economist() +
+  facet_wrap(vars(gender))
+```
+
+```{r gender_distribution_by_age_region, echo=TRUE, out.width = '100%'}
+clientGenderAgeGroupByRegion <- client %>% 
+  mutate(age_group = ifelse(age < 21, "young", ifelse(age >= 21 & age <= 60, "adult", "senior"))) %>% 
+  inner_join(district, by = "district_id") %>% 
+  group_by(age_group, gender, region) %>% 
+  count()
+  
+ggplot(data = clientGenderAgeGroupByRegion, aes(axis1 = region, axis2 = age_group, y = n)) +
+  scale_x_discrete(limits = c("region", "age group"), expand = c(.1, .1)) +
+  xlab("Demographic") +
+  geom_alluvium(aes(fill = gender), knot.pos = 0) +
+  geom_stratum() + 
+  geom_text(stat = "stratum", label.strata = TRUE) +
+  theme_economist() +
+  ggtitle("Region and age group by gender", "Equality is everywhere") 
+```
