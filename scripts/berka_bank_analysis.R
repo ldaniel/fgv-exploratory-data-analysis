@@ -27,7 +27,7 @@ ggplot(data = client) +
        subtitle = "A well balanced bank",
        x = "Gender",
        y = "Total clients") +
-  theme_minimal()
+  theme_economist()
 
 # gender distribution of clients in the bank over the decades
 clientGenderOverDecades <- client %>% 
@@ -43,7 +43,7 @@ ggplot(data = clientGenderOverDecades) +
        subtitle = "Equality at its finest",
        x = "Decades",
        y = "Total clients") +
-  theme_minimal() +
+  theme_economist() +
   facet_wrap(vars(gender))
 
 # alluvial diagram representation of gender, age group and region
@@ -59,7 +59,7 @@ ggplot(data = clientGenderAgeGroupByRegion, aes(axis1 = region, axis2 = age_grou
   geom_alluvium(aes(fill = gender), knot.pos = 0) +
   geom_stratum() + 
   geom_text(stat = "stratum", label.strata = TRUE) +
-  theme_minimal() +
+  theme_economist() +
   ggtitle("Region and age group by gender", "Equality is everywhere") 
 
 # Loan Analisys - Delinquency Rate by Region
