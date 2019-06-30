@@ -15,6 +15,7 @@ source("./scripts/step_01_create_functions.R")
 source("./scripts/step_02_data_ingestion.R")
 source("./scripts/step_03_data_cleaning.R")
 source("./scripts/step_04_label_translation.R")
+source("./scripts/step_05_data_enhancement.R")
 
 # performing data analysis ----------------------------------------------------
 
@@ -62,11 +63,6 @@ ggplot(data = clientGenderAgeGroupByRegion, aes(axis1 = region, axis2 = age_grou
   ggtitle("Region and age group by gender", "Equality is everywhere") 
 
 # Loan Analisys - Delinquency Rate by Region
-
-loan <- mutate(loan, defaulter = as.logical( plyr::mapvalues(status, c ('A','B','C','D'), c(FALSE,TRUE,FALSE,TRUE))),
-               contract_status = plyr::mapvalues(status, c ('A','B','C','D'), c('finished','finished','running','running')),
-               type = 'Owner')
-
 left_join(loan, disposition, by = 'account_id') %>% 
   left_join(client, by = 'client_id') %>% 
   left_join(district, by = 'district_id') %>% 
@@ -88,9 +84,6 @@ left_join(loan, disposition, by = 'account_id') %>%
   labs(x = 'Defaulter', y = 'Contract Status', title = 'Loan Contract Status by Region Heatmap')
 
 # Loan Analisys - Delinquency Rate by Age Group
-
-client <- mutate(client, age_bin = paste(findInterval(age, c(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) * 10,'+'))
-  
 left_join(loan, disposition, by = 'account_id') %>%
   left_join(client, by = 'client_id') %>% 
   left_join(district, by = 'district_id') %>% 
@@ -114,7 +107,6 @@ left_join(loan, disposition, by = 'account_id') %>%
          title = 'Loan Contract Status by Age Group Heatmap')
 
 # Loan Analisys - Delinquency Rate by Gender
-
 left_join(loan, disposition, by = 'account_id') %>%
   left_join(client, by = 'client_id') %>% 
   left_join(district, by = 'district_id') %>% 
@@ -138,7 +130,6 @@ left_join(loan, disposition, by = 'account_id') %>%
          title = 'Loan Contract Status by Gender Heatmap')
 
 # Account Balance Analisys
-  
 account_balance <- arrange(transaction, desc(date), account_id) %>%
   group_by(account_id) %>%
   mutate(avg_balance = mean(balance)) %>%
