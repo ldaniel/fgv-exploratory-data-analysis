@@ -1,8 +1,10 @@
 ---
 title: "FGV MBA - Trabalho de Análise Exploratória de Dados"
 author: "Daniel Campos, Leandro Daniel, Rodrigo Goncalves e Ygor Lima"
-date: "2019-06-30"
-output: html_document
+date: '2019-06-30'
+output:
+  pdf_document: default
+  #html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -53,6 +55,7 @@ knitr::include_graphics("../images/data_model.png")
 
 ## 1.4 - Project at GitHub
 This project can be found and downloaded at GitHub: https://github.com/ldaniel/R_Bank_Berka
+
 > Valar Morghulis!
 > :)
 
