@@ -97,7 +97,8 @@ The birth_number column is given in the form of YYMMDD for men, # and YYMM+50DD 
 GetBirthdateFromBirthnumber <- function(var_birth_number, var_gender) {
  
   year <- paste("19", substr(var_birth_number, 1, 2), sep="")
-  month <- ifelse(var_gender == "male", substr(var_birth_number, 3, 4), as.integer(substr(var_birth_number, 3, 4)) - 50)
+  month <- ifelse(var_gender == "male", substr(var_birth_number, 3, 4), 
+  as.integer(substr(var_birth_number, 3, 4)) - 50)
   day <- substr(var_birth_number, 5, 6)
   result <- as.Date(paste(year, "-", month, "-", day, sep=""), format = "%Y-%m-%d")
   
@@ -170,9 +171,12 @@ This step aims to improve the analysis by adding auxiliary information.
 
 The code below improved loan data by having a classification regarding its payment status.
 ```
-loan <- mutate(loan, defaulter = as.logical( plyr::mapvalues(status, c ('A','B','C','D'), c(FALSE,TRUE,FALSE,TRUE))),
-               contract_status = plyr::mapvalues(status, c ('A','B','C','D'), c('finished','finished','running','running')),
-               type = 'Owner')
+loan <- mutate(loan, defaulter = 
+                as.logical(plyr::mapvalues(status, c ('A','B','C','D'), 
+                                           c(FALSE,TRUE,FALSE,TRUE))),
+                contract_status = plyr::mapvalues(status, c ('A','B','C','D'), 
+                                 c('finished','finished','running','running')),
+                                 type = 'Owner')
 ```
 
 The code below improved client data by havivng its age group.
