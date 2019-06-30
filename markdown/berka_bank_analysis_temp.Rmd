@@ -3,7 +3,8 @@ title: "FGV MBA - Trabalho de Análise Exploratória de Dados"
 author: "Daniel Campos, Leandro Daniel, Rodrigo Goncalves e Ygor Lima"
 date: '2019-06-30'
 output:
-  pdf_document: default
+  pdf_document: 
+    toc: yes
   #html_document: default
 ---
 
@@ -113,7 +114,8 @@ ggplot(data = client) +
   theme_economist()
 
 clientGenderOverDecades <- client %>% 
-  group_by(decade = as.integer(substr(client$birth_number, 1,1)) * 10, gender = client$gender) %>% 
+  group_by(decade = as.integer(substr(client$birth_number, 1,1)) * 10, 
+           gender = client$gender) %>% 
   count()
 
 # gender distribution of clients in the bank over the decades
@@ -131,12 +133,14 @@ ggplot(data = clientGenderOverDecades) +
 
 # alluvial diagram representation of gender, age group and region
 clientGenderAgeGroupByRegion <- client %>% 
-  mutate(age_group = ifelse(age < 21, "young", ifelse(age >= 21 & age <= 60, "adult", "senior"))) %>% 
+  mutate(age_group = ifelse(age < 21, "young", 
+                     ifelse(age >= 21 & age <= 60, "adult", "senior"))) %>% 
   inner_join(district, by = "district_id") %>% 
   group_by(age_group, gender, region) %>% 
   count()
   
-ggplot(data = clientGenderAgeGroupByRegion, aes(axis1 = region, axis2 = age_group, y = n)) +
+ggplot(data = clientGenderAgeGroupByRegion, 
+       aes(axis1 = region, axis2 = age_group, y = n)) +
   scale_x_discrete(limits = c("region", "age group"), expand = c(.1, .1)) +
   xlab("Demographic") +
   geom_alluvium(aes(fill = gender), knot.pos = 0) +
@@ -163,11 +167,15 @@ left_join(loan, disposition, by = 'account_id') %>%
          amount_region = sum(amount)) %>% 
   ggplot(aes(x = defaulter, y = contract_status, fill = count / count_region)) +
   geom_bin2d(stat = 'identity') +
-  geom_text(aes(label = paste(round(count / count_region * 100, 2), '%')), color = 'white') +
+  geom_text(aes(label = paste(round(count / count_region * 100, 2), '%')), 
+            color = 'white') +
   facet_wrap(~region) +
   theme_economist() +
-  theme(legend.position = 'none', panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
-  labs(x = 'Defaulter', y = 'Contract Status', title = 'Loan Contract Status by Region Heatmap')
+  theme(legend.position = 'none', panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank()) +
+  labs(x = 'Defaulter', 
+       y = 'Contract Status', 
+       title = 'Loan Contract Status by Region Heatmap')
 ```
 
 ```{r Loan_status_by_gender, echo=TRUE, out.width = '100%'}
@@ -183,12 +191,15 @@ left_join(loan, disposition, by = 'account_id') %>%
   group_by(gender) %>% 
   mutate(count_gender = sum(count),
          amount_gender = sum(amount)) %>% 
-  ggplot(aes(x = defaulter, y = contract_status, fill = count / count_gender)) +
+  ggplot(aes(x = defaulter, y = contract_status, 
+             fill = count / count_gender)) +
     geom_bin2d(stat = 'identity') +
-    geom_text(aes(label = paste(round(count / count_gender * 100, 2), '%')), color = 'white') +
+    geom_text(aes(label = paste(round(count / count_gender * 100, 2), '%')), 
+              color = 'white') +
     facet_wrap(~gender) +
     theme_economist() +
-    theme(legend.position = 'none', panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+    theme(legend.position = 'none', panel.grid.major = element_blank(), 
+          panel.grid.minor = element_blank()) +
     labs(x = 'Defaulter',
          y = 'Contract Status',
          title = 'Loan Contract Status by Gender Heatmap')
@@ -207,12 +218,15 @@ left_join(loan, disposition, by = 'account_id') %>%
   group_by(age_bin) %>% 
   mutate(count_age_bin = sum(count),
          amount_age_bin = sum(amount)) %>% 
-  ggplot(aes(x = defaulter, y = contract_status, fill = count / count_age_bin)) +
+  ggplot(aes(x = defaulter, 
+             y = contract_status, fill = count / count_age_bin)) +
     geom_bin2d(stat = 'identity') +
-    geom_text(aes(label = paste(round(count / count_age_bin * 100, 2), '%')), color = 'white') +
+    geom_text(aes(label = paste(round(count / count_age_bin * 100, 2), '%')), 
+              color = 'white') +
     facet_wrap(~age_bin) +
     theme_economist() +
-    theme(legend.position = 'none', panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
+    theme(legend.position = 'none', panel.grid.major = element_blank(), 
+          panel.grid.minor = element_blank()) +
     labs(x = 'Defaulter',
          y = 'Contract Status',
          title = 'Loan Contract Status by Age Group Heatmap')
@@ -227,7 +241,8 @@ account_balance <- arrange(transaction, desc(date), account_id) %>%
   filter(row_number() == 1) %>% 
   select(account_id, date, balance, avg_balance)
 
-colnames(account_balance) <- c("account_id", "last_transaction_date", 'account_balance', 'avg_balance')
+colnames(account_balance) <- c("account_id", "last_transaction_date", 
+                               'account_balance', 'avg_balance')
 
 left_join(account_balance, disposition, by = 'account_id') %>%
   left_join(client, by = 'client_id') %>% 
