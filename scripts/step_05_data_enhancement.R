@@ -1,4 +1,4 @@
-# this step aims to improve the analysis step by adding auxiliary information -
+# this step aims to improve the analysis by adding auxiliary information ------
 
 # improving loan data by having a classification regarding its payment status
 loan <- mutate(loan, defaulter = as.logical( plyr::mapvalues(status, c ('A','B','C','D'), c(FALSE,TRUE,FALSE,TRUE))),
