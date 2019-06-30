@@ -50,7 +50,10 @@ The bank managers hope to improve their undestanding of customers and seed speci
 A mere application of discovery tool will not be convincing for them.
 
 ## 1.3 - Data description
-```{r data_model_pic, echo=FALSE, out.width = '800px'}
+
+This database was prepared by Petr Berka and Marta Sochorova.
+
+```{r data_model_pic, echo=FALSE, out.width = '800px', fig.align='center', fig.cap='The logical data model of Berka Bank.'}
 knitr::include_graphics("../images/data_model.png")
 ```
 
@@ -73,26 +76,109 @@ Before starting the Berka Analysis, a few important steps were taken in order to
 - **Step 05**: Data Enhancement
 
 ## 2.1 - Create Functions
-To-do.
+This step create functions to be used in the next steps. Following, all functions created were described.
+
+### 2.1.1 - GetGenderFromBirthnumber 
+The birth_number column is given in the form of YYMMDD for men, and YYMM+50DD for women. The objective of this function is to return the gender of the client via the birth_number.
+
+```
+GetGenderFromBirthnumber <- function(var_birth_number) {
+  
+  month <- substr(var_birth_number, 3, 4)
+  result <- ifelse(as.integer(month) > 50, "female", "male")
+  
+  return(as.factor(result))
+}
+```
+
+### 2.1.2 - GetBirthdateFromBirthnumber
+The birth_number column is given in the form of YYMMDD for men, # and YYMM+50DD for women. The objective of this function is to return the final birthday as Date.
+```
+GetBirthdateFromBirthnumber <- function(var_birth_number, var_gender) {
+ 
+  year <- paste("19", substr(var_birth_number, 1, 2), sep="")
+  month <- ifelse(var_gender == "male", substr(var_birth_number, 3, 4), as.integer(substr(var_birth_number, 3, 4)) - 50)
+  day <- substr(var_birth_number, 5, 6)
+  result <- as.Date(paste(year, "-", month, "-", day, sep=""), format = "%Y-%m-%d")
+  
+  return(result)
+}
+```
+
+### 2.1.3 - ConvertToDate
+The objective of this function is to convert the strange bank date style to the regular R Date datatype.
+```
+ConvertToDate <- function(var_date) {
+  
+  year <- paste("19", substr(var_date, 1, 2), sep="")
+  month <- substr(var_date, 3, 4)
+  day <- substr(var_date, 5, 6)
+  result <- as.Date(paste(year, "-", month, "-", day, sep=""), format = "%Y-%m-%d")
+  
+  return(result)
+}
+```
+
+### 2.1.4 - GetAgeFromBirthnumber
+The objective of this function is to get age given the birth_number.
+```
+GetAgeFromBirthnumber <- function(var_birth_number) {
+  
+  base_year <- 99 # considering 1999 as the base year for this exercise
+  year <- substr(var_birth_number, 1, 2)
+  result <- base_year - as.integer(year)
+  
+  return(result)
+}
+```
 
 ## 2.2 - Data Ingestion
-To-do.
+During this step, in addition to the loading data processes, it were performed data casting, column renaming and small touch-ups. The list below describe each table adjustment taken:
+
+- **Client**: get gender, birthday and age from birth_number column in using *GetGenderFromBirthnumber* and *GetBirthdateFromBirthnumber* functions;
+- **District**: renaming columns and casting columns with decimal or "?" values;
+- **Credit Card**: casting column issued in creditcard table from string to datetime data type;
+- **Account**: casting column date in account table from string to datetime data type;
+- **Loan**: casting columns in table loan to the right data types;
+- **Permanent Order**: casting columns with decimal values;
+- **Transaction**: casting columns in table transaction to the right data types.
 
 ## 2.3 - Data Cleaning
+
+The objective of this step was analysing missing values and other strange conditions. In order to accomplish this task, a few R functions were used to quickly discover missing values, like NA and empty fields.
+
+The following command were used in each table to find out where NA values. 
 
 ```
 sapply(transaction, function(x) sum(is.na(x)))
 ```
+Solely the transaction table has 760931 NA's in the account column.
 
 ```
-sapply(permanent_order, function(x) table(as.character(x) =="")["TRUE"])
+sapply(transaction, function(x) table(as.character(x) =="")["TRUE"])
 ```
+Again, only the transaction table has empty values, in the following columns:
+- operation: 183114 empty cells
+- k_symbol: 481881 empty cells
+- bank: 782812 empty cells
 
 ## 2.4 - Label Translation
-To-do.
+In order to make the data information more understandable, it was translated some relevant labels and domains from Czech to English.
 
 ## 2.5 - Data Enhancement
-To-do.
+This step aims to improve the analysis by adding auxiliary information.
+
+The code below improved loan data by having a classification regarding its payment status.
+```
+loan <- mutate(loan, defaulter = as.logical( plyr::mapvalues(status, c ('A','B','C','D'), c(FALSE,TRUE,FALSE,TRUE))),
+               contract_status = plyr::mapvalues(status, c ('A','B','C','D'), c('finished','finished','running','running')),
+               type = 'Owner')
+```
+
+The code below improved client data by havivng its age group.
+```
+client <- mutate(client, age_bin = paste(findInterval(age, c(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) * 10,'+'))
+```
 
 *******************************************************************************
 
