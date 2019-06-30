@@ -1,7 +1,7 @@
 ---
-title: "Trabalho de Análise Exploratória de Dados"
-author: "Leandro Daniel"
-date: "6/29/2019"
+title: "FGV MBA - Trabalho de Análise Exploratória de Dados"
+author: "Daniel Campos, Leandro Daniel, Rodrigo Goncalves e Ygor Lima"
+date: "2019-06-30"
 output: html_document
 ---
 
@@ -26,6 +26,7 @@ library(ggthemes)
 source("./scripts/step_01_create_functions.R")
 source("./scripts/step_02_data_ingestion.R")
 #source("./scripts/step_03_data_cleaning.R")
+#TO-DO: to discuss with team how to handle data cleaning
 source("./scripts/step_04_label_translation.R")
 source("./scripts/step_05_data_enhancement.R")
 ```
@@ -50,16 +51,46 @@ A mere application of discovery tool will not be convincing for them.
 knitr::include_graphics("../images/data_model.png")
 ```
 
-# 2 - Data ingestion, cleaning, translation and Enhancement
+## 1.4 - Project at GitHub
+This project can be found and downloaded at GitHub: https://github.com/ldaniel/R_Bank_Berka
+> Valar Morghulis!
+> :)
+
+*******************************************************************************
+
+# 2 - Data ingestion, cleaning, translation and enhancement
+
+Before starting the Berka Analysis, a few important steps were taken in order to prepare the source data files. These steps are listed below:
+
+- **Step 01**: Create Functions
+- **Step 02**: Data Ingestion
+- **Step 03**: Data Cleaning
+- **Step 04**: Label Translation
+- **Step 05**: Data Enhancement
+
+## 2.1 - Create Functions
+To-do.
+
+## 2.2 - Data Ingestion
+To-do.
+
+## 2.3 - Data Cleaning
 
 ```
-sapply(transaction, function(x) sum(is.na(x))) 
-
+sapply(transaction, function(x) sum(is.na(x)))
 ```
 
 ```
-sapply(permanent_order, function(x) table(as.character(x) =="")["TRUE"]) 
+sapply(permanent_order, function(x) table(as.character(x) =="")["TRUE"])
 ```
+
+## 2.4 - Label Translation
+To-do.
+
+## 2.5 - Data Enhancement
+To-do.
+
+*******************************************************************************
 
 # 3 - The Berka Bank Analysis
 
