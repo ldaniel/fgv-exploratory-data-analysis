@@ -6,12 +6,12 @@ Sexual language and imagery is not appropriate for any communication and/or talk
 
 These are the values to which people should aspire:
 
-- **Be friendly and welcoming**
+- **Be friendly and welcoming**.
 - **Be patient**, remember that people have varying communication styles and that not everyone is using their native language. (Meaning and tone can be lost in translation.)
 - **Be thoughtful**, productive communication requires effort. Think about how your words will be interpreted. Remember that sometimes it is best to refrain entirely from commenting.
 - **Be respectful**, in particular, respect differences of opinion.
 - **Be charitable**, interpret the arguments of others in good faith, do not seek to disagree. When we do disagree, try to understand why.
-- **Avoid destructive behavior** D
+- **Avoid destructive behavior**
     - Derailing: stay on topic; if you want to talk about something else, start a new conversation. 
     - Unconstructive criticism: don't merely decry the current state of affairs; offer—or at least solicit—suggestions as to how things may be improved.
     - Snarking (pithy, unproductive, sniping comments)
