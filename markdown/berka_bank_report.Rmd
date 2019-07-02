@@ -1,19 +1,20 @@
 ---
 title: "FGV MBA - Trabalho de Análise Exploratória de Dados"
-author: 
+author:
 - Daniel Campos (A99999999 / nome@email.com)
 - Leandro Daniel (A57622988 / ldanielcontato@gmail.com)
 - Rodrigo Goncalves (A99999999 / nome@email.com)
 - Ygor Lima (A99999999 / nome@email.com)
-date: 'Julho de 2019'
+date: "Julho de 2019"
 output:
-  pdf_document: 
+  html_document:
+    df_print: paged
+    toc: yes
+    toc_depth: '4'
+  pdf_document:
     number_sections: yes
     toc: yes
     toc_depth: 4
-#header-includes:
-#  - \usepackage{xcolor}
-#  - \usepackage{framed}
 ---
 
 ```{r setup, include=FALSE}
