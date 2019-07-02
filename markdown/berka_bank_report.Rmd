@@ -362,5 +362,7 @@ left_join(account_balance, disposition, by = 'account_id') %>%
     labs(title = 'Average Account Balance Distribution by Gender and Region') +
     theme_economist() +
     facet_wrap(~region)
-
 ```
+
+# Conclusion
+To.do
