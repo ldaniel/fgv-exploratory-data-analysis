@@ -4,7 +4,7 @@ navbar:
   title: "Cars"
   left:
   - text: "Home"
-   href: index.html
+   href: ./markdown/berka_bank_report.html
   - text: "Speed and Distance"
    href: speed-and-distance.html
 output:

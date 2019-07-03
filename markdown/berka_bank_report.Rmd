@@ -6,15 +6,6 @@ author:
 - Rodrigo Goncalves (A99999999 / nome@email.com)
 - Ygor Lima (A99999999 / nome@email.com)
 date: "Julho de 2019"
-output:
-  html_document: 
-    number_sections: yes
-    toc: yes
-    toc_depth: 4
-  pdf_document:
-    number_sections: yes
-    toc: yes
-    toc_depth: 4
 ---
 
 ```{r setup, include=FALSE}
