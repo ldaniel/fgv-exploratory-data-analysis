@@ -33,6 +33,7 @@ library(VIM)
 library(psych)
 library(ggthemes)
 library(tinytex)
+library(leaflet)
 ```
 
 ```{r include=FALSE}
@@ -370,6 +371,29 @@ left_join(account_balance, disposition, by = 'account_id') %>%
     labs(title = 'Average Account Balance Distribution by Gender and Region') +
     theme_economist() +
     facet_wrap(~region)
+```
+
+## District Exploration
+
+```{r district_map_exploration, echo=TRUE, out.width = '100%'}
+czech_regions <- read.csv(textConnection(
+                   "City,Lat,Long,Pop
+                    prague,50.073658,14.418540,645966
+                    central Bohemia,49.8175,15.4730,645966
+                    South Bohemia,48.9458,14.4416,645966
+                    west Bohemia,49.7384,13.3736,645966
+                    north Bohemia,50.7663,15.0543,645966
+                    east Bohemia,50.0343,15.7812,645966
+                    south Moravia,48.9545,16.7677,645966
+                    north Moravia,49.5938,17.2509,645966"))
+
+leaflet(czech_regions) %>% 
+  addTiles() %>%
+  addCircles(lng = ~Long, 
+             lat = ~Lat, 
+             weight = 2, 
+             radius = ~sqrt(Pop) * 30, 
+             popup = ~City)
 ```
 
 # Conclusion

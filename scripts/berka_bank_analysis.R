@@ -158,7 +158,7 @@ leaflet(czech_regions) %>%
   addTiles() %>%
   addCircles(lng = ~Long, 
              lat = ~Lat, 
-             weight = 1, 
+             weight = 2, 
              radius = ~sqrt(Pop) * 30, 
              popup = ~City)
 
