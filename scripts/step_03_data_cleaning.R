@@ -1,5 +1,8 @@
 # analysing missing values and other strange conditions -----------------------
 
+# fix observations in k_symbol transaction table with ' ' (one space) to empty string ('')
+transaction$k_symbol = trimws(transaction$k_symbol)
+
 # looking for NA's in any column
 sapply(client, function(x) sum(is.na(x)))
 sapply(disposition, function(x) sum(is.na(x)))
@@ -27,11 +30,4 @@ sapply(permanent_order, function(x) table(as.character(x) =="")["TRUE"])
 #   bank      = 782812 empty cells
 sapply(transaction, function(x) table(as.character(x) =="" | as.character(x) ==" ")["TRUE"])
 
-# View(temp)
-# summary(transaction)
-# str(transaction)
 
-# matrixplot(transaction)
-
-# fix observations in k_symbol transaction table with ' ' (one space) to empty string ('')
-transaction$k_symbol = trimws(transaction$k_symbol)
