@@ -12,12 +12,6 @@ transaction     <- read.csv2(paste(dataDirectory, "trans.asc", sep = ""), string
 
 # performing data casting, column renaming and small touch-ups ----------------
 
-# get gender and birthday from birth_number column in client table
-client <- client %>% 
-  mutate(gender = GetGenderFromBirthnumber(birth_number)) %>% 
-  mutate(birth_date = GetBirthdateFromBirthnumber(birth_number, gender)) %>% 
-  mutate(age = GetAgeFromBirthnumber(birth_number))
-
 # renaming columns in district table 
 names(district)[names(district) == "A1"] <- "district_id"
 names(district)[names(district) == "A2"] <- "district_name"

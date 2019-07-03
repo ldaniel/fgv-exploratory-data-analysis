@@ -150,7 +150,6 @@ GetAgeFromBirthnumber <- function(var_birth_number) {
 ## Data Ingestion
 During this step, in addition to the loading data processes, it was performed data casting, column renaming and small touch-ups. The list below describe each table adjustment taken:
 
-- **Client**: get gender, birthday and age from birth_number column in using *GetGenderFromBirthnumber* and *GetBirthdateFromBirthnumber* functions;
 - **District**: renaming columns and casting columns with decimal or "?" values;
 - **Credit Card**: casting column issued in creditcard table from string to datetime data type;
 - **Account**: casting column date in account table from string to datetime data type;
@@ -183,6 +182,15 @@ In order to make the data information more understandable, it was translated som
 
 ## Data Enhancement
 This step aims to improve the analysis by adding auxiliary information.
+
+The code below get gender, birthday and age from birth_number column in using *GetGenderFromBirthnumber* and *GetBirthdateFromBirthnumber* functions.
+
+```
+client <- client %>% 
+  mutate(gender = GetGenderFromBirthnumber(birth_number)) %>% 
+  mutate(birth_date = GetBirthdateFromBirthnumber(birth_number, gender)) %>% 
+  mutate(age = GetAgeFromBirthnumber(birth_number))
+```
 
 The code below improved loan data by having a classification regarding its payment status.
 

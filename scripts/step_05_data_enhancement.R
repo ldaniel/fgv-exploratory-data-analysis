@@ -1,5 +1,11 @@
 # this step aims to improve the analysis by adding auxiliary information ------
 
+# get gender and birthday from birth_number column in client table
+client <- client %>% 
+  mutate(gender = GetGenderFromBirthnumber(birth_number)) %>% 
+  mutate(birth_date = GetBirthdateFromBirthnumber(birth_number, gender)) %>% 
+  mutate(age = GetAgeFromBirthnumber(birth_number))
+
 # improving loan data by having a classification regarding its payment status
 loan <- mutate(loan, defaulter = as.logical( plyr::mapvalues(status, c ('A','B','C','D'), c(FALSE,TRUE,FALSE,TRUE))),
                contract_status = plyr::mapvalues(status, c ('A','B','C','D'), c('finished','finished','running','running')),
