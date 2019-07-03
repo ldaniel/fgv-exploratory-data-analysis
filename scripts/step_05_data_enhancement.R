@@ -18,6 +18,7 @@ client <- mutate(client, age_bin = paste(findInterval(age, c(10, 20, 30, 40, 50,
 account_balance <- arrange(transaction, desc(date), account_id) %>%
   group_by(account_id) %>%
   mutate(avg_balance = mean(balance)) %>%
-  filter(row_number() == 1) %>% 
-  select(account_id, date, balance, avg_balance)
+  filter(row_number() == 1) %>%
+  dplyr::select(account_id, date, balance, avg_balance)
+
 colnames(account_balance) <- c("account_id", "last_transaction_date", 'account_balance', 'avg_balance')
