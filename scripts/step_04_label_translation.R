@@ -22,5 +22,5 @@ transaction$operation <- plyr::mapvalues(transaction$operation,
 
 transaction$k_symbol <- plyr::mapvalues(transaction$k_symbol, 
                                         c('POJISTNE', 'SLUZBY', 'UROK', 'SANKC. UROK', 'SIPO', 'DUCHOD', 'UVER'),
-                                        c('insurrance payment', 'statement', 'interest credited',
+                                        c('insurance payment', 'statement', 'interest credited',
                                           'sanction interest', 'household', 'old age pension', 'loan payment'))
