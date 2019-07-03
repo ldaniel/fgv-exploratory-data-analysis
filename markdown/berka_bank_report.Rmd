@@ -203,7 +203,7 @@ loan <- mutate(loan, defaulter =
                                  type = 'Owner')
 ```
 
-The code below improved client data by havivng its age group.
+The code below improved client data by having its age group.
 
 ```
 client <- mutate(client, age_bin = paste(findInterval(age, 
