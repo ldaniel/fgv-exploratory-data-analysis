@@ -10,6 +10,8 @@ if(tolower(username) == "daniell") {
   wd = "C:/Users/rodri/OneDrive/My GIT Projects/R_Bank_Berka"
 } else if (tolower(username) == "a57622988") {
   wd = "C:/Users/A57622988/Desktop/Aula"
+} else if (tolower(username) == "Ygor") {
+  wd = "/Users/Ygor/Documents/MBA/analise_preditiva/R_Bank_Berka"
 } else {
   directoryPath <- dirname(rstudioapi::getSourceEditorContext()$path)
   directoryPath <- str_replace(directoryPath, "/scripts", "")
