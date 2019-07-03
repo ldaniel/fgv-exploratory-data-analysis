@@ -131,13 +131,6 @@ left_join(loan, disposition, by = 'account_id') %>%
          title = 'Loan Contract Status by Gender Heatmap')
 
 # Account Balance Analisys
-account_balance <- arrange(transaction, desc(date), account_id) %>%
-  group_by(account_id) %>%
-  mutate(avg_balance = mean(balance)) %>%
-  filter(row_number() == 1) %>% 
-  select(account_id, date, balance, avg_balance)
-
-colnames(account_balance) <- c("account_id", "last_transaction_date", 'account_balance', 'avg_balance')
 
 left_join(account_balance, disposition, by = 'account_id') %>%
   left_join(client, by = 'client_id') %>% 
