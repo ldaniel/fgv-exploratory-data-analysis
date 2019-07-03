@@ -1,13 +1,11 @@
-name: "cars"
+name: "AnaliseExploratoriaDados"
 output_dir: "docs"
 navbar:
-  title: "Cars"
+  title: "FGV MBA - Trabalho de Análise Exploratória de Dados"
   left:
   - text: "Home"
    href: ../markdown/berka_bank_report.html
-  - text: "Speed and Distance"
-   href: speed-and-distance.html
 output:
   html_document:
- theme: cosmo
+ theme: jekyll-theme-cayman
 
