@@ -18,9 +18,7 @@ source("./scripts/step_03_data_cleaning.R")
 source("./scripts/step_04_label_translation.R")
 source("./scripts/step_05_data_enhancement.R")
 
-# performing data analysis ----------------------------------------------------
-
-# gender distribution of clients in the bank
+# gender distribution of clients in the bank ----------------------------------
 ggplot(data = client) +
   aes(x = gender, fill = gender) +
   geom_bar() +
@@ -30,7 +28,7 @@ ggplot(data = client) +
        y = "Total clients") +
   theme_economist()
 
-# gender distribution of clients in the bank over the decades
+# gender distribution of clients in the bank over the decades -----------------
 clientGenderOverDecades <- client %>% 
   group_by(decade = as.integer(substr(client$birth_number, 1,1)) * 10, gender = client$gender) %>% 
   count()
@@ -47,7 +45,7 @@ ggplot(data = clientGenderOverDecades) +
   theme_economist() +
   facet_wrap(vars(gender))
 
-# alluvial diagram representation of gender, age group and region
+# alluvial diagram representation of gender, age group and region -------------
 clientGenderAgeGroupByRegion <- client %>% 
   mutate(age_group = ifelse(age < 21, "young", ifelse(age >= 21 & age <= 60, "adult", "senior"))) %>% 
   inner_join(district, by = "district_id") %>% 
@@ -63,7 +61,7 @@ ggplot(data = clientGenderAgeGroupByRegion, aes(axis1 = region, axis2 = age_grou
   theme_economist() +
   ggtitle("Region and age group by gender", "Equality is everywhere") 
 
-# Loan Analisys - Delinquency Rate by Region
+# Loan Analisys - Delinquency Rate by Region ----------------------------------
 left_join(loan, disposition, by = 'account_id') %>% 
   left_join(client, by = 'client_id') %>% 
   left_join(district, by = 'district_id') %>% 
@@ -84,7 +82,7 @@ left_join(loan, disposition, by = 'account_id') %>%
   theme(legend.position = 'none', panel.grid.major = element_blank(), panel.grid.minor = element_blank()) +
   labs(x = 'Defaulter', y = 'Contract Status', title = 'Loan Contract Status by Region Heatmap')
 
-# Loan Analisys - Delinquency Rate by Age Group
+# Loan Analisys - Delinquency Rate by Age Group -------------------------------
 left_join(loan, disposition, by = 'account_id') %>%
   left_join(client, by = 'client_id') %>% 
   left_join(district, by = 'district_id') %>% 
@@ -107,7 +105,7 @@ left_join(loan, disposition, by = 'account_id') %>%
          y = 'Contract Status',
          title = 'Loan Contract Status by Age Group Heatmap')
 
-# Loan Analisys - Delinquency Rate by Gender
+# Loan Analisys - Delinquency Rate by Gender ----------------------------------
 left_join(loan, disposition, by = 'account_id') %>%
   left_join(client, by = 'client_id') %>% 
   left_join(district, by = 'district_id') %>% 
@@ -130,7 +128,7 @@ left_join(loan, disposition, by = 'account_id') %>%
          y = 'Contract Status',
          title = 'Loan Contract Status by Gender Heatmap')
 
-# Account Balance Analisys
+# Account Balance Analisys ----------------------------------------------------
 
 left_join(account_balance, disposition, by = 'account_id') %>%
   left_join(client, by = 'client_id') %>% 
@@ -143,7 +141,7 @@ left_join(account_balance, disposition, by = 'account_id') %>%
     theme_economist() +
     facet_wrap(~region)
 
-# -----------------------------------------------------------------------------
+# Ploting map with district analysis ------------------------------------------
 
 czech_regions <- read.csv(textConnection(
                    "City,Lat,Long,Pop
