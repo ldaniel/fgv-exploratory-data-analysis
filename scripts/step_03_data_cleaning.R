@@ -25,10 +25,13 @@ sapply(permanent_order, function(x) table(as.character(x) =="")["TRUE"])
 #   operation = 183114 empty cells
 #   k_symbol  = 481881 empty cells
 #   bank      = 782812 empty cells
-sapply(transaction, function(x) table(as.character(x) =="")["TRUE"])
+sapply(transaction, function(x) table(as.character(x) =="" | as.character(x) ==" ")["TRUE"])
 
 # View(temp)
 # summary(transaction)
 # str(transaction)
 
 # matrixplot(transaction)
+
+# fix observations in k_symbol transaction table with ' ' (one space) to empty string ('')
+transaction$k_symbol = trimws(transaction$k_symbol)
