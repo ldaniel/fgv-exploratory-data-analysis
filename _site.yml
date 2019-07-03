@@ -9,5 +9,4 @@ navbar:
       href: about.html
 output:
   html_document:
- theme: jekyll-theme-cayman
-
+  theme: jekyll-theme-cayman
