@@ -13,3 +13,11 @@ loan <- mutate(loan, defaulter = as.logical( plyr::mapvalues(status, c ('A','B',
 
 # improving client data by having its age group
 client <- mutate(client, age_bin = paste(findInterval(age, c(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) * 10,'+'))
+
+# create account balance table
+account_balance <- arrange(transaction, desc(date), account_id) %>%
+  group_by(account_id) %>%
+  mutate(avg_balance = mean(balance)) %>%
+  filter(row_number() == 1) %>% 
+  select(account_id, date, balance, avg_balance)
+colnames(account_balance) <- c("account_id", "last_transaction_date", 'account_balance', 'avg_balance')
