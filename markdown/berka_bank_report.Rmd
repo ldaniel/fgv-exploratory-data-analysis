@@ -3,7 +3,7 @@ title: "FGV MBA - Trabalho de Análise Exploratória de Dados"
 author:
 - Daniel Campos (A99999999 / nome@email.com)
 - Leandro Daniel (A57622988 / ldanielcontato@gmail.com)
-- Rodrigo Goncalves (A99999999 / nome@email.com)
+- Rodrigo Goncalves (A57566093 / rodrigo.goncalves@me.com)
 - Ygor Lima (A99999999 / nome@email.com)
 date: "Julho de 2019"
 knit: (function(input_file, encoding) 
