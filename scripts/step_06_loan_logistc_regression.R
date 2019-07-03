@@ -1,9 +1,10 @@
 
 # loading required libraries --------------------------------------------------
-library(dplyr)
+library(tidyverse)
 library(ggplot2)
 library(ggthemes)
 library(lubridate)
+library(magrittr)
 
 # loading other scripts do be used here ---------------------------------------
 source("./scripts/step_00_config_environment.R")
@@ -15,59 +16,6 @@ source("./scripts/step_05_data_enhancement.R")
 
 # data prep -------------------------------------------------------------------
 
-transaction.date.ini = make_date(1993, 01, 01)
-transaction.date.end = make_date(1998, 12, 31)
-
-account_transaction_pattern <- group_by(transaction, account_id) %>% 
-  summarise(transaction_count = n(),
-            transaction_amount = sum(amount),
-            last_transaction_date = max(date),
-            transaction_amount_date_filter = crossprod(amount,  
-                                                       date >= transaction.date.ini &
-                                                         date <= transaction.date.end),
-            
-            percent_amount_old_age_pension = crossprod(amount, 
-                                                       date >= transaction.date.ini &
-                                                         date <= transaction.date.end &
-                                                         k_symbol == 'old age pension') / 
-              transaction_amount_date_filter,
-            percent_amount_insurance_payment = crossprod(amount, 
-                                                         date >= transaction.date.ini &
-                                                           date <= transaction.date.end &
-                                                           k_symbol == 'insurrance payment') / 
-              transaction_amount_date_filter,
-            percent_amount_sanction_interest = crossprod(amount, 
-                                                         date >= transaction.date.ini &
-                                                           date <= transaction.date.end &
-                                                           k_symbol == 'sanction interest') /
-              transaction_amount_date_filter,
-            percent_amount_household = crossprod(amount, 
-                                                 date >= transaction.date.ini &
-                                                   date <= transaction.date.end &
-                                                   k_symbol == 'household') / 
-              transaction_amount_date_filter,
-            percent_amount_statement = crossprod(amount, 
-                                                 date >= transaction.date.ini &
-                                                   date <= transaction.date.end &
-                                                   k_symbol == 'statement') / 
-              transaction_amount_date_filter,
-            percent_amount_interest_credited = crossprod(amount, 
-                                                         date >= transaction.date.ini &
-                                                           date <= transaction.date.end &
-                                                           k_symbol == 'interest credited') / 
-              transaction_amount_date_filter,
-            percent_amount_loan_payment = crossprod(amount, 
-                                                    date >= transaction.date.ini &
-                                                      date <= transaction.date.end &
-                                                      k_symbol == 'loan payment') / 
-              transaction_amount_date_filter,
-            percent_amount_other = crossprod(amount, 
-                                             date >= transaction.date.ini &
-                                               date <= transaction.date.end &
-                                               k_symbol == '') /
-              transaction_amount_date_filter
-  )
-
 temp <- left_join(loan, disposition, by = c('account_id', 'type')) %>% 
   left_join(client, by = 'client_id') %>%
   left_join(district, by = 'district_id') %>% 
@@ -78,7 +26,7 @@ temp <- left_join(loan, disposition, by = c('account_id', 'type')) %>%
                              make_date(1998, 12, 31)) / months(1),
          last_transaction_age_days = ((last_transaction_date.y %--% 
                                          make_date(1998, 12, 31)) / days(1))) %>% 
-  select(c("amount", "duration", "payments", "status", "defaulter", "contract_status",
+  dplyr::select(c("amount", "duration", "payments", "status", "defaulter", "contract_status",
            "gender", "age", "district_name", "region", 
            "no_of_inhabitants", "no_of_municip_inhabitants_less_499", 
            "no_of_municip_500_to_1999", "no_of_municip_2000_to_9999", 
@@ -109,27 +57,40 @@ colnames(temp) <- c("x_loan_amount", "x_loan_duration", "x_loan_payments", "x_lo
                     "x_percent_amount_statement", "x_percent_amount_interest_credited", 
                     "x_percent_amount_loan_payment", "x_percent_amount_other")
 
-temp <- select(temp, y_loan_defaulter, everything())
+temp <- dplyr::select(temp, y_loan_defaulter, everything())
 
 temp$x_card_type = ifelse(is.na(temp$x_card_type), 'no card', as.character(temp$x_card_type))
 temp$x_card_age_month = ifelse(is.na(temp$x_card_age_month), 0, temp$x_card_age_month)
 temp$y_loan_defaulter = as.numeric(temp$y_loan_defaulter)
 
-temp <- select(temp, -c(x_percent_amount_old_age_pension, x_loan_contract_status))
 
+# taking multicolinear variables from the dataset.
+temp <- dplyr::select(temp, -c(x_no_of_inhabitants, x_no_of_cities,
+                               x_average_salary, x_unemploymant_rate_1995,
+                               x_unemploymant_rate_1996, x_no_of_commited_crimes_1996 ,
+                               x_percent_amount_old_age_pension, x_transaction_count, 
+                               x_transaction_amount_date_filter, x_percent_amount_insurance_payment, 
+                               x_percent_amount_household, x_percent_amount_statement, 
+                               x_percent_amount_loan_payment, x_percent_amount_other, 
+                               x_district_name, x_region, x_loan_status, 
+                               x_loan_contract_status, x_percent_amount_sanction_interest))
 
 loan_reg_dataset <- temp
 
-loan_reg_dataset <- select(loan_reg_dataset, -c(x_no_of_inhabitants, x_no_of_cities, 
-                                                x_average_salary, x_unemploymant_rate_1995, 
-                                                x_unemploymant_rate_1996, x_no_of_commited_crimes_1996 ,
-                                                x_transaction_count, x_transaction_amount_date_filter, 
-                                                x_percent_amount_insurance_payment, x_percent_amount_household, 
-                                                x_percent_amount_statement, x_percent_amount_loan_payment, 
-                                                x_percent_amount_other))
-
-rm(temp, transaction.date.ini, transaction.date.end)
+rm(temp)
 gc()
+
+# evaluating multicolinearity of remaining variables.
+library(mctest)
+
+vars.quant <- select_if(loan_reg_dataset, is.numeric)
+
+omcdiag(vars.quant, loan_reg_dataset$y_loan_defaulter)
+imcdiag(vars.quant, loan_reg_dataset$y_loan_defaulter)
+mctest::mc.plot(vars.quant, loan_reg_dataset$y_loan_defaulter)
+
+library(corrplot)
+corrplot.mixed(cor(vars.quant))
 
 # sampling ----------------------------------------------------------------------------
 library(caret)
@@ -146,52 +107,50 @@ prop.table(table(data.train$y_loan_defaulter))
 prop.table(table(data.test$y_loan_defaulter))
 
 
-# Avaliando multicolinearidade - vars quantitativas
-library(mctest)
+# fit the logistic model -------------------------------------------------------------
 
-vars.quant <- select_if(loan_reg_dataset, is.numeric)
-
-omcdiag(vars.quant, loan_reg_dataset$y_loan_defaulter)
-imcdiag(vars.quant, loan_reg_dataset$y_loan_defaulter)
-mctest::mc.plot(vars.quant, loan_reg_dataset$y_loan_defaulter)
-
-loan_reg_dataset <- select(loan_reg_dataset, -c(x_no_of_inhabitants, x_no_of_cities, 
-                                                x_average_salary, x_unemploymant_rate_1995, 
-                                                x_unemploymant_rate_1996, x_no_of_commited_crimes_1996 ,
-                                                x_transaction_count, x_transaction_amount_date_filter, 
-                                                x_percent_amount_insurance_payment, x_percent_amount_household, 
-                                                x_percent_amount_statement, x_percent_amount_loan_payment, 
-                                                x_percent_amount_other))
-
-# calculando matriz de correlacao
-library(ppcor)
-library(corrplot)
-
-cor_matrix <- pcor(vars.quant, method = "pearson")
-corrplot.mixed(cor_matrix$estimate)
-
-cor_matrix$estimate
-
-glm_temp <- select(temp, -c(x_percent_amount_old_age_pension, x_loan_status,
-                            x_district_name, x_region))
-
-model <- glm(data = glm_temp, formula = y_loan_defaulter ~ ., 
+model <- glm(data = data.train, formula = y_loan_defaulter ~ ., 
              family= binomial(link='logit'))
 
+anova(model)
 summary(model)
 
 
+# model evaluation -------------------------------------------------------------------
 
-# AMOSTRAGEM DO DADOS
-library(caret)
+library(hmeasure) 
 
-set.seed(12345)
-index <- createDataPartition(base$y_subscribe, p= 0.7,list = F)
+glm.prob.train <- predict(model, type = "response")
+glm.prob.test <- predict(model, newdata = data.test, type= "response")
 
-data.train <- base[index, ] # base de desenvolvimento: 70%
-data.test  <- base[-index,] # base de teste: 30%
 
-# Checando se as propor??es das amostras s?o pr?ximas ? base original
-prop.table(table(base$y_subscribe))
-prop.table(table(data.train$y_subscribe))
-prop.table(table(data.test$y_subscribe))
+glm.train <- HMeasure(data.train$y_loan_defaulter, glm.prob.train)
+glm.test  <- HMeasure(data.test$y_loan_defaulter, glm.prob.test)
+
+glm.train$metrics
+glm.test$metrics
+
+library(rms)
+val.prob(glm.prob.train, data.train$y_loan_defaulter, smooth = F)
+hist(glm.prob.test, breaks = 25, col = "lightblue",xlab= "Probabilidades",
+     ylab= "Frequ?ncia",main= "Regress?o Log?stica")
+
+boxplot(glm.prob.test ~ data.test$y_loan_defaulter, col= c("red", "green"), 
+        horizontal= T)
+
+library(pROC)
+roc1 <- roc(data.test$y_loan_defaulter, glm.prob.test)
+y1 <- roc1$sensitivities
+x1 <- 1-roc1$specificities
+
+plot(x1, y1,  type="n",
+     xlab = "1 - Especificidade", 
+     ylab= "Sensitividade")
+lines(x1, y1,lwd=3,lty=1, col="purple") 
+
+# accuracy metrics -----------------------------------
+
+fitted.results <- ifelse(glm.prob.test > 0.5,1,0)
+
+misClasificError <- mean(fitted.results != data.test$y_loan_defaulter)
+print(paste('Accuracy', 1 - misClasificError))
