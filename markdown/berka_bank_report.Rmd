@@ -1,16 +1,17 @@
 ---
 title: "FGV MBA - Trabalho de Análise Exploratória de Dados"
 author:
-- Daniel Campos (A99999999 / nome@email.com)
+- Daniel Campos (A99999999 / daniel.ferraz.campos@gmail.com)
 - Leandro Daniel (A57622988 / ldanielcontato@gmail.com)
 - Rodrigo Goncalves (A57566093 / rodrigo.goncalves@me.com)
-- Ygor Lima (A99999999 / nome@email.com)
+- Ygor Lima (A99999999 / ygorlima1990@gmail.com)
 date: "Julho de 2019"
 knit: (function(input_file, encoding) 
        {
         out_dir <- '../docs';
         rmarkdown::render(input_file, encoding=encoding, 
-        output_file=file.path(dirname(input_file), out_dir, 'index.html'))
+                          output_file=file.path(dirname(input_file), 
+                          out_dir, 'index.html'))
        }
       )
 ---

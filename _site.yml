@@ -3,9 +3,10 @@ output_dir: "docs"
 navbar:
   title: "FGV MBA - Trabalho de Análise Exploratória de Dados"
   left:
-  - text: "Home"
-   href: ../markdown/berka_bank_report.html
+    - text: "Home"
+      href: index.html
+    - text: "About"
+      href: about.html
 output:
   html_document:
- theme: jekyll-theme-cayman
-
+  theme: jekyll-theme-cayman
