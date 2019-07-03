@@ -7,7 +7,7 @@ if(tolower(username) == "daniell") {
 } else if (tolower(username) == "leandro") {
   wd = "D:/OneDrive/FGV/04_Modulos/02 - Analise Exploratoria de Dados/TrabalhoFinal"
 } else if (tolower(username) == "rodri") {
-  wd = "C:/Users/rodri/OneDrive/My R Projects/R_Bank_Berka"
+  wd = "C:/Users/rodri/OneDrive/My GIT Projects/R_Bank_Berka"
 } else if (tolower(username) == "a57622988") {
   wd = "C:/Users/A57622988/Desktop/Aula"
 } else {
