@@ -10,7 +10,7 @@ output:
   html_document: 
     highlight: tango
     number_sections: yes
-    theme: cerulean
+    theme: paper
     toc: yes
 ---
 
