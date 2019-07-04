@@ -4376,8 +4376,7 @@ $(document).ready(function () {
 <h2><span class="header-section-number">1.2</span> Task descripion</h2>
 <p>The bank wants to improve their services. For instance, the bank managers have only vague idea, who is a good client (whom to offer some additional services) and who is a bad client (whom to watch carefully to monimize the bank loses).</p>
 <p>Fortunately, the bank stores data about their clients, the accounts (transactions within several months), the loans already granted, the credit cards issued.</p>
-<p>The bank managers hope to improve their undestanding of customers and seed specific actions to improve services.</p>
-<p>A mere application of discovery tool will not be convincing for them.</p>
+<p>The bank managers hope to improve their undestanding of customers and seed specific actions to improve services. A mere application of discovery tool will not be convincing for them.</p>
 </div>
 <div id="data-description" class="section level2">
 <h2><span class="header-section-number">1.3</span> Data description</h2>
@@ -4410,7 +4409,7 @@ The partial logical data model of Berka Bank.
 </ul>
 <div id="create-functions" class="section level2">
 <h2><span class="header-section-number">2.1</span> Create Functions</h2>
-<p>This step create functions to be used in the next steps. Following, all functions created were described.</p>
+<p>This step create functions to be used in the next steps. Following, all functions created are described.</p>
 <div id="getgenderfrombirthnumber" class="section level3">
 <h3><span class="header-section-number">2.1.1</span> GetGenderFromBirthnumber</h3>
 <p>The birth_number column is given in the form of YYMMDD for men, and YYMM+50DD for women. The objective of this function is to return the gender of the client via the birth_number.</p>
@@ -4464,6 +4463,7 @@ The partial logical data model of Berka Bank.
 </div>
 <div id="data-ingestion" class="section level2">
 <h2><span class="header-section-number">2.2</span> Data Ingestion</h2>
+<p>The process of data ingestion — preparing data for analysis — usually includes steps called extract (taking the data from its current location), transform (cleansing and normalizing the data), and load (placing the data in a database where it can be analyzed).</p>
 <p>During this step, in addition to the loading data processes, it was performed data casting, column renaming and small touch-ups. The list below describe each table adjustment taken:</p>
 <ul>
 <li><strong>District</strong>: renaming columns and casting columns with decimal or “?” values;</li>
@@ -4476,10 +4476,10 @@ The partial logical data model of Berka Bank.
 </div>
 <div id="data-cleaning" class="section level2">
 <h2><span class="header-section-number">2.3</span> Data Cleaning</h2>
-<p>The objective of this step was analysing missing values and other strange conditions. In order to accomplish this task, a few R functions were used to quickly discover missing values, like NA and empty fields.</p>
+<p>The objective of this step is analysing missing values and other strange conditions. In order to accomplish this task, a few R functions were used to quickly discover missing values, like NA and empty fields.</p>
 <p>First thing done, was fixing observations in k_symbol transaction table with ’ ’ (one space) to empty string (’’), using the following command.</p>
 <pre><code>transaction$k_symbol = trimws(transaction$k_symbol)</code></pre>
-<p>Then, the following command were used in each table to find out where NA values.</p>
+<p>Then, the command below was used to find out any NA values in each table.</p>
 <pre><code>sapply(transaction, function(x) sum(is.na(x)))</code></pre>
 <p>Solely the transaction table has NA values, in the following columns:</p>
 <table>
@@ -4532,9 +4532,9 @@ The partial logical data model of Berka Bank.
 </tr>
 </tbody>
 </table>
-<p>Finally, the following command were used in each table to find out where empty values was hidden.</p>
+<p>Finally, the following command wase used in each table to find out where empty values was hidden.</p>
 <pre><code>sapply(transaction, function(x) table(as.character(x) ==&quot;&quot;)[&quot;TRUE&quot;])</code></pre>
-<p>Again, only the transaction table has empty values, in the following columns:</p>
+<p>Again, only the transaction table had empty values, according to the table below:</p>
 <table>
 <thead>
 <tr class="header">
@@ -4592,8 +4592,8 @@ The partial logical data model of Berka Bank.
 </div>
 <div id="data-enhancement" class="section level2">
 <h2><span class="header-section-number">2.5</span> Data Enhancement</h2>
-<p>This step aims to improve the analysis by adding auxiliary information.</p>
-<p>The code below get gender, birthday and age from birth_number column in using <em>GetGenderFromBirthnumber</em> and <em>GetBirthdateFromBirthnumber</em> functions.</p>
+<p>This step aims to improve the analysis by adding auxiliary information. Data enhancement is all about making sure any data that is coming into the business is being looked at with a critical eye and is being filtered down to maximize its value.</p>
+<p>The code below get gender, birthday and age from birth_number column using <em>GetGenderFromBirthnumber</em> and <em>GetBirthdateFromBirthnumber</em> functions.</p>
 <pre><code>client &lt;- client %&gt;% 
   mutate(gender = GetGenderFromBirthnumber(birth_number)) %&gt;% 
   mutate(birth_date = GetBirthdateFromBirthnumber(birth_number, gender)) %&gt;% 
@@ -4783,8 +4783,9 @@ The partial logical data model of Berka Bank.
 <a class="sourceLine" id="cb18-16" title="16">             <span class="dt">weight =</span> <span class="dv">2</span>, </a>
 <a class="sourceLine" id="cb18-17" title="17">             <span class="dt">radius =</span> <span class="op">~</span><span class="kw">sqrt</span>(Pop) <span class="op">*</span><span class="st"> </span><span class="dv">30</span>, </a>
 <a class="sourceLine" id="cb18-18" title="18">             <span class="dt">popup =</span> <span class="op">~</span>City)</a></code></pre></div>
-<div id="htmlwidget-d6dd952f33f85521c32e" style="width:100%;height:480px;" class="leaflet html-widget"></div>
-<script type="application/json" data-for="htmlwidget-d6dd952f33f85521c32e">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircles","args":[[50.073658,49.8175,48.9458,49.7384,50.7663,50.0343,48.9545,49.5938],[14.41854,15.473,14.4416,13.3736,15.0543,15.7812,16.7677,17.2509],[24111.6030159755,24111.6030159755,24111.6030159755,24111.6030159755,24111.6030159755,24111.6030159755,24111.6030159755,24111.6030159755],null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":2,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},["                    prague","                    central Bohemia","                    South Bohemia","                    west Bohemia","                    north Bohemia","                    east Bohemia","                    south Moravia","                    north Moravia"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]}],"limits":{"lat":[48.9458,50.7663],"lng":[13.3736,17.2509]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-8df2b85284df3aae9d57" style="width:100%;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-8df2b85284df3aae9d57">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircles","args":[[50.073658,49.8175,48.9458,49.7384,50.7663,50.0343,48.9545,49.5938],[14.41854,15.473,14.4416,13.3736,15.0543,15.7812,16.7677,17.2509],[24111.6030159755,24111.6030159755,24111.6030159755,24111.6030159755,24111.6030159755,24111.6030159755,24111.6030159755,24111.6030159755],null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":2,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},["                    prague","                    central Bohemia","                    South Bohemia","                    west Bohemia","                    north Bohemia","                    east Bohemia","                    south Moravia","                    north Moravia"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]}],"limits":{"lat":[48.9458,50.7663],"lng":[13.3736,17.2509]}},"evals":[],"jsHooks":[]}</script>
+<hr />
 </div>
 </div>
 <div id="conclusion" class="section level1">
