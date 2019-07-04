@@ -154,6 +154,24 @@ czech_regions <- read.csv(textConnection(
                     south Moravia,48.9545,16.7677,645966
                     north Moravia,49.5938,17.2509,645966"))
 
+content <- paste(sep = "<br/>",
+                 "<b><a href='http://www.samurainoodle.com'>Samurai Noodle</a></b>",
+                 "606 5th Ave. S",
+                 "Seattle, WA 98138")
+
+leaflet(czech_regions) %>% 
+  addTiles() %>%
+  addLabelOnlyMarkers(
+    lng = 14.418540, lat = 50.073658,
+    label = "Test",
+    labelOptions = labelOptions(noHide = T, direction = "bottom",
+                                style = list(
+                                  "font-family" = "Tahoma",
+                                  "box-shadow" = "3px 3px rgba(0,0,0,0.25)",
+                                  "font-size" = "12px",
+                                  "border-color" = "rgba(0,0,0,0.5)"
+                                )))
+
 leaflet(czech_regions) %>% 
   addTiles() %>%
   addCircles(lng = ~Long, 
@@ -161,9 +179,5 @@ leaflet(czech_regions) %>%
              weight = 2, 
              radius = ~sqrt(Pop) * 30, 
              popup = ~City)
-
-
-
-
 
 
