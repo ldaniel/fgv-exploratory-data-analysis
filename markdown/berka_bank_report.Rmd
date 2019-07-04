@@ -55,9 +55,7 @@ The bank wants to improve their services. For instance, the bank managers have o
 
 Fortunately, the bank stores data about their clients, the accounts (transactions within several months), the loans already granted, the credit cards issued.
 
-The bank managers hope to improve their undestanding of customers and seed specific actions to improve services.
-
-A mere application of discovery tool will not be convincing for them.
+The bank managers hope to improve their undestanding of customers and seed specific actions to improve services. A mere application of discovery tool will not be convincing for them.
 
 ## Data description
 
@@ -86,7 +84,7 @@ Before starting the Berka Analysis, a few important steps were taken in order to
 - **Step 05**: Data Enhancement.
 
 ## Create Functions
-This step create functions to be used in the next steps. Following, all functions created were described.
+This step create functions to be used in the next steps. Following, all functions created are described.
 
 ### GetGenderFromBirthnumber 
 The birth_number column is given in the form of YYMMDD for men, and YYMM+50DD for women. The objective of this function is to return the gender of the client via the birth_number.
@@ -147,6 +145,8 @@ GetAgeFromBirthnumber <- function(var_birth_number) {
 ```
 
 ## Data Ingestion
+The process of data ingestion — preparing data for analysis — usually includes steps called extract (taking the data from its current location), transform (cleansing and normalizing the data), and load (placing the data in a database where it can be analyzed).
+
 During this step, in addition to the loading data processes, it was performed data casting, column renaming and small touch-ups. The list below describe each table adjustment taken:
 
 - **District**: renaming columns and casting columns with decimal or "?" values;
@@ -158,7 +158,7 @@ During this step, in addition to the loading data processes, it was performed da
 
 ## Data Cleaning
 
-The objective of this step was analysing missing values and other strange conditions. In order to accomplish this task, a few R functions were used to quickly discover missing values, like NA and empty fields.
+The objective of this step is analysing missing values and other strange conditions. In order to accomplish this task, a few R functions were used to quickly discover missing values, like NA and empty fields.
 
 First thing done, was fixing observations in k_symbol transaction table with ' ' (one space) to empty string (''), using the following command.
 
@@ -166,7 +166,7 @@ First thing done, was fixing observations in k_symbol transaction table with ' '
 transaction$k_symbol = trimws(transaction$k_symbol)
 ```
 
-Then, the following command were used in each table to find out where NA values. 
+Then, the command below was used to find out any NA values in each table.
 
 ```
 sapply(transaction, function(x) sum(is.na(x)))
@@ -178,13 +178,13 @@ Solely the transaction table has NA values, in the following columns:
 kable(transaction_na_cols)
 ```
 
-Finally, the following command were used in each table to find out where empty values was hidden. 
+Finally, the following command wase used in each table to find out where empty values was hidden. 
 
 ```
 sapply(transaction, function(x) table(as.character(x) =="")["TRUE"])
 ```
 
-Again, only the transaction table has empty values, in the following columns:
+Again, only the transaction table had empty values, according to the table below:
 
 ```{r echo=FALSE, results = 'asis'}
 kable(transaction_empty_cols)
@@ -194,9 +194,9 @@ kable(transaction_empty_cols)
 In order to make the data information more understandable, it was translated some relevant labels and domains from Czech to English.
 
 ## Data Enhancement
-This step aims to improve the analysis by adding auxiliary information.
+This step aims to improve the analysis by adding auxiliary information. Data enhancement is all about making sure any data that is coming into the business is being looked at with a critical eye and is being filtered down to maximize its value.
 
-The code below get gender, birthday and age from birth_number column in using *GetGenderFromBirthnumber* and *GetBirthdateFromBirthnumber* functions.
+The code below get gender, birthday and age from birth_number column using *GetGenderFromBirthnumber* and *GetBirthdateFromBirthnumber* functions.
 
 ```
 client <- client %>% 
