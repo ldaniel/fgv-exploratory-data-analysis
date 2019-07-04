@@ -6,14 +6,12 @@ author:
 - Rodrigo Goncalves (A57566093 / rodrigo.goncalves@me.com)
 - Ygor Lima (A57549661 / ygor_redesocial@hotmail.com)
 date: "Julho de 2019"
-knit: (function(input_file, encoding) 
-       {
-        out_dir <- '../docs';
-        rmarkdown::render(input_file, encoding=encoding, 
-                          output_file=file.path(dirname(input_file), 
-                          out_dir, 'index.html'))
-       }
-      )
+output:
+  html_document: 
+    highlight: tango
+    number_sections: yes
+    theme: cerulean
+    toc: yes
 ---
 
 ```{r setup, include=FALSE}
@@ -34,14 +32,14 @@ library(psych)
 library(ggthemes)
 library(tinytex)
 library(leaflet)
+library(knitr)
 ```
 
 ```{r include=FALSE}
 # loading required steps before performing the analysis
 source("./scripts/step_01_create_functions.R")
 source("./scripts/step_02_data_ingestion.R")
-#source("./scripts/step_03_data_cleaning.R")
-#TO-DO: to discuss with team how to handle data cleaning
+source("./scripts/step_03_data_cleaning.R")
 source("./scripts/step_04_label_translation.R")
 source("./scripts/step_05_data_enhancement.R")
 ```
@@ -162,21 +160,35 @@ During this step, in addition to the loading data processes, it was performed da
 
 The objective of this step was analysing missing values and other strange conditions. In order to accomplish this task, a few R functions were used to quickly discover missing values, like NA and empty fields.
 
-The following command were used in each table to find out where NA values. 
+First thing done, was fixing observations in k_symbol transaction table with ' ' (one space) to empty string (''), using the following command.
+
+```
+transaction$k_symbol = trimws(transaction$k_symbol)
+```
+
+Then, the following command were used in each table to find out where NA values. 
 
 ```
 sapply(transaction, function(x) sum(is.na(x)))
 ```
-Solely the transaction table has 760931 NA's in the account column.
+
+Solely the transaction table has NA values, in the following columns:
+
+```{r echo=FALSE, results = 'asis'}
+kable(transaction_na_cols)
+```
+
+Finally, the following command were used in each table to find out where empty values was hidden. 
 
 ```
 sapply(transaction, function(x) table(as.character(x) =="")["TRUE"])
 ```
+
 Again, only the transaction table has empty values, in the following columns:
 
-- operation: 183114 empty cells;
-- k_symbol: 481881 empty cells;
-- bank: 782812 empty cells.
+```{r echo=FALSE, results = 'asis'}
+kable(transaction_empty_cols)
+```
 
 ## Label Translation
 In order to make the data information more understandable, it was translated some relevant labels and domains from Czech to English.
