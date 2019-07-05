@@ -1,16 +1,15 @@
 ---
-title: "FGV MBA - Trabalho de Análise Exploratória de Dados"
+title: "Berka Bank Report"
 author:
 - Daniel Campos (A99999999 / daniel.ferraz.campos@gmail.com)
 - Leandro Daniel (A57622988 / contato@leandrodaniel.com)
 - Rodrigo Goncalves (A57566093 / rodrigo.goncalves@me.com)
 - Ygor Lima (A57549661 / ygor_redesocial@hotmail.com)
-date: "Julho de 2019"
+date: "July, 2019"
 output:
   html_document: 
     highlight: tango
     number_sections: yes
-    theme: paper
     toc: yes
 ---
 
@@ -61,9 +60,7 @@ The bank managers hope to improve their undestanding of customers and seed speci
 
 This database was prepared by Petr Berka and Marta Sochorova.
 
-```{r data_model_pic, echo=FALSE, out.width = '800px', fig.align='center', fig.cap='The partial logical data model of Berka Bank.'}
-knitr::include_graphics("../images/data_model.png")
-```
+![Simplified logical data model of Berka Bank.](../images/data_model.png)
 
 ## Project at GitHub
 This project can be found and downloaded at GitHub: https://github.com/ldaniel/R_Bank_Berka

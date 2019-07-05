@@ -1,0 +1,18 @@
+---
+title: "About this website"
+---
+
+# FGV MBA: Business Analytics & Big Data
+
+This website intends to present the MBA work from the "Análise Exploratória de Dados" class.
+
+Use the menu above to navigate and see the final report.
+
+## Professor
+- Gustavo Mirapalheta
+
+## Authors / students
+- Daniel Campos (A99999999 / daniel.ferraz.campos@gmail.com)
+- Leandro Daniel (A57622988 / contato@leandrodaniel.com)
+- Rodrigo Goncalves (A57566093 / rodrigo.goncalves@me.com)
+- Ygor Lima (A57549661 / ygor_redesocial@hotmail.com)

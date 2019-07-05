@@ -1,0 +1,8 @@
+name: "R-Berka-Bank"
+navbar:
+  title: "FGV MBA"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Berka Bank Report"
+      href: berka_bank_report.html
