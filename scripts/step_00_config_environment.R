@@ -17,7 +17,5 @@ if(tolower(username) == "daniell") {
   directoryPath <- str_replace(directoryPath, "/scripts", "")
   wd = directoryPath
 }
-return(getwd())
-
 setwd(wd)
 getwd()
