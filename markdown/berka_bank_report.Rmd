@@ -1,16 +1,6 @@
 ---
 title: "Berka Bank Report"
-author:
-- Daniel Campos (A99999999 / daniel.ferraz.campos@gmail.com)
-- Leandro Daniel (A57622988 / contato@leandrodaniel.com)
-- Rodrigo Goncalves (A57566093 / rodrigo.goncalves@me.com)
-- Ygor Lima (A57549661 / ygor_redesocial@hotmail.com)
 date: "July, 2019"
-output:
-  html_document: 
-    highlight: tango
-    number_sections: yes
-    toc: yes
 ---
 
 ```{r setup, include=FALSE}

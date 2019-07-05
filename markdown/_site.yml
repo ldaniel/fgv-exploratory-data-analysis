@@ -6,3 +6,9 @@ navbar:
       href: index.html
     - text: "Berka Bank Report"
       href: berka_bank_report.html
+output:
+  html_document: 
+    theme: cosmo
+    highlight: tango
+    number_sections: yes
+    toc: yes
