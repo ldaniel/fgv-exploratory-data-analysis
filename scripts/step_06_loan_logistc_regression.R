@@ -5,6 +5,7 @@ library(ggplot2)
 library(ggthemes)
 library(lubridate)
 library(magrittr)
+library(feather)
 
 # loading other scripts do be used here ---------------------------------------
 source("./scripts/step_00_config_environment.R")
