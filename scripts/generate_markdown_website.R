@@ -3,7 +3,7 @@ scriptsDirectoryPath  <- dirname(rstudioapi::getSourceEditorContext()$path)
 markdownDirectoryPath <- stringr::str_replace(scriptsDirectoryPath, "/scripts", "/markdown")
 docsDirectoryPath     <- stringr::str_replace(scriptsDirectoryPath, "/scripts", "/docs")
 tempSiteDirecoryPath  <- paste(markdownDirectoryPath, "/_site", sep = "")
-rootDirectoryPath     <- str_replace(scriptsDirectoryPath, "/scripts", "")
+rootDirectoryPath     <- stringr::str_replace(scriptsDirectoryPath, "/scripts", "")
 
 # generating website from markdown files --------------------------------------
 setwd(markdownDirectoryPath)
