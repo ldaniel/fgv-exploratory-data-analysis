@@ -25,7 +25,7 @@ colnames(account_balance) <- c("account_id", "last_transaction_date", 'account_b
 
 # calculate some derived variables from transaction table to feed our logist regression model.
 
-if (!file.exists('.data/account_transaction_pattern.feather')) {
+if (!file.exists('data/account_transaction_pattern.feather')) {
   account_transaction_pattern <- select(transaction, c(trans_id, account_id, date, amount, k_symbol)) %>% 
     mutate(k_symbol = ifelse(k_symbol == '' | is.na(k_symbol), 'other', k_symbol)) %>% 
     spread(key = k_symbol, value = amount) %>%
@@ -43,7 +43,7 @@ if (!file.exists('.data/account_transaction_pattern.feather')) {
               prop_other = sum(`other`) / amount,
               prop_sanction_interest = sum(`sanction interest`) / amount,
               prop_statement = sum(`statement`) / amount)
-  write_feather(account_transaction_pattern, '.data/account_transaction_pattern.feather')
+  write_feather(account_transaction_pattern, 'data/account_transaction_pattern.feather')
 } else {
-  account_transaction_pattern <- read_feather('.data/account_transaction_pattern.feather')
+  account_transaction_pattern <- read_feather('data/account_transaction_pattern.feather')
 }
