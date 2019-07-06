@@ -3,7 +3,7 @@ navbar:
   title: "FGV MBA"
   left:
     - text: "Home"
-      href: 00_index.html
+      href: index.html
     - text: "Exploration"
       href: 01_exploration_report.html
     - text: "Loan Logistic Regression"
