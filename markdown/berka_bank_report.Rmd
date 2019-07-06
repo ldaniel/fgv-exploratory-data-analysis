@@ -33,9 +33,9 @@ source("./scripts/step_04_label_translation.R")
 source("./scripts/step_05_data_enhancement.R")
 ```
 
-# Berka Bank (setting the scene)
+# Setting the scene
 
-## Domain
+## Introduction
 Onde upon a time, there was a bank offering services to private persons. The services include managing of accounts, offerings loans, etc.
 
 ## Task descripion
@@ -53,7 +53,7 @@ This database was prepared by Petr Berka and Marta Sochorova.
 ![Simplified logical data model of Berka Bank.](https://raw.githubusercontent.com/ldaniel/R_Bank_Berka/master/images/data_model.png)
 
 ## Project at GitHub
-This project can be found and downloaded at GitHub: https://github.com/ldaniel/R_Bank_Berka
+This project can be found and downloaded on GitHub: https://github.com/ldaniel/R_Bank_Berka
 
 > Valar Morghulis!
 > :)
@@ -208,7 +208,7 @@ client <- mutate(client, age_bin = paste(findInterval(age,
 
 *******************************************************************************
 
-# The Berka Bank Analysis
+# The explorations
 
 ## Gender Exploration
 

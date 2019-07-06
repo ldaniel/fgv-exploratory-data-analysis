@@ -11,7 +11,7 @@
 
 
 
-<title>About this website</title>
+<title>FGV MBA: Business Analytics &amp; Big Data</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -284,22 +284,24 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">About this website</h1>
+<h1 class="title toc-ignore">FGV MBA: Business Analytics &amp; Big Data</h1>
 
 </div>
 
 <div id="TOC">
 <ul>
-<li><a href="#fgv-mba-business-analytics-big-data"><span class="toc-section-number">1</span> FGV MBA: Business Analytics &amp; Big Data</a><ul>
+<li><a href="#introduction"><span class="toc-section-number">1</span> Introduction</a><ul>
 <li><a href="#professor"><span class="toc-section-number">1.1</span> Professor</a></li>
 <li><a href="#authors-students"><span class="toc-section-number">1.2</span> Authors / students</a></li>
 </ul></li>
+<li><a href="#about-the-data"><span class="toc-section-number">2</span> About the data</a></li>
 </ul>
 </div>
 
-<div id="fgv-mba-business-analytics-big-data" class="section level1">
-<h1><span class="header-section-number">1</span> FGV MBA: Business Analytics &amp; Big Data</h1>
+<div id="introduction" class="section level1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
 <p>This website intends to present the MBA work from the “Análise Exploratória de Dados” class.</p>
+<p>The ideia is Practing R using a real anonymized Czech bank transactions, account info, and loan records released for PKDD’99 Discovery Challenge.</p>
 <p>Use the menu above to navigate and see the final report.</p>
 <div id="professor" class="section level2">
 <h2><span class="header-section-number">1.1</span> Professor</h2>
@@ -316,6 +318,23 @@ $(document).ready(function () {
 <li>Ygor Lima (A57549661 / <a href="mailto:ygor_redesocial@hotmail.com" class="email">ygor_redesocial@hotmail.com</a>)</li>
 </ul>
 </div>
+</div>
+<div id="about-the-data" class="section level1">
+<h1><span class="header-section-number">2</span> About the data</h1>
+<p>Data from a real Czech bank. From 1999.</p>
+<p>The data about the clients and their accounts consist of following relations:</p>
+<ul>
+<li><p>relation account (4500 objects in the file ACCOUNT.ASC) - each record describes static characteristics of an account,</p></li>
+<li><p>relation client (5369 objects in the file CLIENT.ASC) - each record describes characteristics of a client,</p></li>
+<li><p>relation disposition (5369 objects in the file DISP.ASC) - each record relates together a client with an account i.e. this relation describes the rights of clients to operate accounts,</p></li>
+<li><p>relation permanent order (6471 objects in the file ORDER.ASC) - each record describes characteristics of a payment order,</p></li>
+<li><p>relation transaction (1056320 objects in the file TRANS.ASC) - each record describes one transaction on an account,</p></li>
+<li><p>relation loan (682 objects in the file LOAN.ASC) - each record describes a loan granted for a given account,</p></li>
+<li><p>relation credit card (892 objects in the file CARD.ASC) - each record describes a credit card issued to an account,</p></li>
+<li><p>relation demographic data (77 objects in the file DISTRICT.ASC) - each record describes demographic characteristics of a district.</p></li>
+</ul>
+<p>Each account has both static characteristics (e.g. date of creation, address of the branch) given in relation “account” and dynamic characteristics (e.g. payments debited or credited, balances) given in relations “permanent order” and “transaction”. Relation “client” describes characteristics of persons who can manipulate with the accounts. One client can have more accounts, more clients can manipulate with single account; clients and accounts are related together in relation “disposition”. Relations “loan” and “credit card” describe some services which the bank offers to its clients; more credit cards can be issued to an account, at most one loan can be granted for an account. Relation “demographic data” gives some publicly available information about the districts (e.g. the unemployment rate); additional information about the clients can be deduced from this.</p>
+<p>Source: <em>This database was prepared by Petr Berka and Marta Sochorova.</em></p>
 </div>
 
 
