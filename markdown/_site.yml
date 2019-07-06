@@ -3,9 +3,13 @@ navbar:
   title: "FGV MBA"
   left:
     - text: "Home"
-      href: index.html
-    - text: "Berka Bank Report"
-      href: berka_bank_report.html
+      href: 00_index.html
+    - text: "Exploration"
+      href: 01_exploration_report.html
+    - text: "Loan Logistic Regression"
+      href: 02_logistic_regression_report.html
+    - text: "Conclusion"
+      href: 03_conclusion.html
 output:
   html_document: 
     theme: cosmo
