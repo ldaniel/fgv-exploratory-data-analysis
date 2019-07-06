@@ -28,5 +28,5 @@ transaction_na_cols <- sapply(transaction, function(x) sum(is.na(x)))
 #   operation = 183114 empty cells
 #   k_symbol  = 535314 empty cells
 #   bank      = 782812 empty cells
-transaction_empty_cols <-  sapply(transaction, function(x) table(as.character(x) =="" | as.character(x) ==" ")["TRUE"])
+transaction_empty_cols <-  sapply(transaction, function(x) table(as.character(x) == "" | as.character(x) == " ")["TRUE"])
 

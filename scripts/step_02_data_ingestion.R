@@ -9,9 +9,9 @@ account         <- read.csv2(paste(dataDirectory, "account.asc", sep = ""), stri
 loan            <- read.csv2(paste(dataDirectory, "loan.asc", sep = ""), stringsAsFactors = TRUE)
 permanent_order <- read.csv2(paste(dataDirectory, "order.asc", sep = ""), stringsAsFactors = TRUE)
 
-# special case fro transaction table to speedup data ingestion.
+# special case for transaction table to speedup data ingestion.
 if(!file.exists('data/transaction.feather')) {
-  transaction     <- read.csv2(paste(dataDirectory, "trans.asc", sep = ""), stringsAsFactors = TRUE)
+  transaction   <- read.csv2(paste(dataDirectory, "trans.asc", sep = ""), stringsAsFactors = TRUE)
   write_feather(transaction, 'data/transaction.faether')
 } else {
   read_feather('data/transaction.faether')
@@ -68,12 +68,3 @@ transaction <- transaction %>%
   mutate(date = ConvertToDate(date)) %>% 
   mutate(amount = as.double(amount)) %>% 
   mutate(balance = as.double(balance)) 
-
-# View(client)
-# View(disposition)
-# View(district)
-# View(creditcard)
-# View(account)
-# View(loan)
-# View(permanent_order)
-# View(transaction)
