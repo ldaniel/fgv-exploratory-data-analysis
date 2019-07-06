@@ -22,7 +22,9 @@ library(ggthemes)
 library(tinytex)
 library(leaflet)
 library(feather)
+library(corrplot)
 library(knitr)
+
 ```
 
 ```{r include=FALSE}
@@ -34,375 +36,263 @@ source("./scripts/step_04_label_translation.R")
 source("./scripts/step_05_data_enhancement.R")
 ```
 
-# Setting the scene
-
-## Introduction
+# Objective
 The objective of this session is to try to fit a logistic regression model on Loan data aiming to predit the probability of delinquency for each contract.
 
-## Task descripion
+# Task descripion
 
-Using the vanilla transaction dataset we calculate several derived variables for each account.
+## Step 01 - Dataset Preparation
+Using the vanilla transaction dataset we calculated several derived variables for each account.
 
 First we calculated an additional table with the current account balance and average account balance of each account.
 
-Later we calculated another auxiliary table that contains the proportion of each kind of transaction for each account, the idea os these variable is to capture the spend pattern of each client.
+Later we calculated another auxiliary table that contains the proportion of each kind of transaction (k_symbol) for each account. The idea os these variable is to capture the spend pattern of each client.
 
-Finnaly we combine the 682 Loan observations with client, district, credit card and the auxiliary tables we calculated early.
+Finnaly we combine the 682 Loan Contracts observations with client, district, credit card and the auxiliary tables we calculated early.
 
-We end up with a data set with 51 variables. from this dataset wqe excluded 12 variables that are redundant, shows no variability for the 682 Loan contract observations or have no applicability for the excersice such as client_id, disp_id, card_id an so on.
+```{r echo=FALSE}
 
-
-
-Fortunately, the bank stores data about their clients, the accounts (transactions within several months), the loans already granted, the credit cards issued.
-
-The bank managers hope to improve their undestanding of customers and seed specific actions to improve services. A mere application of discovery tool will not be convincing for them.
-
-## Data description
-
-This database was prepared by Petr Berka and Marta Sochorova.
-
-![Simplified logical data model of Berka Bank.](https://raw.githubusercontent.com/ldaniel/R_Bank_Berka/master/images/data_model.png)
-
-## Project at GitHub
-This project can be found and downloaded on GitHub: https://github.com/ldaniel/R_Bank_Berka
-
-> Valar Morghulis!
-> :)
-
-*******************************************************************************
-
-# Data ingestion, cleaning, translation and enhancement
-
-Before starting the Berka Analysis, a few important steps were taken in order to prepare the source data files. These steps are listed below:
-
-- **Step 01**: Create Functions;
-- **Step 02**: Data Ingestion;
-- **Step 03**: Data Cleaning;
-- **Step 04**: Label Translation;
-- **Step 05**: Data Enhancement.
-
-## Create Functions
-This step create functions to be used in the next steps. Following, all functions created are described.
-
-### GetGenderFromBirthnumber 
-The birth_number column is given in the form of YYMMDD for men, and YYMM+50DD for women. The objective of this function is to return the gender of the client via the birth_number.
-
-```
-GetGenderFromBirthnumber <- function(var_birth_number) {
-  month <- substr(var_birth_number, 3, 4)
-  result <- ifelse(as.integer(month) > 50, "female", "male")
-  
-  return(as.factor(result))
-}
-```
-
-### GetBirthdateFromBirthnumber
-The birth_number column is given in the form of YYMMDD for men, # and YYMM+50DD for women. The objective of this function is to return the final birthday as Date.
-
-```
-GetBirthdateFromBirthnumber <- function(var_birth_number, var_gender) {
-  year <- paste("19", substr(var_birth_number, 1, 2), sep="")
-  month <- ifelse(var_gender == "male", substr(var_birth_number, 3, 4), 
-  as.integer(substr(var_birth_number, 3, 4)) - 50)
-  day <- substr(var_birth_number, 5, 6)
-  result <- as.Date(paste(year, "-", month, "-", day, sep=""), format = "%Y-%m-%d")
-  
-  return(result)
-}
-```
-
-### ConvertToDate
-The objective of this function is to convert the strange bank date style to the regular R Date datatype.
-
-```
-ConvertToDate <- function(var_date) {
-  year <- paste("19", substr(var_date, 1, 2), sep="")
-  month <- substr(var_date, 3, 4)
-  day <- substr(var_date, 5, 6)
-  result <- as.Date(paste(year, "-", month, "-", day, sep=""), format = "%Y-%m-%d")
-  
-  return(result)
-}
-```
-
-### GetAgeFromBirthnumber
-The objective of this function is to get age given the birth_number.
-
-```
-GetAgeFromBirthnumber <- function(var_birth_number) {
-  base_year <- 99 # considering 1999 as the base year for this exercise
-  year <- substr(var_birth_number, 1, 2)
-  result <- base_year - as.integer(year)
-  
-  return(result)
-}
-```
-
-## Data Ingestion
-The process of data ingestion — preparing data for analysis — usually includes steps called extract (taking the data from its current location), transform (cleansing and normalizing the data), and load (placing the data in a database where it can be analyzed).
-
-During this step, in addition to the loading data processes, it was performed data casting, column renaming and small touch-ups. The list below describe each table adjustment taken:
-
-- **District**: renaming columns and casting columns with decimal or "?" values;
-- **Credit Card**: casting column issued in creditcard table from string to datetime data type;
-- **Account**: casting column date in account table from string to datetime data type;
-- **Loan**: casting columns in table loan to the right data types;
-- **Permanent Order**: casting columns with decimal values;
-- **Transaction**: casting columns in table transaction to the right data types.
-
-## Data Cleaning
-
-The objective of this step is analysing missing values and other strange conditions. In order to accomplish this task, a few R functions were used to quickly discover missing values, like NA and empty fields.
-
-First thing done, was fixing observations in k_symbol transaction table with ' ' (one space) to empty string (''), using the following command.
-
-```
-transaction$k_symbol = trimws(transaction$k_symbol)
-```
-
-Then, the command below was used to find out any NA values in each table.
-
-```
-sapply(TableName, function(x) sum(is.na(x)))
-```
-
-Solely the **transaction** table has NA values, in the following columns:
-
-```{r echo=FALSE, results = 'asis'}
-kable(transaction_na_cols)
-```
-
-Finally, the following command was used in each table to find out where empty values was hidden. 
-
-```
-sapply(TableName, function(x) table(as.character(x) =="")["TRUE"])
-```
-
-Again, only the **transaction** table had empty values, according to the table below:
-
-```{r echo=FALSE, results = 'asis'}
-kable(transaction_empty_cols)
-```
-
-## Label Translation
-In order to make the data information more understandable, it was translated some relevant labels and domains from Czech to English.
-
-## Data Enhancement
-This step aims to improve the analysis by adding auxiliary information. Data enhancement is all about making sure any data that is coming into the business is being looked at with a critical eye and is being filtered down to maximize its value.
-
-The code below get gender, birthday and age from birth_number column using *GetGenderFromBirthnumber* and *GetBirthdateFromBirthnumber* functions.
-
-```
-client <- client %>% 
-  mutate(gender = GetGenderFromBirthnumber(birth_number)) %>% 
-  mutate(birth_date = GetBirthdateFromBirthnumber(birth_number, gender)) %>% 
-  mutate(age = GetAgeFromBirthnumber(birth_number))
-```
-
-The code below improved loan data by having a classification regarding its payment status.
-
-```
-loan <- mutate(loan, defaulter = 
-                as.logical(plyr::mapvalues(status, c ('A','B','C','D'), 
-                                           c(FALSE,TRUE,FALSE,TRUE))),
-                contract_status = plyr::mapvalues(status, c ('A','B','C','D'), 
-                                 c('finished','finished','running','running')),
-                                 type = 'Owner')
-```
-
-The code below improved client data by having its age group.
-
-```
-client <- mutate(client, age_bin = paste(findInterval(age, 
-                 c(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) * 10,'+'))
-```
-
-*******************************************************************************
-
-# The explorations
-
-## Gender Exploration
-
-At first glance, gender equality is well balanced in the bank, even when observed over the decades. Even more impressive, gender equality is everywhere in the country.
-
-```{r gender_distribution_analysis, echo=TRUE, out.width = '100%'}
-# gender distribution of clients in the bank
-ggplot(data = client) +
-  aes(x = gender, fill = gender) +
-  geom_bar() +
-  labs(title = "Gender distribution of clients in the bank",
-       subtitle = "A well balanced bank",
-       x = "Gender",
-       y = "Total clients") +
-  theme_economist()
-
-clientGenderOverDecades <- client %>% 
-  group_by(decade = as.integer(substr(client$birth_number, 1,1)) * 10, 
-           gender = client$gender) %>% 
-  count()
-
-# gender distribution of clients in the bank over the decades
-ggplot(data = clientGenderOverDecades) +
-  aes(x = decade, fill = gender, weight = n) +
-  scale_x_continuous(breaks = c(0, 10, 20, 30, 40, 50, 60, 70, 80)) +
-  geom_bar() +
-  geom_line(aes(y = n, color = gender)) +
-  labs(title = "Gender distribution of clients in the bank over the decades",
-       subtitle = "Equality at its finest",
-       x = "Decades",
-       y = "Total clients") +
-  theme_economist() +
-  facet_wrap(vars(gender))
-
-# alluvial diagram representation of gender, age group and region
-clientGenderAgeGroupByRegion <- client %>% 
-  mutate(age_group = ifelse(age < 21, "young", 
-                     ifelse(age >= 21 & age <= 60, "adult", "senior"))) %>% 
-  inner_join(district, by = "district_id") %>% 
-  group_by(age_group, gender, region) %>% 
-  count()
-  
-ggplot(data = clientGenderAgeGroupByRegion, 
-       aes(axis1 = region, axis2 = age_group, y = n)) +
-  scale_x_discrete(limits = c("region", "age group"), expand = c(.1, .1)) +
-  xlab("Demographic") +
-  geom_alluvium(aes(fill = gender), knot.pos = 0) +
-  geom_stratum() + 
-  geom_text(stat = "stratum", label.strata = TRUE) +
-  theme_economist() +
-  ggtitle("Region and age group by gender", "Equality is everywhere") 
-```
-
-## Loan Exploration
-
-```{r Loan_status_by_region, echo=TRUE, out.width = '100%'}
-left_join(loan, disposition, by = 'account_id') %>% 
-  left_join(client, by = 'client_id') %>% 
+temp <- left_join(loan, disposition, by = c('account_id', 'type')) %>% 
+  left_join(client, by = 'client_id') %>%
   left_join(district, by = 'district_id') %>% 
-  group_by(region, contract_status, defaulter) %>% 
-  summarise(count = n(),
-            amount = sum(amount)) %>% 
-  group_by(region, contract_status) %>% 
-  mutate(count_contract_status = sum(count),
-         amount_contract_status = sum(amount)) %>% 
-  group_by(region) %>% 
-  mutate(count_region = sum(count),
-         amount_region = sum(amount)) %>% 
-  ggplot(aes(x = defaulter, y = contract_status, fill = count / count_region)) +
-  geom_bin2d(stat = 'identity') +
-  geom_text(aes(label = paste(round(count / count_region * 100, 2), '%')), 
-            color = 'white') +
-  facet_wrap(~region) +
-  theme_economist() +
-  theme(legend.position = 'none', panel.grid.major = element_blank(), 
-        panel.grid.minor = element_blank()) +
-  labs(x = 'Defaulter', 
-       y = 'Contract Status', 
-       title = 'Loan Contract Status by Region Heatmap')
+  left_join(creditcard, by = 'disp_id') %>% 
+  left_join(account_balance, by = 'account_id') %>% 
+  left_join(account_transaction_pattern, by = 'account_id') %>% 
+  mutate(card_age_month = (issued %--% 
+                             make_date(1998, 12, 31)) / months(1),
+         last_transaction_age_days = ((last_transaction_date.y %--% 
+                                         make_date(1998, 12, 31)) / days(1))) %>% 
+  dplyr::select(c("amount.x", "duration", "payments", "status", "defaulter", "contract_status",
+           "gender", "age", "district_name", "region", 
+           "no_of_inhabitants", "no_of_municip_inhabitants_less_499", 
+           "no_of_municip_500_to_1999", "no_of_municip_2000_to_9999", 
+           "no_of_municip_greater_10000", "no_of_cities", "ratio_of_urban_inhabitants", 
+           "average_salary", "unemploymant_rate_1995", "unemploymant_rate_1996", 
+           "no_of_enterpreneurs_per_1000_inhabitants", "no_of_commited_crimes_1995", 
+           "no_of_commited_crimes_1996", "type.y", "card_age_month","account_balance", 
+           "avg_balance","transaction_count", "amount.y", 
+           "last_transaction_age_days", "prop_old_age_pension", "prop_insurance_payment", 
+           "prop_sanction_interest","prop_household", 
+           "prop_statement", "prop_interest_credited", 
+           "prop_loan_payment", "prop_other"))
+
+colnames(temp) <- c("x_loan_amount", "x_loan_duration", "x_loan_payments", "x_loan_status", 
+                    "y_loan_defaulter", "x_loan_contract_status",
+                    "x_client_gender", "x_client_age", "x_district_name", "x_region", 
+                    "x_no_of_inhabitants", "x_no_of_municip_inhabitants_less_499", 
+                    "x_no_of_municip_500_to_1999", "x_no_of_municip_2000_to_9999", 
+                    "x_no_of_municip_greater_10000", "x_no_of_cities", "x_ratio_of_urban_inhabitants", 
+                    "x_average_salary", "x_unemploymant_rate_1995", "x_unemploymant_rate_1996", 
+                    "x_no_of_enterpreneurs_per_1000_inhabitants", "x_no_of_commited_crimes_1995", 
+                    "x_no_of_commited_crimes_1996", "x_card_type", "x_card_age_month","x_account_balance", 
+                    "x_avg_account_balance","x_transaction_count", "x_transaction_amount", 
+                    "x_last_transaction_age_days", "x_prop_old_age_pension", "x_prop_insurance_payment", 
+                    "x_prop_sanction_interest","x_prop_household","x_prop_statement",
+                    "x_prop_interest_credited", "x_prop_loan_payment", "x_prop_other")
+
+temp <- dplyr::select(temp, y_loan_defaulter, everything())
+
+temp$x_card_type = ifelse(is.na(temp$x_card_type), 'no card', as.character(temp$x_card_type))
+temp$x_card_age_month = ifelse(is.na(temp$x_card_age_month), 0, temp$x_card_age_month)
+temp$y_loan_defaulter = as.numeric(temp$y_loan_defaulter)
+
 ```
 
-```{r Loan_status_by_gender, echo=TRUE, out.width = '100%'}
-left_join(loan, disposition, by = 'account_id') %>%
-  left_join(client, by = 'client_id') %>% 
-  left_join(district, by = 'district_id') %>% 
-  group_by(gender, contract_status, defaulter) %>% 
-  summarise(count = n(),
-            amount = sum(amount)) %>% 
-  group_by(gender, contract_status) %>% 
-  mutate(count_contract_status = sum(count),
-         amount_contract_status = sum(amount)) %>% 
-  group_by(gender) %>% 
-  mutate(count_gender = sum(count),
-         amount_gender = sum(amount)) %>% 
-  ggplot(aes(x = defaulter, y = contract_status, 
-             fill = count / count_gender)) +
-    geom_bin2d(stat = 'identity') +
-    geom_text(aes(label = paste(round(count / count_gender * 100, 2), '%')), 
-              color = 'white') +
-    facet_wrap(~gender) +
-    theme_economist() +
-    theme(legend.position = 'none', panel.grid.major = element_blank(), 
-          panel.grid.minor = element_blank()) +
-    labs(x = 'Defaulter',
-         y = 'Contract Status',
-         title = 'Loan Contract Status by Gender Heatmap')
+We end up with a data set with 38 variables.
+
+## Step 02 - Variable Selection
+
+From this dataset we excluded 6 variables that are redundant, shows no variability on the 682 Loan contract observations or have no applicability for the excersice:
+
+- **x_prop_old_age_pension** (no variation on selected sample)
+- **x_district_name** (sample have no enough variability to fit a model)
+- **x_region** (sample have no enough variability to fit a model) 
+- **x_loan_status** (redundant)
+- **x_loan_contract_status** (resundant) 
+- **x_prop_sanction_interest** (seems not to be valid for this analysis, as the reason for interest payment in the account is exactly the delinquency in the observatio contact itself)
+
+```{r}
+
+temp <- dplyr::select(temp, -c(x_prop_old_age_pension, 
+                               x_district_name, 
+                               x_region, 
+                               x_loan_status, 
+                               x_loan_contract_status, 
+                               x_prop_sanction_interest))
+
 ```
 
-```{r Loan_status_by_age_bin, echo=TRUE, out.width = '100%'}
-left_join(loan, disposition, by = 'account_id') %>%
-  left_join(client, by = 'client_id') %>% 
-  left_join(district, by = 'district_id') %>% 
-  group_by(age_bin, contract_status, defaulter) %>% 
-  summarise(count = n(),
-            amount = sum(amount)) %>% 
-  group_by(age_bin, contract_status) %>% 
-  mutate(count_contract_status = sum(count),
-         amount_contract_status = sum(amount)) %>% 
-  group_by(age_bin) %>% 
-  mutate(count_age_bin = sum(count),
-         amount_age_bin = sum(amount)) %>% 
-  ggplot(aes(x = defaulter, 
-             y = contract_status, fill = count / count_age_bin)) +
-    geom_bin2d(stat = 'identity') +
-    geom_text(aes(label = paste(round(count / count_age_bin * 100, 2), '%')), 
-              color = 'white') +
-    facet_wrap(~age_bin) +
-    theme_economist() +
-    theme(legend.position = 'none', panel.grid.major = element_blank(), 
-          panel.grid.minor = element_blank()) +
-    labs(x = 'Defaulter',
-         y = 'Contract Status',
-         title = 'Loan Contract Status by Age Group Heatmap')
+## Step 03 - Investigating Multicolinearity
+With the remaining variables we ran a multicolinearity test to identify additional variables to drop from the model spesification.
+
+```{r}
+
+library(mctest)
+
+vars.quant <- select_if(temp, is.numeric)
+
+imcdiag(vars.quant, temp$y_loan_defaulter)
+
 ```
 
-## Account Balance Exploration
+We decided to exclude any variable with a VIF greather than 4.
 
-```{r avg_account_balance_by_gender_and_region, echo=TRUE, out.width = '100%'}
-account_balance <- arrange(transaction, desc(date), account_id) %>%
-  group_by(account_id) %>%
-  mutate(avg_balance = mean(balance)) %>%
-  filter(row_number() == 1) %>% 
-  select(account_id, date, balance, avg_balance)
+Below variables were excluded based on the multicolinear presence on them.
+- **x_no_of_inhabitants**
+- **x_no_of_cities**
+- **x_average_salary** 
+- **x_unemploymant_rate_1995**
+- **x_unemploymant_rate_1996**
+- **x_no_of_commited_crimes_1996**
+- **x_prop_old_age_pension**
+- **x_transaction_count**
+- **x_prop_insurance_payment** 
+- **x_prop_household**
+- **x_prop_statement**
+- **x_prop_loan_payment** 
+- **x_prop_other**
+- **x_loan_status**
+- **x_loan_contract_status** 
+- **x_prop_sanction_interest**
 
-colnames(account_balance) <- c("account_id", "last_transaction_date", 
-                               'account_balance', 'avg_balance')
+```{r}
 
-left_join(account_balance, disposition, by = 'account_id') %>%
-  left_join(client, by = 'client_id') %>% 
-  left_join(district, by = 'district_id') %>% 
-  filter(type == 'Owner') %>% 
-  ggplot(aes(avg_balance)) +
-    geom_density(alpha = 0.5, aes(fill = gender)) +
-    scale_x_continuous(labels = scales::comma) +
-    labs(title = 'Average Account Balance Distribution by Gender and Region') +
-    theme_economist() +
-    facet_wrap(~region)
+temp <- dplyr::select(temp, -c(x_no_of_inhabitants, 
+                               x_no_of_cities,
+                               x_average_salary, 
+                               x_unemploymant_rate_1995,
+                               x_unemploymant_rate_1996, 
+                               x_no_of_commited_crimes_1996,
+                               x_transaction_count, 
+                               x_prop_insurance_payment, 
+                               x_prop_household, 
+                               x_prop_statement, 
+                               x_prop_loan_payment, 
+                               x_prop_other))
+
+loan_reg_dataset <- temp
+
 ```
 
-## District Exploration
+Here is the final correlation matrix we got:
 
-```{r district_map_exploration, echo=TRUE, out.width = '100%'}
-czech_regions <- read.csv(textConnection(
-                   "City,Lat,Long,Pop
-                    prague,50.073658,14.418540,645966
-                    central Bohemia,49.8175,15.4730,645966
-                    South Bohemia,48.9458,14.4416,645966
-                    west Bohemia,49.7384,13.3736,645966
-                    north Bohemia,50.7663,15.0543,645966
-                    east Bohemia,50.0343,15.7812,645966
-                    south Moravia,48.9545,16.7677,645966
-                    north Moravia,49.5938,17.2509,645966"))
+```{r}
 
-leaflet(czech_regions) %>% 
-  addTiles() %>%
-  addCircles(lng = ~Long, 
-             lat = ~Lat, 
-             weight = 2, 
-             radius = ~sqrt(Pop) * 30, 
-             popup = ~City)
+vars.quant <- select_if(loan_reg_dataset, is.numeric)
+
+imcdiag(vars.quant, loan_reg_dataset$y_loan_defaulter)
+mc.plot(vars.quant, loan_reg_dataset$y_loan_defaulter)
+
+corrplot.mixed(cor(vars.quant))
+
 ```
 
-*******************************************************************************
+
+## Step 04 - Sample split into Test and Training Data
+
+The available data in Loan Dataset is split into Train and Testing data on the following proportion:
+
+- ***Train Dataset*** (70% xx obs)
+- ***Test Dataset*** (30% xx obs)
+
+```{r}
+
+library(caret)
+
+set.seed(12345)
+index <- createDataPartition(loan_reg_dataset$y_loan_defaulter, p= 0.7,list = FALSE)
+
+data.train <- loan_reg_dataset[index, ] # base de desenvolvimento: 70%
+data.test  <- loan_reg_dataset[-index,] # base de teste: 30%
+
+# Checando se as propor??es das amostras s?o pr?ximas ? base original
+prop.table(table(loan_reg_dataset$y_loan_defaulter))
+prop.table(table(data.train$y_loan_defaulter))
+prop.table(table(data.test$y_loan_defaulter))
+
+```
+
+Both data sets keep the the same proortion for the explainned variable arround 11%.
+
+## Step 05 - Fit the logistic model 
+
+With the final cleanned dataset we got from below steps we fit our Logist Regression:
+
+```{r}
+
+model <- glm(data = data.train, formula = y_loan_defaulter ~ ., 
+             family= binomial(link='logit'))
+
+summary(model)
+
+```
+
+
+# Step 06 - Evaluating the Model Perfromance
+
+We starting this task by making prediction using our model on the x's variables in our Train and Test datasets
+
+```{r}
+
+glm.prob.train <- predict(model, type = "response")
+glm.prob.test <- predict(model, newdata = data.test, type= "response")
+
+
+```
+
+
+We then evaluate the metrics in the model for Train and Test data:
+
+```{r}
+
+library(hmeasure) 
+
+glm.train <- HMeasure(data.train$y_loan_defaulter, glm.prob.train)
+glm.test  <- HMeasure(data.test$y_loan_defaulter, glm.prob.test)
+
+glm.train$metrics
+glm.test$metrics
+
+```
+
+Then we look a a boxplot chart to see how well our model split the observation into our explainned variable:
+
+```{r}
+
+library(rms)
+
+boxplot(glm.prob.test ~ data.test$y_loan_defaulter, col= c("red", "green"), 
+        horizontal= T)
+
+```
+
+Then we plot the ROC curve of the model:
+
+```{r}
+
+library(pROC)
+
+roc <- roc(data.test$y_loan_defaulter, glm.prob.test)
+y1 <- roc$sensitivities
+x1 <- 1-roc$specificities
+
+plot(x1, y1,  type="n",
+     xlab = "1 - Especificidade", 
+     ylab= "Sensitividade")
+lines(x1, y1,lwd=3,lty=1, col="purple") 
+
+```
+
+Finnaly we look at the general model accuracy:
+
+```{r}
+
+fitted.results <- ifelse(glm.prob.test > 0.5,1,0)
+
+misClasificError <- mean(fitted.results != data.test$y_loan_defaulter)
+print(paste('Accuracy', 1 - misClasificError))
+
+```
 
 # Conclusion
 To.do

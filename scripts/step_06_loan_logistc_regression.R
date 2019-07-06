@@ -27,7 +27,7 @@ temp <- left_join(loan, disposition, by = c('account_id', 'type')) %>%
                              make_date(1998, 12, 31)) / months(1),
          last_transaction_age_days = ((last_transaction_date.y %--% 
                                          make_date(1998, 12, 31)) / days(1))) %>% 
-  dplyr::select(c("amount", "duration", "payments", "status", "defaulter", "contract_status",
+  dplyr::select(c("amount.x", "duration", "payments", "status", "defaulter", "contract_status",
            "gender", "age", "district_name", "region", 
            "no_of_inhabitants", "no_of_municip_inhabitants_less_499", 
            "no_of_municip_500_to_1999", "no_of_municip_2000_to_9999", 
@@ -35,12 +35,12 @@ temp <- left_join(loan, disposition, by = c('account_id', 'type')) %>%
            "average_salary", "unemploymant_rate_1995", "unemploymant_rate_1996", 
            "no_of_enterpreneurs_per_1000_inhabitants", "no_of_commited_crimes_1995", 
            "no_of_commited_crimes_1996", "type.y", "card_age_month","account_balance", 
-           "avg_balance","transaction_count", "transaction_amount", 
-           "last_transaction_age_days","transaction_amount_date_filter", 
-           "percent_amount_old_age_pension", "percent_amount_insurance_payment", 
-           "percent_amount_sanction_interest","percent_amount_household", 
-           "percent_amount_statement", "percent_amount_interest_credited", 
-           "percent_amount_loan_payment", "percent_amount_other"))
+           "avg_balance","transaction_count", "amount.y", 
+           "last_transaction_age_days", 
+           "prop_old_age_pension", "prop_insurance_payment", 
+           "prop_sanction_interest","prop_household", 
+           "prop_statement", "prop_interest_credited", 
+           "prop_loan_payment", "prop_other"))
 
 colnames(temp) <- c("x_loan_amount", "x_loan_duration", "x_loan_payments", "x_loan_status", 
                     "y_loan_defaulter", "x_loan_contract_status",
@@ -53,10 +53,10 @@ colnames(temp) <- c("x_loan_amount", "x_loan_duration", "x_loan_payments", "x_lo
                     "x_no_of_commited_crimes_1996", "x_card_type", "x_card_age_month","x_account_balance", 
                     "x_avg_account_balance","x_transaction_count", "x_transaction_amount", 
                     "x_last_transaction_age_days","x_transaction_amount_date_filter", 
-                    "x_percent_amount_old_age_pension", "x_percent_amount_insurance_payment", 
-                    "x_percent_amount_sanction_interest","x_percent_amount_household", 
-                    "x_percent_amount_statement", "x_percent_amount_interest_credited", 
-                    "x_percent_amount_loan_payment", "x_percent_amount_other")
+                    "x_prop_old_age_pension", "x_prop_insurance_payment", 
+                    "x_prop_sanction_interest","x_prop_household", 
+                    "x_prop_statement", "x_prop_interest_credited", 
+                    "x_prop_loan_payment", "x_prop_other")
 
 temp <- dplyr::select(temp, y_loan_defaulter, everything())
 
@@ -69,12 +69,12 @@ temp$y_loan_defaulter = as.numeric(temp$y_loan_defaulter)
 temp <- dplyr::select(temp, -c(x_no_of_inhabitants, x_no_of_cities,
                                x_average_salary, x_unemploymant_rate_1995,
                                x_unemploymant_rate_1996, x_no_of_commited_crimes_1996 ,
-                               x_percent_amount_old_age_pension, x_transaction_count, 
-                               x_transaction_amount_date_filter, x_percent_amount_insurance_payment, 
-                               x_percent_amount_household, x_percent_amount_statement, 
-                               x_percent_amount_loan_payment, x_percent_amount_other, 
+                               x_prop_old_age_pension, x_transaction_count, 
+                               x_transaction_amount_date_filter, x_prop_insurance_payment, 
+                               x_prop_household, x_prop_statement, 
+                               x_prop_loan_payment, x_prop_other, 
                                x_district_name, x_region, x_loan_status, 
-                               x_loan_contract_status, x_percent_amount_sanction_interest))
+                               x_loan_contract_status, x_prop_sanction_interest))
 
 loan_reg_dataset <- temp
 
