@@ -124,10 +124,9 @@ temp$y_loan_defaulter = as.numeric(temp$y_loan_defaulter)
 
 ```
 
-We end up with a data set with 38 variables.
+We end up with a data set with 39 variables.
 
 ```{r variables}
-
 kable(tibble(variables = names(temp)))
 ```
 
@@ -196,19 +195,19 @@ We decided to exclude any variable with a VIF greater than 5.
 
 Below variables were excluded based on the multicollinear presence on them.
 
--**x_prop_insurance_payment**
--**x_prop_household**
--**x_prop_statement** 
--**x_prop_loan_payment** 
--**x_prop_other**
--**x_no_of_inhabitants** 
--**x_no_of_commited_crimes_1996**
--**x_transaction_amount**
--**x_transaction_count**
--**x_unemploymant_rate_1996** 
--**x_unemploymant_rate_1995**
--**x_average_salary**
--**x_no_of_cities**
+- **x_prop_insurance_payment**
+- **x_prop_household**
+- **x_prop_statement** 
+- **x_prop_loan_payment** 
+- **x_prop_other**
+- **x_no_of_inhabitants** 
+- **x_no_of_commited_crimes_1996**
+- **x_transaction_amount**
+- **x_transaction_count**
+- **x_unemploymant_rate_1996** 
+- **x_unemploymant_rate_1995**
+- **x_average_salary**
+- **x_no_of_cities**
 
 ```{r remove_variables_2}
 
@@ -305,7 +304,6 @@ kable(prop.table(table(loan_reg_dataset$y_loan_defaulter)))
 kable(prop.table(table(data.train$y_loan_defaulter)))
 kable(prop.table(table(data.test$y_loan_defaulter)))
 
-
 ```
 
 Both datasets keep the same proportion for the explained variable around 11%.
@@ -338,7 +336,7 @@ summary(model_2)
 
 In the next step we will compare how each model performed.
 
-# Evaluating the Model Perfromance
+# Evaluating the Model Performance
 
 We start this step by making predictions using our model on the X's variables in our Train and Test datasets.
 

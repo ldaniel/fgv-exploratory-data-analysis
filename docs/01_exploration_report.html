@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Berka Bank Report</title>
+
+<script src="site_libs/jquery-1.12.4/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/htmlwidgets-1.3/htmlwidgets.js"></script>
+<link href="site_libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="site_libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="site_libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="site_libs/Proj4Leaflet-1.0.1/proj4-compressed.js"></script>
+<script src="site_libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="site_libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="site_libs/leaflet-binding-2.0.2/leaflet.js"></script>
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  { background-color: #f8f8f8; }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #c4a000; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #000000; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #000000; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #000000; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">FGV MBA</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="01_exploration_report.html">Exploration</a>
+</li>
+<li>
+  <a href="02_logistic_regression_report.html">Loan Logistic Regression</a>
+</li>
+<li>
+  <a href="03_conclusion.html">Conclusion</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Berka Bank Report</h1>
+<h4 class="date">July, 2019</h4>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#setting-the-scene"><span class="toc-section-number">1</span> Setting the scene</a><ul>
+<li><a href="#introduction"><span class="toc-section-number">1.1</span> Introduction</a></li>
+<li><a href="#task-descripion"><span class="toc-section-number">1.2</span> Task descripion</a></li>
+<li><a href="#data-description"><span class="toc-section-number">1.3</span> Data description</a></li>
+<li><a href="#project-at-github"><span class="toc-section-number">1.4</span> Project at GitHub</a></li>
+</ul></li>
+<li><a href="#data-ingestion-cleaning-translation-and-enhancement"><span class="toc-section-number">2</span> Data ingestion, cleaning, translation and enhancement</a><ul>
+<li><a href="#create-functions"><span class="toc-section-number">2.1</span> Create Functions</a><ul>
+<li><a href="#getgenderfrombirthnumber"><span class="toc-section-number">2.1.1</span> GetGenderFromBirthnumber</a></li>
+<li><a href="#getbirthdatefrombirthnumber"><span class="toc-section-number">2.1.2</span> GetBirthdateFromBirthnumber</a></li>
+<li><a href="#converttodate"><span class="toc-section-number">2.1.3</span> ConvertToDate</a></li>
+<li><a href="#getagefrombirthnumber"><span class="toc-section-number">2.1.4</span> GetAgeFromBirthnumber</a></li>
+</ul></li>
+<li><a href="#data-ingestion"><span class="toc-section-number">2.2</span> Data Ingestion</a></li>
+<li><a href="#data-cleaning"><span class="toc-section-number">2.3</span> Data Cleaning</a></li>
+<li><a href="#label-translation"><span class="toc-section-number">2.4</span> Label Translation</a></li>
+<li><a href="#data-enhancement"><span class="toc-section-number">2.5</span> Data Enhancement</a></li>
+</ul></li>
+<li><a href="#the-explorations"><span class="toc-section-number">3</span> The explorations</a><ul>
+<li><a href="#gender-exploration"><span class="toc-section-number">3.1</span> Gender Exploration</a></li>
+<li><a href="#loan-exploration"><span class="toc-section-number">3.2</span> Loan Exploration</a></li>
+<li><a href="#account-balance-exploration"><span class="toc-section-number">3.3</span> Account Balance Exploration</a></li>
+<li><a href="#district-exploration"><span class="toc-section-number">3.4</span> District Exploration</a></li>
+</ul></li>
+<li><a href="#conclusion"><span class="toc-section-number">4</span> Conclusion</a></li>
+</ul>
+</div>
+
+<div id="setting-the-scene" class="section level1">
+<h1><span class="header-section-number">1</span> Setting the scene</h1>
+<div id="introduction" class="section level2">
+<h2><span class="header-section-number">1.1</span> Introduction</h2>
+<p>Onde upon a time, there was a bank offering services to private persons. The services include managing of accounts, offerings loans, etc.</p>
+</div>
+<div id="task-descripion" class="section level2">
+<h2><span class="header-section-number">1.2</span> Task descripion</h2>
+<p>The bank wants to improve their services. For instance, the bank managers have only vague idea, who is a good client (whom to offer some additional services) and who is a bad client (whom to watch carefully to monimize the bank loses).</p>
+<p>Fortunately, the bank stores data about their clients, the accounts (transactions within several months), the loans already granted, the credit cards issued.</p>
+<p>The bank managers hope to improve their undestanding of customers and seed specific actions to improve services. A mere application of discovery tool will not be convincing for them.</p>
+</div>
+<div id="data-description" class="section level2">
+<h2><span class="header-section-number">1.3</span> Data description</h2>
+<p>This database was prepared by Petr Berka and Marta Sochorova.</p>
+<div class="figure">
+<img src="https://raw.githubusercontent.com/ldaniel/R_Bank_Berka/master/images/data_model.png" alt="Simplified logical data model of Berka Bank." />
+<p class="caption">Simplified logical data model of Berka Bank.</p>
+</div>
+</div>
+<div id="project-at-github" class="section level2">
+<h2><span class="header-section-number">1.4</span> Project at GitHub</h2>
+<p>This project can be found and downloaded on GitHub: <a href="https://github.com/ldaniel/R_Bank_Berka" class="uri">https://github.com/ldaniel/R_Bank_Berka</a></p>
+<blockquote>
+<p>Valar Morghulis! :)</p>
+</blockquote>
+<hr />
+</div>
+</div>
+<div id="data-ingestion-cleaning-translation-and-enhancement" class="section level1">
+<h1><span class="header-section-number">2</span> Data ingestion, cleaning, translation and enhancement</h1>
+<p>Before starting the Berka Analysis, a few important steps were taken in order to prepare the source data files. These steps are listed below:</p>
+<ul>
+<li><strong>Step 01</strong>: Create Functions;</li>
+<li><strong>Step 02</strong>: Data Ingestion;</li>
+<li><strong>Step 03</strong>: Data Cleaning;</li>
+<li><strong>Step 04</strong>: Label Translation;</li>
+<li><strong>Step 05</strong>: Data Enhancement.</li>
+</ul>
+<div id="create-functions" class="section level2">
+<h2><span class="header-section-number">2.1</span> Create Functions</h2>
+<p>This step create functions to be used in the next steps. Following, all functions created are described.</p>
+<div id="getgenderfrombirthnumber" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> GetGenderFromBirthnumber</h3>
+<p>The birth_number column is given in the form of YYMMDD for men, and YYMM+50DD for women. The objective of this function is to return the gender of the client via the birth_number.</p>
+<pre><code>GetGenderFromBirthnumber &lt;- function(var_birth_number) {
+  month &lt;- substr(var_birth_number, 3, 4)
+  result &lt;- ifelse(as.integer(month) &gt; 50, &quot;female&quot;, &quot;male&quot;)
+  
+  return(as.factor(result))
+}</code></pre>
+</div>
+<div id="getbirthdatefrombirthnumber" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> GetBirthdateFromBirthnumber</h3>
+<p>The birth_number column is given in the form of YYMMDD for men, # and YYMM+50DD for women. The objective of this function is to return the final birthday as Date.</p>
+<pre><code>GetBirthdateFromBirthnumber &lt;- function(var_birth_number, var_gender) {
+  year &lt;- paste(&quot;19&quot;, substr(var_birth_number, 1, 2), sep=&quot;&quot;)
+  month &lt;- ifelse(var_gender == &quot;male&quot;, substr(var_birth_number, 3, 4), 
+  as.integer(substr(var_birth_number, 3, 4)) - 50)
+  day &lt;- substr(var_birth_number, 5, 6)
+  result &lt;- as.Date(paste(year, &quot;-&quot;, month, &quot;-&quot;, day, sep=&quot;&quot;), format = &quot;%Y-%m-%d&quot;)
+  
+  return(result)
+}</code></pre>
+</div>
+<div id="converttodate" class="section level3">
+<h3><span class="header-section-number">2.1.3</span> ConvertToDate</h3>
+<p>The objective of this function is to convert the strange bank date style to the regular R Date datatype.</p>
+<pre><code>ConvertToDate &lt;- function(var_date) {
+  year &lt;- paste(&quot;19&quot;, substr(var_date, 1, 2), sep=&quot;&quot;)
+  month &lt;- substr(var_date, 3, 4)
+  day &lt;- substr(var_date, 5, 6)
+  result &lt;- as.Date(paste(year, &quot;-&quot;, month, &quot;-&quot;, day, sep=&quot;&quot;), format = &quot;%Y-%m-%d&quot;)
+  
+  return(result)
+}</code></pre>
+</div>
+<div id="getagefrombirthnumber" class="section level3">
+<h3><span class="header-section-number">2.1.4</span> GetAgeFromBirthnumber</h3>
+<p>The objective of this function is to get age given the birth_number.</p>
+<pre><code>GetAgeFromBirthnumber &lt;- function(var_birth_number) {
+  base_year &lt;- 99 # considering 1999 as the base year for this exercise
+  year &lt;- substr(var_birth_number, 1, 2)
+  result &lt;- base_year - as.integer(year)
+  
+  return(result)
+}</code></pre>
+</div>
+</div>
+<div id="data-ingestion" class="section level2">
+<h2><span class="header-section-number">2.2</span> Data Ingestion</h2>
+<p>The process of data ingestion — preparing data for analysis — usually includes steps called extract (taking the data from its current location), transform (cleansing and normalizing the data), and load (placing the data in a database where it can be analyzed).</p>
+<p>During this step, in addition to the loading data processes, it was performed data casting, column renaming and small touch-ups. The list below describe each table adjustment taken:</p>
+<ul>
+<li><strong>District</strong>: renaming columns and casting columns with decimal or “?” values;</li>
+<li><strong>Credit Card</strong>: casting column issued in creditcard table from string to datetime data type;</li>
+<li><strong>Account</strong>: casting column date in account table from string to datetime data type;</li>
+<li><strong>Loan</strong>: casting columns in table loan to the right data types;</li>
+<li><strong>Permanent Order</strong>: casting columns with decimal values;</li>
+<li><strong>Transaction</strong>: casting columns in table transaction to the right data types.</li>
+</ul>
+</div>
+<div id="data-cleaning" class="section level2">
+<h2><span class="header-section-number">2.3</span> Data Cleaning</h2>
+<p>The objective of this step is analysing missing values and other strange conditions. In order to accomplish this task, a few R functions were used to quickly discover missing values, like NA and empty fields.</p>
+<p>First thing done, was fixing observations in k_symbol transaction table with ’ ’ (one space) to empty string (’’), using the following command.</p>
+<pre><code>transaction$k_symbol = trimws(transaction$k_symbol)</code></pre>
+<p>Then, the command below was used to find out any NA values in each table.</p>
+<pre><code>sapply(TableName, function(x) sum(is.na(x)))</code></pre>
+<p>Solely the <strong>transaction</strong> table has NA values, in the following columns:</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>trans_id</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>account_id</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>date</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>type</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>operation</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>amount</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>balance</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>k_symbol</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>bank</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>account</td>
+<td align="right">760931</td>
+</tr>
+</tbody>
+</table>
+<p>Finally, the following command was used in each table to find out where empty values was hidden.</p>
+<pre><code>sapply(TableName, function(x) table(as.character(x) ==&quot;&quot;)[&quot;TRUE&quot;])</code></pre>
+<p>Again, only the <strong>transaction</strong> table had empty values, according to the table below:</p>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>trans_id.NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td>account_id.NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td>date.NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td>type.NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td>operation.TRUE</td>
+<td align="right">183114</td>
+</tr>
+<tr class="even">
+<td>amount.NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="odd">
+<td>balance.NA</td>
+<td align="right">NA</td>
+</tr>
+<tr class="even">
+<td>k_symbol.TRUE</td>
+<td align="right">535314</td>
+</tr>
+<tr class="odd">
+<td>bank.TRUE</td>
+<td align="right">782812</td>
+</tr>
+<tr class="even">
+<td>account.NA</td>
+<td align="right">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="label-translation" class="section level2">
+<h2><span class="header-section-number">2.4</span> Label Translation</h2>
+<p>In order to make the data information more understandable, it was translated some relevant labels and domains from Czech to English.</p>
+</div>
+<div id="data-enhancement" class="section level2">
+<h2><span class="header-section-number">2.5</span> Data Enhancement</h2>
+<p>This step aims to improve the analysis by adding auxiliary information. Data enhancement is all about making sure any data that is coming into the business is being looked at with a critical eye and is being filtered down to maximize its value.</p>
+<p>The code below get gender, birthday and age from birth_number column using <em>GetGenderFromBirthnumber</em> and <em>GetBirthdateFromBirthnumber</em> functions.</p>
+<pre><code>client &lt;- client %&gt;% 
+  mutate(gender = GetGenderFromBirthnumber(birth_number)) %&gt;% 
+  mutate(birth_date = GetBirthdateFromBirthnumber(birth_number, gender)) %&gt;% 
+  mutate(age = GetAgeFromBirthnumber(birth_number))</code></pre>
+<p>The code below improved loan data by having a classification regarding its payment status.</p>
+<pre><code>loan &lt;- mutate(loan, defaulter = 
+                as.logical(plyr::mapvalues(status, c (&#39;A&#39;,&#39;B&#39;,&#39;C&#39;,&#39;D&#39;), 
+                                           c(FALSE,TRUE,FALSE,TRUE))),
+                contract_status = plyr::mapvalues(status, c (&#39;A&#39;,&#39;B&#39;,&#39;C&#39;,&#39;D&#39;), 
+                                 c(&#39;finished&#39;,&#39;finished&#39;,&#39;running&#39;,&#39;running&#39;)),
+                                 type = &#39;Owner&#39;)</code></pre>
+<p>The code below improved client data by having its age group.</p>
+<pre><code>client &lt;- mutate(client, age_bin = paste(findInterval(age, 
+                 c(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) * 10,&#39;+&#39;))</code></pre>
+<hr />
+</div>
+</div>
+<div id="the-explorations" class="section level1">
+<h1><span class="header-section-number">3</span> The explorations</h1>
+<div id="gender-exploration" class="section level2">
+<h2><span class="header-section-number">3.1</span> Gender Exploration</h2>
+<p>At first glance, gender equality is well balanced in the bank, even when observed over the decades. Even more impressive, gender equality is everywhere in the country.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="co"># gender distribution of clients in the bank</span></a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="kw">ggplot</span>(<span class="dt">data =</span> client) <span class="op">+</span></a>
+<a class="sourceLine" id="cb11-3" title="3"><span class="st">  </span><span class="kw">aes</span>(<span class="dt">x =</span> gender, <span class="dt">fill =</span> gender) <span class="op">+</span></a>
+<a class="sourceLine" id="cb11-4" title="4"><span class="st">  </span><span class="kw">geom_bar</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb11-5" title="5"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Gender distribution of clients in the bank&quot;</span>,</a>
+<a class="sourceLine" id="cb11-6" title="6">       <span class="dt">subtitle =</span> <span class="st">&quot;A well balanced bank&quot;</span>,</a>
+<a class="sourceLine" id="cb11-7" title="7">       <span class="dt">x =</span> <span class="st">&quot;Gender&quot;</span>,</a>
+<a class="sourceLine" id="cb11-8" title="8">       <span class="dt">y =</span> <span class="st">&quot;Total clients&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb11-9" title="9"><span class="st">  </span><span class="kw">theme_economist</span>()</a></code></pre></div>
+<p><img src="01_exploration_report_files/figure-html/gender_distribution_analysis-1.png" width="100%" /></p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">clientGenderOverDecades &lt;-<span class="st"> </span>client <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-2" title="2"><span class="st">  </span><span class="kw">group_by</span>(<span class="dt">decade =</span> <span class="kw">as.integer</span>(<span class="kw">substr</span>(client<span class="op">$</span>birth_number, <span class="dv">1</span>,<span class="dv">1</span>)) <span class="op">*</span><span class="st"> </span><span class="dv">10</span>, </a>
+<a class="sourceLine" id="cb12-3" title="3">           <span class="dt">gender =</span> client<span class="op">$</span>gender) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb12-4" title="4"><span class="st">  </span><span class="kw">count</span>()</a>
+<a class="sourceLine" id="cb12-5" title="5"></a>
+<a class="sourceLine" id="cb12-6" title="6"><span class="co"># gender distribution of clients in the bank over the decades</span></a>
+<a class="sourceLine" id="cb12-7" title="7"><span class="kw">ggplot</span>(<span class="dt">data =</span> clientGenderOverDecades) <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-8" title="8"><span class="st">  </span><span class="kw">aes</span>(<span class="dt">x =</span> decade, <span class="dt">fill =</span> gender, <span class="dt">weight =</span> n) <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-9" title="9"><span class="st">  </span><span class="kw">scale_x_continuous</span>(<span class="dt">breaks =</span> <span class="kw">c</span>(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>, <span class="dv">50</span>, <span class="dv">60</span>, <span class="dv">70</span>, <span class="dv">80</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-10" title="10"><span class="st">  </span><span class="kw">geom_bar</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-11" title="11"><span class="st">  </span><span class="kw">geom_line</span>(<span class="kw">aes</span>(<span class="dt">y =</span> n, <span class="dt">color =</span> gender)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-12" title="12"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&quot;Gender distribution of clients in the bank over the decades&quot;</span>,</a>
+<a class="sourceLine" id="cb12-13" title="13">       <span class="dt">subtitle =</span> <span class="st">&quot;Equality at its finest&quot;</span>,</a>
+<a class="sourceLine" id="cb12-14" title="14">       <span class="dt">x =</span> <span class="st">&quot;Decades&quot;</span>,</a>
+<a class="sourceLine" id="cb12-15" title="15">       <span class="dt">y =</span> <span class="st">&quot;Total clients&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-16" title="16"><span class="st">  </span><span class="kw">theme_economist</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb12-17" title="17"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="kw">vars</span>(gender))</a></code></pre></div>
+<p><img src="01_exploration_report_files/figure-html/gender_distribution_analysis-2.png" width="100%" /></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1"><span class="co"># alluvial diagram representation of gender, age group and region</span></a>
+<a class="sourceLine" id="cb13-2" title="2">clientGenderAgeGroupByRegion &lt;-<span class="st"> </span>client <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">age_group =</span> <span class="kw">ifelse</span>(age <span class="op">&lt;</span><span class="st"> </span><span class="dv">21</span>, <span class="st">&quot;young&quot;</span>, </a>
+<a class="sourceLine" id="cb13-4" title="4">                     <span class="kw">ifelse</span>(age <span class="op">&gt;=</span><span class="st"> </span><span class="dv">21</span> <span class="op">&amp;</span><span class="st"> </span>age <span class="op">&lt;=</span><span class="st"> </span><span class="dv">60</span>, <span class="st">&quot;adult&quot;</span>, <span class="st">&quot;senior&quot;</span>))) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-5" title="5"><span class="st">  </span><span class="kw">inner_join</span>(district, <span class="dt">by =</span> <span class="st">&quot;district_id&quot;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-6" title="6"><span class="st">  </span><span class="kw">group_by</span>(age_group, gender, region) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-7" title="7"><span class="st">  </span><span class="kw">count</span>()</a>
+<a class="sourceLine" id="cb13-8" title="8">  </a>
+<a class="sourceLine" id="cb13-9" title="9"><span class="kw">ggplot</span>(<span class="dt">data =</span> clientGenderAgeGroupByRegion, </a>
+<a class="sourceLine" id="cb13-10" title="10">       <span class="kw">aes</span>(<span class="dt">axis1 =</span> region, <span class="dt">axis2 =</span> age_group, <span class="dt">y =</span> n)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-11" title="11"><span class="st">  </span><span class="kw">scale_x_discrete</span>(<span class="dt">limits =</span> <span class="kw">c</span>(<span class="st">&quot;region&quot;</span>, <span class="st">&quot;age group&quot;</span>), <span class="dt">expand =</span> <span class="kw">c</span>(.<span class="dv">1</span>, <span class="fl">.1</span>)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-12" title="12"><span class="st">  </span><span class="kw">xlab</span>(<span class="st">&quot;Demographic&quot;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-13" title="13"><span class="st">  </span><span class="kw">geom_alluvium</span>(<span class="kw">aes</span>(<span class="dt">fill =</span> gender), <span class="dt">knot.pos =</span> <span class="dv">0</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-14" title="14"><span class="st">  </span><span class="kw">geom_stratum</span>() <span class="op">+</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb13-15" title="15"><span class="st">  </span><span class="kw">geom_text</span>(<span class="dt">stat =</span> <span class="st">&quot;stratum&quot;</span>, <span class="dt">label.strata =</span> <span class="ot">TRUE</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-16" title="16"><span class="st">  </span><span class="kw">theme_economist</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb13-17" title="17"><span class="st">  </span><span class="kw">ggtitle</span>(<span class="st">&quot;Region and age group by gender&quot;</span>, <span class="st">&quot;Equality is everywhere&quot;</span>) </a></code></pre></div>
+<p><img src="01_exploration_report_files/figure-html/gender_distribution_analysis-3.png" width="100%" /></p>
+</div>
+<div id="loan-exploration" class="section level2">
+<h2><span class="header-section-number">3.2</span> Loan Exploration</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">left_join</span>(loan, disposition, <span class="dt">by =</span> <span class="st">&#39;account_id&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-2" title="2"><span class="st">  </span><span class="kw">left_join</span>(client, <span class="dt">by =</span> <span class="st">&#39;client_id&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-3" title="3"><span class="st">  </span><span class="kw">left_join</span>(district, <span class="dt">by =</span> <span class="st">&#39;district_id&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-4" title="4"><span class="st">  </span><span class="kw">group_by</span>(region, contract_status, defaulter) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">count =</span> <span class="kw">n</span>(),</a>
+<a class="sourceLine" id="cb14-6" title="6">            <span class="dt">amount =</span> <span class="kw">sum</span>(amount)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-7" title="7"><span class="st">  </span><span class="kw">group_by</span>(region, contract_status) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-8" title="8"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">count_contract_status =</span> <span class="kw">sum</span>(count),</a>
+<a class="sourceLine" id="cb14-9" title="9">         <span class="dt">amount_contract_status =</span> <span class="kw">sum</span>(amount)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-10" title="10"><span class="st">  </span><span class="kw">group_by</span>(region) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-11" title="11"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">count_region =</span> <span class="kw">sum</span>(count),</a>
+<a class="sourceLine" id="cb14-12" title="12">         <span class="dt">amount_region =</span> <span class="kw">sum</span>(amount)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb14-13" title="13"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> defaulter, <span class="dt">y =</span> contract_status, <span class="dt">fill =</span> count <span class="op">/</span><span class="st"> </span>count_region)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-14" title="14"><span class="st">  </span><span class="kw">geom_bin2d</span>(<span class="dt">stat =</span> <span class="st">&#39;identity&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-15" title="15"><span class="st">  </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label =</span> <span class="kw">paste</span>(<span class="kw">round</span>(count <span class="op">/</span><span class="st"> </span>count_region <span class="op">*</span><span class="st"> </span><span class="dv">100</span>, <span class="dv">2</span>), <span class="st">&#39;%&#39;</span>)), </a>
+<a class="sourceLine" id="cb14-16" title="16">            <span class="dt">color =</span> <span class="st">&#39;white&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-17" title="17"><span class="st">  </span><span class="kw">facet_wrap</span>(<span class="op">~</span>region) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-18" title="18"><span class="st">  </span><span class="kw">theme_economist</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-19" title="19"><span class="st">  </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&#39;none&#39;</span>, <span class="dt">panel.grid.major =</span> <span class="kw">element_blank</span>(), </a>
+<a class="sourceLine" id="cb14-20" title="20">        <span class="dt">panel.grid.minor =</span> <span class="kw">element_blank</span>()) <span class="op">+</span></a>
+<a class="sourceLine" id="cb14-21" title="21"><span class="st">  </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&#39;Defaulter&#39;</span>, </a>
+<a class="sourceLine" id="cb14-22" title="22">       <span class="dt">y =</span> <span class="st">&#39;Contract Status&#39;</span>, </a>
+<a class="sourceLine" id="cb14-23" title="23">       <span class="dt">title =</span> <span class="st">&#39;Loan Contract Status by Region Heatmap&#39;</span>)</a></code></pre></div>
+<p><img src="01_exploration_report_files/figure-html/Loan_status_by_region-1.png" width="100%" /></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">left_join</span>(loan, disposition, <span class="dt">by =</span> <span class="st">&#39;account_id&#39;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb15-2" title="2"><span class="st">  </span><span class="kw">left_join</span>(client, <span class="dt">by =</span> <span class="st">&#39;client_id&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-3" title="3"><span class="st">  </span><span class="kw">left_join</span>(district, <span class="dt">by =</span> <span class="st">&#39;district_id&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-4" title="4"><span class="st">  </span><span class="kw">group_by</span>(gender, contract_status, defaulter) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-5" title="5"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">count =</span> <span class="kw">n</span>(),</a>
+<a class="sourceLine" id="cb15-6" title="6">            <span class="dt">amount =</span> <span class="kw">sum</span>(amount)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-7" title="7"><span class="st">  </span><span class="kw">group_by</span>(gender, contract_status) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-8" title="8"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">count_contract_status =</span> <span class="kw">sum</span>(count),</a>
+<a class="sourceLine" id="cb15-9" title="9">         <span class="dt">amount_contract_status =</span> <span class="kw">sum</span>(amount)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-10" title="10"><span class="st">  </span><span class="kw">group_by</span>(gender) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-11" title="11"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">count_gender =</span> <span class="kw">sum</span>(count),</a>
+<a class="sourceLine" id="cb15-12" title="12">         <span class="dt">amount_gender =</span> <span class="kw">sum</span>(amount)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb15-13" title="13"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> defaulter, <span class="dt">y =</span> contract_status, </a>
+<a class="sourceLine" id="cb15-14" title="14">             <span class="dt">fill =</span> count <span class="op">/</span><span class="st"> </span>count_gender)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-15" title="15"><span class="st">    </span><span class="kw">geom_bin2d</span>(<span class="dt">stat =</span> <span class="st">&#39;identity&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-16" title="16"><span class="st">    </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label =</span> <span class="kw">paste</span>(<span class="kw">round</span>(count <span class="op">/</span><span class="st"> </span>count_gender <span class="op">*</span><span class="st"> </span><span class="dv">100</span>, <span class="dv">2</span>), <span class="st">&#39;%&#39;</span>)), </a>
+<a class="sourceLine" id="cb15-17" title="17">              <span class="dt">color =</span> <span class="st">&#39;white&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-18" title="18"><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span>gender) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-19" title="19"><span class="st">    </span><span class="kw">theme_economist</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-20" title="20"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&#39;none&#39;</span>, <span class="dt">panel.grid.major =</span> <span class="kw">element_blank</span>(), </a>
+<a class="sourceLine" id="cb15-21" title="21">          <span class="dt">panel.grid.minor =</span> <span class="kw">element_blank</span>()) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-22" title="22"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&#39;Defaulter&#39;</span>,</a>
+<a class="sourceLine" id="cb15-23" title="23">         <span class="dt">y =</span> <span class="st">&#39;Contract Status&#39;</span>,</a>
+<a class="sourceLine" id="cb15-24" title="24">         <span class="dt">title =</span> <span class="st">&#39;Loan Contract Status by Gender Heatmap&#39;</span>)</a></code></pre></div>
+<p><img src="01_exploration_report_files/figure-html/Loan_status_by_gender-1.png" width="100%" /></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">left_join</span>(loan, disposition, <span class="dt">by =</span> <span class="st">&#39;account_id&#39;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb16-2" title="2"><span class="st">  </span><span class="kw">left_join</span>(client, <span class="dt">by =</span> <span class="st">&#39;client_id&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-3" title="3"><span class="st">  </span><span class="kw">left_join</span>(district, <span class="dt">by =</span> <span class="st">&#39;district_id&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-4" title="4"><span class="st">  </span><span class="kw">group_by</span>(age_bin, contract_status, defaulter) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-5" title="5"><span class="st">  </span><span class="kw">summarise</span>(<span class="dt">count =</span> <span class="kw">n</span>(),</a>
+<a class="sourceLine" id="cb16-6" title="6">            <span class="dt">amount =</span> <span class="kw">sum</span>(amount)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-7" title="7"><span class="st">  </span><span class="kw">group_by</span>(age_bin, contract_status) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-8" title="8"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">count_contract_status =</span> <span class="kw">sum</span>(count),</a>
+<a class="sourceLine" id="cb16-9" title="9">         <span class="dt">amount_contract_status =</span> <span class="kw">sum</span>(amount)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-10" title="10"><span class="st">  </span><span class="kw">group_by</span>(age_bin) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-11" title="11"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">count_age_bin =</span> <span class="kw">sum</span>(count),</a>
+<a class="sourceLine" id="cb16-12" title="12">         <span class="dt">amount_age_bin =</span> <span class="kw">sum</span>(amount)) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb16-13" title="13"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(<span class="dt">x =</span> defaulter, </a>
+<a class="sourceLine" id="cb16-14" title="14">             <span class="dt">y =</span> contract_status, <span class="dt">fill =</span> count <span class="op">/</span><span class="st"> </span>count_age_bin)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-15" title="15"><span class="st">    </span><span class="kw">geom_bin2d</span>(<span class="dt">stat =</span> <span class="st">&#39;identity&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-16" title="16"><span class="st">    </span><span class="kw">geom_text</span>(<span class="kw">aes</span>(<span class="dt">label =</span> <span class="kw">paste</span>(<span class="kw">round</span>(count <span class="op">/</span><span class="st"> </span>count_age_bin <span class="op">*</span><span class="st"> </span><span class="dv">100</span>, <span class="dv">2</span>), <span class="st">&#39;%&#39;</span>)), </a>
+<a class="sourceLine" id="cb16-17" title="17">              <span class="dt">color =</span> <span class="st">&#39;white&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-18" title="18"><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span>age_bin) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-19" title="19"><span class="st">    </span><span class="kw">theme_economist</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-20" title="20"><span class="st">    </span><span class="kw">theme</span>(<span class="dt">legend.position =</span> <span class="st">&#39;none&#39;</span>, <span class="dt">panel.grid.major =</span> <span class="kw">element_blank</span>(), </a>
+<a class="sourceLine" id="cb16-21" title="21">          <span class="dt">panel.grid.minor =</span> <span class="kw">element_blank</span>()) <span class="op">+</span></a>
+<a class="sourceLine" id="cb16-22" title="22"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">x =</span> <span class="st">&#39;Defaulter&#39;</span>,</a>
+<a class="sourceLine" id="cb16-23" title="23">         <span class="dt">y =</span> <span class="st">&#39;Contract Status&#39;</span>,</a>
+<a class="sourceLine" id="cb16-24" title="24">         <span class="dt">title =</span> <span class="st">&#39;Loan Contract Status by Age Group Heatmap&#39;</span>)</a></code></pre></div>
+<p><img src="01_exploration_report_files/figure-html/Loan_status_by_age_bin-1.png" width="100%" /></p>
+</div>
+<div id="account-balance-exploration" class="section level2">
+<h2><span class="header-section-number">3.3</span> Account Balance Exploration</h2>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">account_balance &lt;-<span class="st"> </span><span class="kw">arrange</span>(transaction, <span class="kw">desc</span>(date), account_id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-2" title="2"><span class="st">  </span><span class="kw">group_by</span>(account_id) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-3" title="3"><span class="st">  </span><span class="kw">mutate</span>(<span class="dt">avg_balance =</span> <span class="kw">mean</span>(balance)) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-4" title="4"><span class="st">  </span><span class="kw">filter</span>(<span class="kw">row_number</span>() <span class="op">==</span><span class="st"> </span><span class="dv">1</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb17-5" title="5"><span class="st">  </span><span class="kw">select</span>(account_id, date, balance, avg_balance)</a>
+<a class="sourceLine" id="cb17-6" title="6"></a>
+<a class="sourceLine" id="cb17-7" title="7"><span class="kw">colnames</span>(account_balance) &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="st">&quot;account_id&quot;</span>, <span class="st">&quot;last_transaction_date&quot;</span>, </a>
+<a class="sourceLine" id="cb17-8" title="8">                               <span class="st">&#39;account_balance&#39;</span>, <span class="st">&#39;avg_balance&#39;</span>)</a>
+<a class="sourceLine" id="cb17-9" title="9"></a>
+<a class="sourceLine" id="cb17-10" title="10"><span class="kw">left_join</span>(account_balance, disposition, <span class="dt">by =</span> <span class="st">&#39;account_id&#39;</span>) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb17-11" title="11"><span class="st">  </span><span class="kw">left_join</span>(client, <span class="dt">by =</span> <span class="st">&#39;client_id&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb17-12" title="12"><span class="st">  </span><span class="kw">left_join</span>(district, <span class="dt">by =</span> <span class="st">&#39;district_id&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb17-13" title="13"><span class="st">  </span><span class="kw">filter</span>(type <span class="op">==</span><span class="st"> &#39;Owner&#39;</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb17-14" title="14"><span class="st">  </span><span class="kw">ggplot</span>(<span class="kw">aes</span>(avg_balance)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb17-15" title="15"><span class="st">    </span><span class="kw">geom_density</span>(<span class="dt">alpha =</span> <span class="fl">0.5</span>, <span class="kw">aes</span>(<span class="dt">fill =</span> gender)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb17-16" title="16"><span class="st">    </span><span class="kw">scale_x_continuous</span>(<span class="dt">labels =</span> scales<span class="op">::</span>comma) <span class="op">+</span></a>
+<a class="sourceLine" id="cb17-17" title="17"><span class="st">    </span><span class="kw">labs</span>(<span class="dt">title =</span> <span class="st">&#39;Average Account Balance Distribution by Gender and Region&#39;</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb17-18" title="18"><span class="st">    </span><span class="kw">theme_economist</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb17-19" title="19"><span class="st">    </span><span class="kw">facet_wrap</span>(<span class="op">~</span>region)</a></code></pre></div>
+<p><img src="01_exploration_report_files/figure-html/avg_account_balance_by_gender_and_region-1.png" width="100%" /></p>
+</div>
+<div id="district-exploration" class="section level2">
+<h2><span class="header-section-number">3.4</span> District Exploration</h2>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1">czech_regions &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="kw">textConnection</span>(</a>
+<a class="sourceLine" id="cb18-2" title="2">                   <span class="st">&quot;City,Lat,Long,Pop</span></a>
+<a class="sourceLine" id="cb18-3" title="3"><span class="st">                    prague,50.073658,14.418540,645966</span></a>
+<a class="sourceLine" id="cb18-4" title="4"><span class="st">                    central Bohemia,49.8175,15.4730,645966</span></a>
+<a class="sourceLine" id="cb18-5" title="5"><span class="st">                    South Bohemia,48.9458,14.4416,645966</span></a>
+<a class="sourceLine" id="cb18-6" title="6"><span class="st">                    west Bohemia,49.7384,13.3736,645966</span></a>
+<a class="sourceLine" id="cb18-7" title="7"><span class="st">                    north Bohemia,50.7663,15.0543,645966</span></a>
+<a class="sourceLine" id="cb18-8" title="8"><span class="st">                    east Bohemia,50.0343,15.7812,645966</span></a>
+<a class="sourceLine" id="cb18-9" title="9"><span class="st">                    south Moravia,48.9545,16.7677,645966</span></a>
+<a class="sourceLine" id="cb18-10" title="10"><span class="st">                    north Moravia,49.5938,17.2509,645966&quot;</span>))</a>
+<a class="sourceLine" id="cb18-11" title="11"></a>
+<a class="sourceLine" id="cb18-12" title="12"><span class="kw">leaflet</span>(czech_regions) <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb18-13" title="13"><span class="st">  </span><span class="kw">addTiles</span>() <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb18-14" title="14"><span class="st">  </span><span class="kw">addCircles</span>(<span class="dt">lng =</span> <span class="op">~</span>Long, </a>
+<a class="sourceLine" id="cb18-15" title="15">             <span class="dt">lat =</span> <span class="op">~</span>Lat, </a>
+<a class="sourceLine" id="cb18-16" title="16">             <span class="dt">weight =</span> <span class="dv">2</span>, </a>
+<a class="sourceLine" id="cb18-17" title="17">             <span class="dt">radius =</span> <span class="op">~</span><span class="kw">sqrt</span>(Pop) <span class="op">*</span><span class="st"> </span><span class="dv">30</span>, </a>
+<a class="sourceLine" id="cb18-18" title="18">             <span class="dt">popup =</span> <span class="op">~</span>City)</a></code></pre></div>
+<div id="htmlwidget-7e2727873ff2ada2db2d" style="width:100%;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-7e2727873ff2ada2db2d">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addCircles","args":[[50.073658,49.8175,48.9458,49.7384,50.7663,50.0343,48.9545,49.5938],[14.41854,15.473,14.4416,13.3736,15.0543,15.7812,16.7677,17.2509],[24111.6030159755,24111.6030159755,24111.6030159755,24111.6030159755,24111.6030159755,24111.6030159755,24111.6030159755,24111.6030159755],null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":2,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},["                    prague","                    central Bohemia","                    South Bohemia","                    west Bohemia","                    north Bohemia","                    east Bohemia","                    south Moravia","                    north Moravia"],null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null,null]}],"limits":{"lat":[48.9458,50.7663],"lng":[13.3736,17.2509]}},"evals":[],"jsHooks":[]}</script>
+<hr />
+</div>
+</div>
+<div id="conclusion" class="section level1">
+<h1><span class="header-section-number">4</span> Conclusion</h1>
+<p>To.do</p>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
