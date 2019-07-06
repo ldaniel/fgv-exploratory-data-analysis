@@ -124,10 +124,9 @@ temp$y_loan_defaulter = as.numeric(temp$y_loan_defaulter)
 
 ```
 
-We end up with a data set with 38 variables.
+We end up with a data set with 39 variables.
 
 ```{r variables}
-
 kable(tibble(variables = names(temp)))
 ```
 
@@ -305,7 +304,6 @@ kable(prop.table(table(loan_reg_dataset$y_loan_defaulter)))
 kable(prop.table(table(data.train$y_loan_defaulter)))
 kable(prop.table(table(data.test$y_loan_defaulter)))
 
-
 ```
 
 Both datasets keep the same proportion for the explained variable around 11%.
@@ -338,7 +336,7 @@ summary(model_2)
 
 In the next step we will compare how each model performed.
 
-# Evaluating the Model Perfromance
+# Evaluating the Model Performance
 
 We start this step by making predictions using our model on the X's variables in our Train and Test datasets.
 
