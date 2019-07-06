@@ -195,19 +195,19 @@ We decided to exclude any variable with a VIF greater than 5.
 
 Below variables were excluded based on the multicollinear presence on them.
 
--**x_prop_insurance_payment**
--**x_prop_household**
--**x_prop_statement** 
--**x_prop_loan_payment** 
--**x_prop_other**
--**x_no_of_inhabitants** 
--**x_no_of_commited_crimes_1996**
--**x_transaction_amount**
--**x_transaction_count**
--**x_unemploymant_rate_1996** 
--**x_unemploymant_rate_1995**
--**x_average_salary**
--**x_no_of_cities**
+- **x_prop_insurance_payment**
+- **x_prop_household**
+- **x_prop_statement** 
+- **x_prop_loan_payment** 
+- **x_prop_other**
+- **x_no_of_inhabitants** 
+- **x_no_of_commited_crimes_1996**
+- **x_transaction_amount**
+- **x_transaction_count**
+- **x_unemploymant_rate_1996** 
+- **x_unemploymant_rate_1995**
+- **x_average_salary**
+- **x_no_of_cities**
 
 ```{r remove_variables_2}
 
