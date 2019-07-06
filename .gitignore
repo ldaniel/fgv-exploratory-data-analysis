@@ -25,4 +25,4 @@ vignettes/*.pdf
 *.DS_Store
 
 data/transaction.feather
-mardown/_site/
+markdown/_site/
