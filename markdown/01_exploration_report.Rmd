@@ -391,8 +391,3 @@ leaflet(czech_regions) %>%
              radius = ~sqrt(Pop) * 30, 
              popup = ~City)
 ```
-
-*******************************************************************************
-
-# Conclusion
-To.do
