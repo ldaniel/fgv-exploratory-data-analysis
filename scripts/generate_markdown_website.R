@@ -7,7 +7,13 @@ rootDirectoryPath     <- stringr::str_replace(scriptsDirectoryPath, "/scripts", 
 
 # generating website from markdown files --------------------------------------
 setwd(markdownDirectoryPath)
-rmarkdown::render_site()
+
+initialTime <- Sys.time() # get the initial time
+rmarkdown::render_site()  # call the website generation function
+finalTime <- Sys.time()   # get the final time
+
+# showing the amount of time, in minutes, to generate the website
+print(difftime(finalTime, initialTime, tz="GMT", units="mins")) 
 
 # moving website files to docs directory --------------------------------------
 if(file.exists(docsDirectoryPath))
