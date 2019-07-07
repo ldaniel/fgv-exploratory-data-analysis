@@ -1,9 +1,20 @@
-# R language
+# Introduction
 
-## Introduction
-Practing R using a real anonymized Czech bank transactions, account info, and loan records released for PKDD'99 Discovery Challenge.
+This project intends to present the work analysis for "Análise Exploratória de Dados" class.
 
-## About the data
+The ideia is Practing R using a real anonymized Czech bank transactions, account info, and loan records released for PKDD'99 Discovery Challenge.
+
+## Professor
+- Gustavo Mirapalheta
+
+## Authors / students
+<a href="https://github.com/ldaniel"><img src="https://avatars.githubusercontent.com/u/892048?v=3" title="ldaniel" width="80" height="80"></a>
+- Daniel Campos (A99999999 / daniel.ferraz.campos@gmail.com)
+- Leandro Daniel (A57622988 / contato@leandrodaniel.com)
+- Rodrigo Goncalves (A57566093 / rodrigo.goncalves@me.com)
+- Ygor Lima (A57549661 / ygor_redesocial@hotmail.com)
+
+# About the data
 Data from a real Czech bank. From 1999.
 
 The data about the clients and their accounts consist of following relations:
