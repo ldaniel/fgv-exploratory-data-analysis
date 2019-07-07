@@ -395,13 +395,13 @@ $(document).ready(function () {
 <li><a href="#sample-split-into-test-and-training-data"><span class="toc-section-number">2.4</span> Sample split into Test and Training Data</a></li>
 <li><a href="#fit-the-logistic-model"><span class="toc-section-number">2.5</span> Fit the logistic model</a></li>
 </ul></li>
-<li><a href="#evaluating-the-model-performance"><span class="toc-section-number">3</span> Evaluating the Model Performance</a></li>
+<li><a href="#evaluating-the-model-performance"><span class="toc-section-number">3</span> Evaluating the model performance</a></li>
 </ul>
 </div>
 
 <div id="objective" class="section level1">
 <h1><span class="header-section-number">1</span> Objective</h1>
-<p>The goal of this excercise is to try to fit a logistic regression model on Loan data aiming to predict the probability of delinquency for each contract.</p>
+<p>The goal of this report is trying to fit a logistic regression model on Loan data aiming to predict the probability of delinquency for each contract.</p>
 </div>
 <div id="task-description" class="section level1">
 <h1><span class="header-section-number">2</span> Task description</h1>
@@ -911,29 +911,52 @@ $(document).ready(function () {
 ## -1.5308  -0.4369  -0.2692  -0.1609   2.9273  
 ## 
 ## Coefficients: (1 not defined because of singularities)
-##                                              Estimate Std. Error z value Pr(&gt;|z|)    
-## (Intercept)                                -4.405e+00  2.351e+00  -1.874   0.0610 .  
-## x_loan_amount                               7.239e-06  2.978e-06   2.431   0.0151 *  
-## x_loan_duration                            -2.860e-02  1.867e-02  -1.532   0.1255    
-## x_loan_payments                             2.306e-03  1.839e-03   1.254   0.2099    
-## x_client_gendermale                         2.084e-02  3.594e-01   0.058   0.9537    
-## x_client_age                                1.801e-02  1.414e-02   1.274   0.2028    
-## x_no_of_municip_inhabitants_less_499       -1.823e-03  6.599e-03  -0.276   0.7824    
-## x_no_of_municip_500_to_1999                 8.119e-04  1.957e-02   0.041   0.9669    
-## x_no_of_municip_2000_to_9999               -1.178e-02  6.436e-02  -0.183   0.8547    
-## x_no_of_municip_greater_10000              -3.642e-01  2.321e-01  -1.569   0.1167    
-## x_ratio_of_urban_inhabitants                9.512e-03  1.150e-02   0.827   0.4080    
-## x_no_of_enterpreneurs_per_1000_inhabitants -1.078e-02  1.162e-02  -0.927   0.3538    
-## x_no_of_commited_crimes_1995               -1.362e-02  9.617e-03  -1.416   0.1566    
-## x_card_typegold                             5.329e-01  1.315e+00   0.405   0.6852    
-## x_card_typejunior                           3.728e-01  1.311e+00   0.284   0.7762    
-## x_card_typeno card                          1.580e+00  8.938e-01   1.768   0.0770 .  
-## x_card_age_month                            2.938e-02  3.072e-02   0.956   0.3390    
-## x_account_balance                           2.386e-06  1.383e-06   1.725   0.0844 .  
-## x_avg_account_balance                      -4.174e-06  2.969e-06  -1.406   0.1598    
-## x_last_transaction_age_days                 2.641e-02  4.276e-02   0.618   0.5368    
-## x_prop_interest_credited                    1.156e+01  2.241e+00   5.158  2.5e-07 ***
-## x_has_card                                         NA         NA      NA       NA    
+##                                              Estimate Std. Error z value
+## (Intercept)                                -4.405e+00  2.351e+00  -1.874
+## x_loan_amount                               7.239e-06  2.978e-06   2.431
+## x_loan_duration                            -2.860e-02  1.867e-02  -1.532
+## x_loan_payments                             2.306e-03  1.839e-03   1.254
+## x_client_gendermale                         2.084e-02  3.594e-01   0.058
+## x_client_age                                1.801e-02  1.414e-02   1.274
+## x_no_of_municip_inhabitants_less_499       -1.823e-03  6.599e-03  -0.276
+## x_no_of_municip_500_to_1999                 8.119e-04  1.957e-02   0.041
+## x_no_of_municip_2000_to_9999               -1.178e-02  6.436e-02  -0.183
+## x_no_of_municip_greater_10000              -3.642e-01  2.321e-01  -1.569
+## x_ratio_of_urban_inhabitants                9.512e-03  1.150e-02   0.827
+## x_no_of_enterpreneurs_per_1000_inhabitants -1.078e-02  1.162e-02  -0.927
+## x_no_of_commited_crimes_1995               -1.362e-02  9.617e-03  -1.416
+## x_card_typegold                             5.329e-01  1.315e+00   0.405
+## x_card_typejunior                           3.728e-01  1.311e+00   0.284
+## x_card_typeno card                          1.580e+00  8.938e-01   1.768
+## x_card_age_month                            2.938e-02  3.072e-02   0.956
+## x_account_balance                           2.386e-06  1.383e-06   1.725
+## x_avg_account_balance                      -4.174e-06  2.969e-06  -1.406
+## x_last_transaction_age_days                 2.641e-02  4.276e-02   0.618
+## x_prop_interest_credited                    1.156e+01  2.241e+00   5.158
+## x_has_card                                         NA         NA      NA
+##                                            Pr(&gt;|z|)    
+## (Intercept)                                  0.0610 .  
+## x_loan_amount                                0.0151 *  
+## x_loan_duration                              0.1255    
+## x_loan_payments                              0.2099    
+## x_client_gendermale                          0.9537    
+## x_client_age                                 0.2028    
+## x_no_of_municip_inhabitants_less_499         0.7824    
+## x_no_of_municip_500_to_1999                  0.9669    
+## x_no_of_municip_2000_to_9999                 0.8547    
+## x_no_of_municip_greater_10000                0.1167    
+## x_ratio_of_urban_inhabitants                 0.4080    
+## x_no_of_enterpreneurs_per_1000_inhabitants   0.3538    
+## x_no_of_commited_crimes_1995                 0.1566    
+## x_card_typegold                              0.6852    
+## x_card_typejunior                            0.7762    
+## x_card_typeno card                           0.0770 .  
+## x_card_age_month                             0.3390    
+## x_account_balance                            0.0844 .  
+## x_avg_account_balance                        0.1598    
+## x_last_transaction_age_days                  0.5368    
+## x_prop_interest_credited                    2.5e-07 ***
+## x_has_card                                       NA    
 ## ---
 ## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
 ## 
@@ -981,11 +1004,12 @@ $(document).ready(function () {
 </div>
 </div>
 <div id="evaluating-the-model-performance" class="section level1">
-<h1><span class="header-section-number">3</span> Evaluating the Model Performance</h1>
+<h1><span class="header-section-number">3</span> Evaluating the model performance</h1>
 <p>We started this step by making predictions using our model on the X’s variables in our Train and Test datasets.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" title="1">glm.prob.train<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">predict</span>(model_<span class="dv">1</span>, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>)</a>
 <a class="sourceLine" id="cb12-2" title="2">glm.prob.test<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">predict</span>(model_<span class="dv">1</span>, <span class="dt">newdata =</span> data.test, <span class="dt">type=</span> <span class="st">&quot;response&quot;</span>)</a></code></pre></div>
-<pre><code>## Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type == : prediction from a rank-deficient fit may be misleading</code></pre>
+<pre><code>## Warning in predict.lm(object, newdata, se.fit, scale = 1, type = if (type
+## == : prediction from a rank-deficient fit may be misleading</code></pre>
 <div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1">glm.prob.train<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="kw">predict</span>(model_<span class="dv">2</span>, <span class="dt">type =</span> <span class="st">&quot;response&quot;</span>)</a>
 <a class="sourceLine" id="cb14-2" title="2">glm.prob.test<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="kw">predict</span>(model_<span class="dv">2</span>, <span class="dt">newdata =</span> data.test, <span class="dt">type=</span> <span class="st">&quot;response&quot;</span>)</a></code></pre></div>
 <p>We then evaluate the metrics in the model for Train and Test data:</p>
