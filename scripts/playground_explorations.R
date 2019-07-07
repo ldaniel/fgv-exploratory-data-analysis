@@ -10,6 +10,7 @@ library(psych)
 library(ggthemes)
 library(leaflet)
 library(feather)
+library(plotly)
 
 # loading other scripts do be used here ---------------------------------------
 source("./scripts/step_00_config_environment.R")
@@ -20,7 +21,7 @@ source("./scripts/step_04_label_translation.R")
 source("./scripts/step_05_data_enhancement.R")
 
 # gender distribution of clients in the bank ----------------------------------
-ggplot(data = client) +
+p <- ggplot(data = client) +
   aes(x = gender, fill = gender) +
   geom_bar() +
   labs(title = "Gender distribution of clients in the bank",
@@ -29,12 +30,14 @@ ggplot(data = client) +
        y = "Total clients") +
   theme_economist()
 
+ggplotly(p)
+
 # gender distribution of clients in the bank over the decades -----------------
 clientGenderOverDecades <- client %>% 
   group_by(decade = as.integer(substr(client$birth_number, 1,1)) * 10, gender = client$gender) %>% 
   count()
 
-ggplot(data = clientGenderOverDecades) +
+p <- ggplot(data = clientGenderOverDecades) +
   aes(x = decade, fill = gender, weight = n) +
   scale_x_continuous(breaks = c(0, 10, 20, 30, 40, 50, 60, 70, 80)) +
   geom_bar() +
@@ -45,6 +48,8 @@ ggplot(data = clientGenderOverDecades) +
        y = "Total clients") +
   theme_economist() +
   facet_wrap(vars(gender))
+
+ggplotly(p)
 
 # alluvial diagram representation of gender, age group and region -------------
 clientGenderAgeGroupByRegion <- client %>% 
