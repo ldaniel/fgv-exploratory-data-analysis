@@ -8,11 +8,17 @@ The ideia is Practing R using a real anonymized Czech bank transactions, account
 - Gustavo Mirapalheta
 
 ## Authors / students
-<a href="https://github.com/ldaniel"><img src="https://avatars.githubusercontent.com/u/892048?v=3" title="ldaniel" width="80" height="80"></a>
-- Daniel Campos (A99999999 / daniel.ferraz.campos@gmail.com)
-- Leandro Daniel (A57622988 / contato@leandrodaniel.com)
-- Rodrigo Goncalves (A57566093 / rodrigo.goncalves@me.com)
-- Ygor Lima (A57549661 / ygor_redesocial@hotmail.com)
+Daniel Campos [daniel.ferraz.campos@gmail.com](daniel.ferraz.campos@gmail.com)
+<a href="https://github.com/DanielFCampos"><img src="https://avatars2.githubusercontent.com/u/31582602?s=460&v=4" title="DanielFCampos" width="80" height="80"></a>
+
+Leandro Daniel [contato@leandrodaniel.com](contato@leandrodaniel.com)
+<a href="https://github.com/ldaniel"><img src="https://avatars2.githubusercontent.com/u/205534?s=460&v=4" title="ldaniel" width="80" height="80"></a>
+
+Rodrigo Goncalves [rodrigo.goncalves@me.com](rodrigo.goncalves@me.com)
+<a href="https://github.com/RodriGonca"><img src="https://avatars2.githubusercontent.com/u/50252438?s=460&v=4" title="RodriGonca" width="80" height="80"></a>
+
+Ygor Lima [ygor_redesocial@hotmail.com](ygor_redesocial@hotmail.com)
+<a href="https://github.com/ygorlima1"><img src="https://avatars2.githubusercontent.com/u/52429828?s=460&v=4" title="ygorlima1" width="80" height="80"></a>
 
 # About the data
 Data from a real Czech bank. From 1999.
