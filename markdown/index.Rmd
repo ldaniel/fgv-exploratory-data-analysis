@@ -19,6 +19,12 @@ Use the menu above to navigate and see the final report.
 - Rodrigo Goncalves (A57566093 / rodrigo.goncalves@me.com)
 - Ygor Lima (A57549661 / ygor_redesocial@hotmail.com)
 
+## Project at GitHub
+This project can be found and downloaded on GitHub: https://github.com/ldaniel/R_Bank_Berka
+
+> Valar Morghulis!
+> :)
+
 # About the data
 Data from a real Czech bank. From 1999.
 

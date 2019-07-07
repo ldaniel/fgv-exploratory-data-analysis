@@ -53,12 +53,6 @@ This database was prepared by Petr Berka and Marta Sochorova.
 
 ![Simplified logical data model of Berka Bank.](https://raw.githubusercontent.com/ldaniel/R_Bank_Berka/master/images/data_model.png)
 
-## Project at GitHub
-This project can be found and downloaded on GitHub: https://github.com/ldaniel/R_Bank_Berka
-
-> Valar Morghulis!
-> :)
-
 *******************************************************************************
 
 # Data ingestion, cleaning, translation and enhancement
