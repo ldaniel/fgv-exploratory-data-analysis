@@ -10,8 +10,13 @@ See the final website report at: [https://ldaniel.github.io/R_Bank_Berka](https:
 - Gustavo Mirapalheta
 
 ## Authors / students
-- Daniel Campos [(daniel.ferraz.campos@gmail.com)](daniel.ferraz.campos@gmail.com)
-<a href="https://github.com/DanielFCampos"><img src="https://avatars2.githubusercontent.com/u/31582602?s=460&v=4" title="DanielFCampos" width="80" height="80"></a>
+|Profile|Name|E-mail|
+|---|---|---|
+|<a href="https://github.com/DanielFCampos"><img src="https://avatars2.githubusercontent.com/u/31582602?s=460&v=4" title="DanielFCampos" width="80" height="80"></a>|Daniel Campos| [(daniel.ferraz.campos@gmail.com)](daniel.ferraz.campos@gmail.com)|
+|   |   |   |   |   |
+|   |   |   |   |   |
+
+
 - Leandro Daniel [(contato@leandrodaniel.com)](contato@leandrodaniel.com)
 <a href="https://github.com/ldaniel"><img src="https://avatars2.githubusercontent.com/u/205534?s=460&v=4" title="ldaniel" width="80" height="80"></a>
 - Rodrigo Goncalves [(rodrigo.goncalves@me.com)](rodrigo.goncalves@me.com)
