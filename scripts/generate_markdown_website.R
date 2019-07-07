@@ -18,13 +18,17 @@ print(difftime(finalTime, initialTime, tz="GMT", units="mins"))
 # moving website files to docs directory --------------------------------------
 if(file.exists(docsDirectoryPath))
 {
-  unlink(docsDirectoryPath, recursive=TRUE)
-  file.remove(docsDirectoryPath)
+  do.call(file.remove, list(list.files(docsDirectoryPath, full.names = TRUE)))
 }
 
 if(file.exists(tempSiteDirecoryPath))
 {
-  file.rename(from = tempSiteDirecoryPath,  to = docsDirectoryPath)
+  list_of_files <- list.files(tempSiteDirecoryPath)
+  file.copy(file.path(tempSiteDirecoryPath,list_of_files), docsDirectoryPath,
+            overwrite = TRUE, 
+            recursive = TRUE, 
+            copy.mode = TRUE)
+  unlink(tempSiteDirecoryPath, recursive = TRUE)
 }
 
 # setting the working directory to the original one ---------------------------
