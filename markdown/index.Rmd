@@ -2,16 +2,16 @@
 title: "FGV MBA: Business Analytics & Big Data"
 ---
 
-# Introduction
+# Exploratory data analysis
 
-This website intends to present the work analysis for "Análise Exploratória de Dados" class.
+This website intends to present the work analysis for the *"Análise Exploratória de Dados"* class.
 
 The ideia is Practing R using a real anonymized Czech bank transactions, account info, and loan records released for PKDD'99 Discovery Challenge.
 
 Use the menu above to navigate and see the final report.
 
 ## Professor
-- Gustavo Mirapalheta
+- Gustavo Mirapalheta (gustavo.mirapalheta@fgv.br)
 
 ## Authors / students
 - Daniel Campos (A99999999 / daniel.ferraz.campos@gmail.com)
@@ -19,7 +19,7 @@ Use the menu above to navigate and see the final report.
 - Rodrigo Goncalves (A57566093 / rodrigo.goncalves@me.com)
 - Ygor Lima (A57549661 / ygor_redesocial@hotmail.com)
 
-## Project at GitHub
+## Where to find the source code of this project?
 This project can be found and downloaded on GitHub: https://github.com/ldaniel/R_Bank_Berka
 
 > Valar Morghulis!

@@ -1,5 +1,5 @@
 ---
-title: "Logistic Regression on Loan Dataset"
+title: "The logistic regression on loan Report"
 date: "July, 2019"
 ---
 

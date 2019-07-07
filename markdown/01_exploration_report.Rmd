@@ -1,5 +1,5 @@
 ---
-title: "Berka Bank Report"
+title: "The explorations report"
 date: "July, 2019"
 ---
 
