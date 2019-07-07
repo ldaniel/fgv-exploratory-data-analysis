@@ -14,6 +14,7 @@ The model can accurately identify loan contracts likely to default with test set
 In practice, the probabilities returned by the logistic regression model can be used to decide on grant or not the loan and help on correctly price the interest rate based on the likelihood of default.
 
 Model 2 shows that below variables are associated with the probability of default in a loan contract:
+
 - **x_loan_amount**;
 - **x_loan_duration**; 
 - **x_has_card**;
