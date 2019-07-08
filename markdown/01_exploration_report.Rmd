@@ -259,6 +259,7 @@ ggplot(data = clientGenderAgeGroupByRegion,
 ```
 
 ## Loan Exploration
+Here we investigate if there is any association between the region and the likelihood of default in the 682 loan observations in the dataset.
 
 ```{r Loan_status_by_region, echo=TRUE, out.width = '100%'}
 left_join(loan, disposition, by = 'account_id') %>% 
@@ -285,6 +286,8 @@ left_join(loan, disposition, by = 'account_id') %>%
        y = 'Contract Status', 
        title = 'Loan Contract Status by Region Heatmap')
 ```
+
+We perform the same investigation on the association between the client gender and the likelihood of default in the 682 loan observations in the dataset.
 
 ```{r Loan_status_by_gender, echo=TRUE, out.width = '100%'}
 left_join(loan, disposition, by = 'account_id') %>%
@@ -313,6 +316,8 @@ left_join(loan, disposition, by = 'account_id') %>%
          title = 'Loan Contract Status by Gender Heatmap')
 ```
 
+We finnaly do the same investigation on the association between the client age and the likelihood of default in the 682 loan observations in the dataset.
+
 ```{r Loan_status_by_age_bin, echo=TRUE, out.width = '100%'}
 left_join(loan, disposition, by = 'account_id') %>%
   left_join(client, by = 'client_id') %>% 
@@ -340,29 +345,28 @@ left_join(loan, disposition, by = 'account_id') %>%
          title = 'Loan Contract Status by Age Group Heatmap')
 ```
 
+It seems that none of these features, alone, are determinant on the odds of a client default.
+
 ## Account Balance Exploration
 
-```{r avg_account_balance_by_gender_and_region, echo=TRUE, out.width = '100%'}
-account_balance <- arrange(transaction, desc(date), account_id) %>%
-  group_by(account_id) %>%
-  mutate(avg_balance = mean(balance)) %>%
-  filter(row_number() == 1) %>% 
-  select(account_id, date, balance, avg_balance)
+As we do not have the individual income of each client, we tried to perform a proxy of the client's wealth by calculating the average account balance of each account and investigating the distribution by region and age.
 
-colnames(account_balance) <- c("account_id", "last_transaction_date", 
-                               'account_balance', 'avg_balance')
+```{r avg_account_balance_by_gender_and_region, echo=TRUE, out.width = '100%'}
 
 left_join(account_balance, disposition, by = 'account_id') %>%
   left_join(client, by = 'client_id') %>% 
   left_join(district, by = 'district_id') %>% 
   filter(type == 'Owner') %>% 
-  ggplot(aes(avg_balance)) +
+  ggplot(aes(avg_balance / 1000)) +
     geom_density(alpha = 0.5, aes(fill = gender)) +
     scale_x_continuous(labels = scales::comma) +
-    labs(title = 'Average Account Balance Distribution by Gender and Region') +
+    labs(title = 'Average Account Balance Distribution by Gender and Region',
+         subtitle = 'k (Kč) - Koruna (CZK)') +
     theme_economist() +
     facet_wrap(~region)
 ```
+
+One interest pattern shows up, moles in prague region tend to have a bigger average account balance them females, and the oposite trend in South, North and West Bohemia.
 
 ## District exploration
 
