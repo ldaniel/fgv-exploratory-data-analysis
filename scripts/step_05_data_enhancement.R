@@ -14,6 +14,22 @@ loan <- mutate(loan, defaulter = as.logical( plyr::mapvalues(status, c ('A','B',
 # improving client data by having its age group
 client <- mutate(client, age_bin = paste(findInterval(age, c(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) * 10,'+'))
 
+# creating czech_regions_coords table
+region <- c("Prague", "central Bohemia", "South Bohemia",
+            "west Bohemia", "north Bohemia", "east Bohemia",
+            "south Moravia", "north Moravia")
+lat <- c(50.073658, 49.8175, 48.9458, 
+         49.7384, 50.7663, 50.0343, 
+         48.9545, 49.5938)
+long <- c(14.418540, 15.4730, 14.4416,
+          13.3736, 15.0543, 15.7812,
+          16.7677, 17.2509)
+
+czech_regions_coords <- data.frame(region, lat, long)
+czech_regions_coords %>% mutate_if(is.factor, as.character)
+
+View(czech_regions_coords)
+
 # create account balance table
 account_balance <- arrange(transaction, desc(date), account_id) %>%
   group_by(account_id) %>%

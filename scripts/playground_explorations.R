@@ -148,23 +148,27 @@ left_join(account_balance, disposition, by = 'account_id') %>%
     theme_economist() +
     facet_wrap(~region)
 
-# Ploting map with district analysis ------------------------------------------
+# Ploting map with loadn district analysis ------------------------------------------
 
-# czech_regions <- read.csv(textConnection(
-#                    "City,Lat,Long,Pop
-#                     Prague,50.073658,14.418540,645966
-#                     central Bohemia,49.8175,15.4730,645966
-#                     South Bohemia,48.9458,14.4416,645966
-#                     west Bohemia,49.7384,13.3736,645966
-#                     north Bohemia,50.7663,15.0543,645966
-#                     east Bohemia,50.0343,15.7812,645966
-#                     south Moravia,48.9545,16.7677,645966
-#                     north Moravia,49.5938,17.2509,645966"))
+loan_amount_by_region <- select(loan, account_id, amount, defaulter, contract_status) %>% 
+  filter(defaulter == TRUE) %>% 
+  inner_join(account) %>% 
+  inner_join(district) %>% 
+  group_by(region) %>% 
+  summarise(transaction_count = n(),
+            amount = sum(amount)) %>% 
+  inner_join(czech_regions_coords)
 
 jsonMapFile <- "./map/czech-republic-regions.json"
 czech_regions <- as.json(geojson_read(jsonMapFile))
 
-leaflet() %>% 
+leaflet(loan_amount_by_region) %>% 
   addTiles() %>% 
   setView(lng = 15.3, lat = 49.8, zoom = 7) %>%
-  addGeoJSON(czech_regions)
+  addGeoJSON(czech_regions, fillColor = "red", stroke = "#555555") %>% 
+  addCircles(lng = ~long, 	
+             lat = ~lat, 	
+             weight = 2, 	
+             radius = ~sqrt(amount) * 30, 	
+             popup = ~region)
+
