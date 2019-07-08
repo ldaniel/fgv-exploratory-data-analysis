@@ -169,6 +169,8 @@ Again, only the **transaction** table had empty values, according to the table b
 kable(transaction_empty_cols)
 ```
 
+For the exploration analysis report, we did not take any additional action, since the missing values was not relevant.
+
 ## Label Translation
 In order to make the data information more understandable, it was translated some relevant labels and domains from Czech to English.
 
@@ -238,6 +240,7 @@ The code below improved client data by having its age group.
 client <- mutate(client, age_bin = paste(findInterval(age, 
                  c(10, 20, 30, 40, 50, 60, 70, 80, 90, 100)) * 10,'+'))
 ```
+
 The code below calculate an additional table with current and average account balance for each account.
 
 ``` {r account_balance, eval = FALSE}
@@ -249,6 +252,7 @@ account_balance <- arrange(transaction, desc(date), account_id) %>%
 
 colnames(account_balance) <- c("account_id", "last_transaction_date", 'account_balance', 'avg_balance')
 ```
+
 The code below calculate an additional table with the proportion of each transaction type (k_symbol) on total transaction amount of each account. That data will be used to fit a logistic model on loan dataset.
 
 ``` {r account_transaction_pattern, eval = FALSE}
@@ -270,8 +274,6 @@ account_transaction_pattern <- select(transaction, c(trans_id, account_id, date,
               prop_sanction_interest = sum(`sanction interest`) / amount,
               prop_statement = sum(`statement`) / amount)
 ```
-
-
 
 *******************************************************************************
 
