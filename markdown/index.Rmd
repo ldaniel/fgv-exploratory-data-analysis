@@ -14,7 +14,7 @@ Use the menu above to navigate and see the final report.
 - Gustavo Mirapalheta (gustavo.mirapalheta@fgv.br)
 
 ## Authors / students
-- Daniel Campos (A99999999 / daniel.ferraz.campos@gmail.com)
+- Daniel Campos (A57549661 / daniel.ferraz.campos@gmail.com)
 - Leandro Daniel (A57622988 / contato@leandrodaniel.com)
 - Rodrigo Goncalves (A57566093 / rodrigo.goncalves@me.com)
 - Ygor Lima (A57549661 / ygor_redesocial@hotmail.com)

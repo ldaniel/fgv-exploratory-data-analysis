@@ -1,5 +1,5 @@
----
-title: "The explorations report"
+﻿---
+title: "The exploration's report"
 date: "July, 2019"
 ---
 
