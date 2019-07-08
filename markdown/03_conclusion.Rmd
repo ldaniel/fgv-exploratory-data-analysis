@@ -3,13 +3,7 @@ title: "Conclusion"
 date: "July, 2019"
 ---
 
-# The exploration conclusion
-
-To-do.
-
-# The loan logistic regression conclusion
-
-The final model can accurately sgregate the loan contracts likely to default with test set accuracy of 76.47% using 0.1 as the threshold to assign the observation to defaulter class.
+The final model can accurately segregate the loan contracts likely to default with test set accuracy of 76.47% using 0.1 as the threshold to assign the observation to defaulter class.
 
 Model was also able to predict 72% of real defaulters in our test dataset.
 
