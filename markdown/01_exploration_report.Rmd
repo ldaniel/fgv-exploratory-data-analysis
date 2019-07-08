@@ -72,7 +72,7 @@ This step create functions to be used in the next steps. Following, all function
 ### GetGenderFromBirthnumber 
 The birth_number column is given in the form of YYMMDD for men, and YYMM+50DD for women. The objective of this function is to return the gender of the client via the birth_number.
 
-```
+``` {r GetGenderFromBirthnumber, eval = FALSE}
 GetGenderFromBirthnumber <- function(var_birth_number) {
   month <- substr(var_birth_number, 3, 4)
   result <- ifelse(as.integer(month) > 50, "female", "male")
@@ -84,7 +84,7 @@ GetGenderFromBirthnumber <- function(var_birth_number) {
 ### GetBirthdateFromBirthnumber
 The birth_number column is given in the form of YYMMDD for men, # and YYMM+50DD for women. The objective of this function is to return the final birthday as Date.
 
-```
+``` {r GetBirthdateFromBirthnumber, eval = FALSE}
 GetBirthdateFromBirthnumber <- function(var_birth_number, var_gender) {
   year <- paste("19", substr(var_birth_number, 1, 2), sep="")
   month <- ifelse(var_gender == "male", substr(var_birth_number, 3, 4), 
@@ -99,7 +99,7 @@ GetBirthdateFromBirthnumber <- function(var_birth_number, var_gender) {
 ### ConvertToDate
 The objective of this function is to convert the strange bank date style to the regular R Date datatype.
 
-```
+``` {r ConvertToDate, eval = FALSE}
 ConvertToDate <- function(var_date) {
   year <- paste("19", substr(var_date, 1, 2), sep="")
   month <- substr(var_date, 3, 4)
@@ -113,7 +113,7 @@ ConvertToDate <- function(var_date) {
 ### GetAgeFromBirthnumber
 The objective of this function is to get age given the birth_number.
 
-```
+``` {r GetAgeFromBirthnumber, eval = FALSE}
 GetAgeFromBirthnumber <- function(var_birth_number) {
   base_year <- 99 # considering 1999 as the base year for this exercise
   year <- substr(var_birth_number, 1, 2)
@@ -141,13 +141,13 @@ The objective of this step is analysing missing values and other strange conditi
 
 First thing done, was fixing observations in k_symbol transaction table with ' ' (one space) to empty string (''), using the following command.
 
-```
+``` {r fix_ksymbol, eval = FALSE}
 transaction$k_symbol = trimws(transaction$k_symbol)
 ```
 
 Then, the command below was used to find out any NA values in each table.
 
-```
+``` {r find_na, eval = FALSE}
 sapply(TableName, function(x) sum(is.na(x)))
 ```
 
@@ -159,7 +159,7 @@ kable(transaction_na_cols)
 
 Finally, the following command was used in each table to find out where empty values was hidden. 
 
-```
+``` {r find_empty, eval = FALSE}
 sapply(TableName, function(x) table(as.character(x) =="")["TRUE"])
 ```
 
@@ -173,32 +173,38 @@ kable(transaction_empty_cols)
 In order to make the data information more understandable, it was translated some relevant labels and domains from Czech to English.
 
 ``` {r translate, eval = FALSE}
-# Translating relevant labels and domains to english --------------------------
+# Translating relevant labels and domains to english --------------------------------------------
 
-disposition$type <- plyr::mapvalues(disposition$type, c('OWNER', 'DISPONENT'), c('Owner', 'User'))
+disposition$type <- plyr::mapvalues(disposition$type, c('OWNER', 'DISPONENT'), 
+                                    c('Owner', 'User'))
 
 account$frequency <- plyr::mapvalues(account$frequency,
-                                     c('POPLATEK MESICNE', 'POPLATEK TYDNE', 'POPLATEK PO OBRATU'),
+                                     c('POPLATEK MESICNE', 'POPLATEK TYDNE', 
+                                       'POPLATEK PO OBRATU'),
                                      c('Monthly', 'Weekly', 'On Transaction'))
 
 permanent_order$k_symbol <- plyr::mapvalues(permanent_order$k_symbol,
                                             c('POJISTNE', 'SIPO', 'LEASING', 'UVER'),
-                                            c('insurrance payment', 'household', 'leasing', 'loan payment'))
+                                            c('insurrance payment', 'household', 
+                                              'leasing', 'loan payment'))
 
 transaction$type <- plyr::mapvalues(transaction$type,
                                     c('PRIJEM', 'VYDAJ', 'VYBER'),
                                     c('credit', 'withdrawal', 'withdrawal in cash'))
 
 transaction$operation <- plyr::mapvalues(transaction$operation,
-                                         c('VYBER KARTOU', 'VKLAD', 'PREVOD Z UCTU', 'VYBER', 'PREVOD NA UCET'),
+                                         c('VYBER KARTOU', 'VKLAD', 'PREVOD Z UCTU', 
+                                           'VYBER', 'PREVOD NA UCET'),
                                          c('credit card withdrawal', 'credit in cash', 
-                                           'collection from another bank', 'withdrawal in cash', 
-                                           'remittance to nother bank'))
+                                           'collection from another bank', 
+                                           'withdrawal in cash', 'remittance to nother bank'))
 
 transaction$k_symbol <- plyr::mapvalues(transaction$k_symbol, 
-                                        c('POJISTNE', 'SLUZBY', 'UROK', 'SANKC. UROK', 'SIPO', 'DUCHOD', 'UVER'),
-                                        c('insurance payment', 'statement', 'interest credited',
-                                          'sanction interest', 'household', 'old age pension', 'loan payment'))
+                                        c('POJISTNE', 'SLUZBY', 'UROK', 'SANKC. UROK', 
+                                          'SIPO', 'DUCHOD', 'UVER'),
+                                        c('insurance payment', 'statement', 
+                                          'interest credited', 'sanction interest', 
+                                          'household', 'old age pension', 'loan payment'))
 
 ```
 
