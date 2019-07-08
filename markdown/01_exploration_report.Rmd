@@ -3,7 +3,7 @@ title: "The exploration's report"
 date: "July, 2019"
 ---
 
-```{r setup, include=FALSE}
+```{r setup_exploration, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 knitr::opts_chunk$set(fig.pos =  "h")
 knitr::opts_knit$set(root.dir = "../")
