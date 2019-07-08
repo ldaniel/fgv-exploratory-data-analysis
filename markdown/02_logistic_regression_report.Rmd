@@ -313,7 +313,7 @@ Both datasets keep the same proportion for the explained variable around 11%.
 
 ## Fit the logistic model 
 
-With the final cleaned dataset, we got from below steps we fit our Logistic Regression Y_loan_defaulter on all x variables.
+With the final cleaned dataset, we got from above steps we fit our Logistic Regression Y_loan_defaulter on all x variables.
 
 ```{r fit_model_1}
 model_1 <- glm(data = data.train, formula = y_loan_defaulter ~ .,
