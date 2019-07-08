@@ -34,5 +34,3 @@ if(file.exists(tempSiteDirecoryPath))
 # setting the working directory to the original one ---------------------------
 setwd(rootDirectoryPath)
 getwd()
-
-
