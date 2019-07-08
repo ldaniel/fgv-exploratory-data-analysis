@@ -11,7 +11,7 @@ To-do.
 
 The final model can accurately sgregate the loan contracts likely to default with test set accuracy of 76.47% using 0.1 as the threshold to assign the observation to defaulter class.
 
-Model was also ale to predict 72% of real defaulters in our test dataset.
+Model was also able to predict 72% of real defaulters in our test dataset.
 
 In practice, the probabilities returned by the logistic regression model can be used to decide on grant or not the loan and help on correctly price the interest rate based on the likelihood of default.
 
