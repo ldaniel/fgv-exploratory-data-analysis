@@ -54,7 +54,7 @@ Later on, we calculated another auxiliary table that contains the proportion of 
 
 Finally, we combine the 682 Loan Contracts observations with client, district, credit card and the auxiliary tables we calculated early.
 
-```{r data_prep, echo=FALSE, include=FALSE}
+```{r data_prep, echo=TRUE, warning=FALSE, message=FALSE}
 
 temp <- left_join(loan, disposition, by = c('account_id', 'type')) %>% 
   left_join(client, by = 'client_id') %>%
@@ -183,7 +183,7 @@ ggplot(VIF_Table_Before, aes(x = fct_reorder(variable, VIF), y = log(VIF), label
        y = NULL,
        title = 'Variance Inflation Factor',
        subtitle="Checking for multicolinearity in X's variables.
-       Variables with VIF more than 4 will 
+       Variables with VIF more than 5 will 
        be droped from the model")
 ```
 
@@ -275,10 +275,11 @@ ggcorrplot(cor_mtx, hc.order = TRUE,
 
 The available data in Loan Dataset is split into Train and Testing data on the following proportion:
 
-- **Train Dataset** (70% xx obs);
-- **Test Dataset** (30% xx obs).
+- **Train Dataset** (70% 478 obs);
+- **Test Dataset ** (30% 204 obs).
 
 ```{r split_sample}
+
 set.seed(12345)
 index <- caret::createDataPartition(loan_reg_dataset$y_loan_defaulter, 
                                     p= 0.7,list = FALSE)
@@ -286,9 +287,20 @@ index <- caret::createDataPartition(loan_reg_dataset$y_loan_defaulter,
 data.train <- loan_reg_dataset[index, ]
 data.test  <- loan_reg_dataset[-index,]
 
-kable(prop.table(table(loan_reg_dataset$y_loan_defaulter)))
-kable(prop.table(table(data.train$y_loan_defaulter)))
-kable(prop.table(table(data.test$y_loan_defaulter)))
+
+event_proportion <- bind_rows(prop.table(table(loan_reg_dataset$y_loan_defaulter)),
+                              prop.table(table(data.train$y_loan_defaulter)),
+                              prop.table(table(data.test$y_loan_defaulter)))
+
+event_proportion$scope = ''
+event_proportion$scope[1] = 'full dataset'
+event_proportion$scope[2] = 'train dataset'
+event_proportion$scope[3] = 'test dataset'
+
+event_proportion <- select(event_proportion, scope, everything())
+
+kable(event_proportion)
+
 ```
 
 Both datasets keep the same proportion for the explained variable around 11%.
@@ -301,6 +313,8 @@ With the final cleaned dataset, we got from below steps we fit our Logistic Regr
 model_1 <- glm(data = data.train, formula = y_loan_defaulter ~ .,
                  family= binomial(link='logit'))
 
+names(model_1$coefficients) <- stringr::str_sub(names(model_1$coefficients), 1, 35)
+
 summary(model_1)
 ```
 
@@ -311,6 +325,8 @@ model_2 <- glm(data = data.train, formula = y_loan_defaulter ~ x_loan_amount +
                  x_loan_duration + x_has_card + x_prop_interest_credited,
                  family= binomial(link='logit'))
 
+names(model_2$coefficients) <- stringr::str_sub(names(model_2$coefficients), 1, 35)
+
 summary(model_2)
 ```
 
@@ -320,7 +336,7 @@ In the next step we will compare how each model performed.
 
 We started this step by making predictions using our model on the X's variables in our Train and Test datasets.
 
-```{r predict}
+```{r predict, warning=FALSE}
 glm.prob.train.1 <- predict(model_1, type = "response")
 glm.prob.test.1 <- predict(model_1, newdata = data.test, type= "response")
 
@@ -328,20 +344,28 @@ glm.prob.train.2 <- predict(model_2, type = "response")
 glm.prob.test.2 <- predict(model_2, newdata = data.test, type= "response")
 ```
 
-We then evaluate the metrics in the model for Train and Test data:
+We then evaluate the metrics in the each model for Train and Test data:
 
-```{r measure}
-glm.train.1 <- HMeasure(data.train$y_loan_defaulter, glm.prob.train.1)
-glm.test.1  <- HMeasure(data.test$y_loan_defaulter, glm.prob.test.1)
+```{r measure, warning=FALSE}
+glm.train.1 <- HMeasure(data.train$y_loan_defaulter, glm.prob.train.1, threshold = 0.5)
+glm.test.1  <- HMeasure(data.test$y_loan_defaulter, glm.prob.test.1, threshold = 0.5)
 
-kable(t(glm.train.1$metrics))
-kable(t(glm.test.1$metrics))
+glm.train.2 <- HMeasure(data.train$y_loan_defaulter, glm.prob.train.2, threshold = 0.5)
+glm.test.2 <- HMeasure(data.test$y_loan_defaulter, glm.prob.test.2, threshold = 0.5)
 
-glm.train.2 <- HMeasure(data.train$y_loan_defaulter, glm.prob.train.2)
-glm.test.2 <- HMeasure(data.test$y_loan_defaulter, glm.prob.test.2)
+measures <- t(bind_rows(glm.train.1$metrics,
+                      glm.test.1$metrics,
+                      glm.train.2$metrics,
+                      glm.test.2$metrics)) %>% as_tibble(., rownames = NA)
 
-kable(t(glm.train.2$metrics))
-kable(t(glm.test.2$metrics))
+colnames(measures) <- c('model 1 - train','model 1 - test',
+                        'model 2 - train','model 2 - test')
+
+measures$metric = rownames(measures)
+
+measures <- select(measures, metric, everything())
+
+kable(measures, row.names = FALSE)
 ```
 
 Then, we look a boxplot chart to see how well our model split the observation into our explained variable:
@@ -366,7 +390,7 @@ boxplot(glm.prob.test.2 ~ data.test$y_loan_defaulter,
 
 Then we plot the ROC(Receiver Operator Characteristic Curve) of the model:
 
-```{r roC, out.width = '100%', echo=FALSE}
+```{r roC, out.width = '100%', echo=TRUE, warning=FALSE, message=FALSE}
 roc_1 <- roc(data.test$y_loan_defaulter, glm.prob.test.1)
 roc_2 <- roc(data.test$y_loan_defaulter, glm.prob.test.2)
 
@@ -386,22 +410,80 @@ lines(x2, y2,lwd=3,lty=1, col="blue")
 abline(0,1, lty=2)
 ```
 
-Finally we look at the general model accuracy:
+By the ROC curve of each model we see that model 2 is a better model.
+It only condider the statistic significant variables.
 
--**Model 1:**
-
-```{r accuracy_1}
-fitted.results.1 <- ifelse(glm.prob.test.1 > 0.5,1,0)
-
-misClasificError <- mean(fitted.results.1 != data.test$y_loan_defaulter)
-print(paste('General Accuracy: ', round(((1 - misClasificError) * 100),2), '%'))
-```
+Finally we look more closely to the model 2 accuracy:
 
 -**Model 2:**
 
-```{r accuracy_2}
-fitted.results.2 <- ifelse(glm.prob.test.2 > 0.5,1,0)
+To perform this task, we start by defining a threshold to assign the observation to each class, and them calculate the General Accuracy and the True Positive Rate.
+We start our analysis with a threshold of 0.5
+
+
+```{r accuracy_2_T_0.5, echo=TRUE}
+threshold <- 0.5
+
+fitted.results.2 <- ifelse(glm.prob.test.2 > threshold ,1 ,0)
 
 misClasificError <- mean(fitted.results.2 != data.test$y_loan_defaulter)
-print(paste('General Accuracy: ', round(((1 - misClasificError) * 100),2), '%'))
+
+misClassCount <- misclassCounts(fitted.results.2, data.test$y_loan_defaulter)
+
+paste('Model General Accuracy of: ', round((1 - misClassCount$metrics['ER']) * 100, 2), '%', sep = '')
+paste('True Positive Rate of    : ', round(misClassCount$metrics['TPR'] * 100, 2), '%', sep = '')
+
+kable(misClassCount$conf.matrix)
 ```
+
+At a first glance we may see this model as an excellent predictor of default as it can predict the correct class 88.24% of the cases.
+
+But looking more closely at the confusion matrix we can see that this model can predict only 16% of the true defaulters.
+
+One way to improve the performance of the model is to decrease the threshold to 0.2.
+
+See results below:
+
+```{r accuracy_2_T_0.2, echo=TRUE}
+threshold <- 0.2
+
+fitted.results.2 <- ifelse(glm.prob.test.2 > threshold ,1 ,0)
+
+misClasificError <- mean(fitted.results.2 != data.test$y_loan_defaulter)
+
+misClassCount <- misclassCounts(fitted.results.2, data.test$y_loan_defaulter)
+
+paste('Model General Accuracy of: ', round((1 - misClassCount$metrics['ER']) * 100, 2), '%', sep = '')
+paste('True Positive Rate of    : ', round(misClassCount$metrics['TPR'] * 100, 2), '%', sep = '')
+
+kable(misClassCount$conf.matrix)
+```
+
+Now we see that the True Positive accuracy increased to 52% and the general accuracy drop just a bit to 86.76%.
+
+We may be tempted to reduce even more our threshold.
+
+Let's see what happen if we use 0.1 as threshold.
+
+```{r accuracy_2_T_0.1, echo=FALSE}
+threshold <- 0.1
+
+fitted.results.2 <- ifelse(glm.prob.test.2 > threshold ,1 ,0)
+
+misClasificError <- mean(fitted.results.2 != data.test$y_loan_defaulter)
+
+misClassCount <- misclassCounts(fitted.results.2, data.test$y_loan_defaulter)
+
+paste('Model General Accuracy of: ', round((1 - misClassCount$metrics['ER']) * 100, 2), '%', sep = '')
+paste('True Positive Rate of    : ', round(misClassCount$metrics['TPR'] * 100, 2), '%', sep = '')
+
+kable(misClassCount$conf.matrix)
+```
+
+Now our TPR jumped to 72% and our general accuracy drop to 76.47%.
+
+The final threshold will depend on the real word use case, by how much we value each class.
+
+In this sample we see that we can improve our True Positive prediction rate at expense of classifying an increasing number as defaulter.
+
+This balance must be decided by the managers and the bank should keep seeking and experimenting with more variables to find a better model.

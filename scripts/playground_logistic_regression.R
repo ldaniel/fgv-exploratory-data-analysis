@@ -13,6 +13,7 @@ library(rms)
 library(ggplot2)
 library(ggthemes)
 library(ggcorrplot)
+library(knitr)
 
 # loading other scripts do be used here ---------------------------------------
 source("./scripts/step_00_config_environment.R")
@@ -74,14 +75,14 @@ colnames(temp) <- c("x_loan_amount", "x_loan_duration", "x_loan_payments",
                     "x_prop_old_age_pension", "x_prop_insurance_payment", 
                     "x_prop_sanction_interest","x_prop_household","x_prop_statement",
                     "x_prop_interest_credited", "x_prop_loan_payment", "x_prop_other",
-                    "has_card")
+                    "x_has_card")
 
 temp <- dplyr::select(temp, y_loan_defaulter, everything())
 
 temp$x_card_type = ifelse(is.na(temp$x_card_type), 'no card', 
                           as.character(temp$x_card_type))
 
-temp$has_card = ifelse(temp$x_card_type == 'no card', 0, 1)
+temp$x_has_card = ifelse(temp$x_card_type == 'no card', 0, 1)
 
 temp$x_card_age_month = ifelse(is.na(temp$x_card_age_month), 0, 
                                temp$x_card_age_month)
@@ -96,6 +97,10 @@ temp <- dplyr::select(temp, -c(x_prop_old_age_pension,
                                x_loan_status, 
                                x_loan_contract_status, 
                                x_prop_sanction_interest))
+
+
+kable(tibble(variables = names(temp)))
+
 
 # evaluating multicolinearity of remaining variables.
 vars.quant <- select_if(temp, is.numeric)
@@ -125,21 +130,22 @@ ggplot(VIF_Table_Before, aes(x = fct_reorder(variable, VIF), y = log(VIF), label
        y = NULL,
        title = 'Variance Inflation Factor',
        subtitle="Checking for multicolinearity in X's variables.
-       Variables with VIF more than 4 will be droped from the model")
+       Variables with VIF more than 5 will be droped from the model")
 
 # taking multicolinear variables from the dataset.
-temp <- dplyr::select(temp, -c(x_no_of_inhabitants, 
-                               x_no_of_cities,
-                               x_average_salary, 
-                               x_unemploymant_rate_1995,
-                               x_unemploymant_rate_1996, 
+temp <- dplyr::select(temp, -c(x_prop_insurance_payment,
+                               x_prop_household,
+                               x_prop_statement,
+                               x_prop_loan_payment,
+                               x_prop_other,
+                               x_no_of_inhabitants,
                                x_no_of_commited_crimes_1996,
-                               x_transaction_count, 
-                               x_prop_insurance_payment, 
-                               x_prop_household, 
-                               x_prop_statement, 
-                               x_prop_loan_payment, 
-                               x_prop_other))
+                               x_transaction_amount,
+                               x_transaction_count,
+                               x_unemploymant_rate_1996,
+                               x_unemploymant_rate_1995,
+                               x_average_salary,
+                               x_no_of_cities))
 
 loan_reg_dataset <- temp
 
@@ -149,10 +155,10 @@ vars.quant <- select_if(loan_reg_dataset, is.numeric)
 VIF <- imcdiag(vars.quant, loan_reg_dataset$y_loan_defaulter)
 
 VIF_Table_After <- tibble(variable = names(VIF$idiags[,1]),
-                    VIF = VIF$idiags[,1]) %>% 
+                          VIF = VIF$idiags[,1]) %>% 
   arrange(desc(VIF))
 
-knitr::kable(VIF_Table_After)
+kable(VIF_Table_After)
 
 ggplot(VIF_Table_After, aes(x = fct_reorder(variable, VIF), y = log(VIF), label = round(VIF, 2))) + 
   geom_point(stat='identity', fill="black", size=15)  +
@@ -172,7 +178,7 @@ ggplot(VIF_Table_After, aes(x = fct_reorder(variable, VIF), y = log(VIF), label 
        y = NULL,
        title = 'Variance Inflation Factor',
        subtitle="Checking for multicolinearity in X's variables.
-       Variables with VIF more than 4 will be droped from the model")
+       Variables with VIF more than 5 will be droped from the model")
 
 cor_mtx <- cor(vars.quant)
 
@@ -194,51 +200,114 @@ index <- caret::createDataPartition(loan_reg_dataset$y_loan_defaulter,
 data.train <- loan_reg_dataset[index, ]
 data.test  <- loan_reg_dataset[-index,]
 
-prop.table(table(loan_reg_dataset$y_loan_defaulter))
-prop.table(table(data.train$y_loan_defaulter))
-prop.table(table(data.test$y_loan_defaulter))
 
+event_proportion <- bind_rows(prop.table(table(loan_reg_dataset$y_loan_defaulter)),
+                              prop.table(table(data.train$y_loan_defaulter)),
+                              prop.table(table(data.test$y_loan_defaulter)))
+
+event_proportion$scope = ''
+event_proportion$scope[1] = 'full dataset'
+event_proportion$scope[2] = 'train dataset'
+event_proportion$scope[3] = 'test dataset'
+
+event_proportion <- select(event_proportion, scope, everything())
+
+kable(event_proportion)
 
 # fit the logistic model -------------------------------------------------------------
 
-model <- glm(data = data.train, formula = y_loan_defaulter ~ ., 
-             family= binomial(link='logit'))
+model_1 <- glm(data = data.train, formula = y_loan_defaulter ~ .,
+               family= binomial(link='logit'))
 
-anova(model)
-summary(model)
+names(model_1$coefficients) <- stringr::str_sub(names(model_1$coefficients), 1, 25)
+
+summary(model_1)
+
+model_2 <- glm(data = data.train, formula = y_loan_defaulter ~ x_loan_amount +
+                 x_loan_duration + x_has_card + x_prop_interest_credited,
+               family= binomial(link='logit'))
+
+names(model_2$coefficients) <- stringr::str_sub(names(model_2$coefficients), 1, 25)
+
+summary(model_2)
 
 # model evaluation -------------------------------------------------------------------
 
 ## making preditions -----------------------------------------------------------------
-glm.prob.train <- predict(model, type = "response")
-glm.prob.test <- predict(model, newdata = data.test, type= "response")
+
+glm.prob.train.1 <- predict(model_1, type = "response")
+glm.prob.test.1 <- predict(model_1, newdata = data.test, type= "response")
+
+glm.prob.train.2 <- predict(model_2, type = "response")
+glm.prob.test.2 <- predict(model_2, newdata = data.test, type= "response")
 
 
 ## getting measures ------------------------------------------------------------------
-glm.train <- hmeasure::HMeasure(data.train$y_loan_defaulter, glm.prob.train)
-glm.test  <- hmeasure::HMeasure(data.test$y_loan_defaulter, glm.prob.test)
+glm.train.1 <- HMeasure(data.train$y_loan_defaulter, glm.prob.train.1, threshold = 0.5)
+glm.test.1  <- HMeasure(data.test$y_loan_defaulter, glm.prob.test.1, threshold = 0.5)
 
-t(glm.train$metrics)
-t(glm.test$metrics)
+glm.train.2 <- HMeasure(data.train$y_loan_defaulter, glm.prob.train.2, threshold = 0.5)
+glm.test.2 <- HMeasure(data.test$y_loan_defaulter, glm.prob.test.2, threshold = 0.5)
+
+measures <- t(bind_rows(glm.train.1$metrics,
+                      glm.test.1$metrics,
+                      glm.train.2$metrics,
+                      glm.test.2$metrics)) %>% as_tibble(., rownames = NA)
+
+colnames(measures) <- c('model 1 - train','model 1 - test',
+                        'model 2 - train','model 2 - test')
+
+measures$metric = rownames(measures)
+
+measures <- select(measures, metric, everything())
+
+kable(measures, row.names = FALSE)
 
 ## boxplot ---------------------------------------------------------------------------
-boxplot(glm.prob.test ~ data.test$y_loan_defaulter, col= c("red", "green"), 
-        horizontal= T)
+boxplot(glm.prob.test.1 ~ data.test$y_loan_defaulter,
+        col= c("red", "green"), 
+        horizontal= T,
+        xlab = 'Probability Prediction',
+        ylab = 'Loan Defaulter')
 
+boxplot(glm.prob.test.2 ~ data.test$y_loan_defaulter,
+        col= c("red", "green"), 
+        horizontal= T,
+        xlab = 'Probability Prediction',
+        ylab = 'Loan Defaulter')
 
 ## ROC Curve -------------------------------------------------------------------------
-roc <- pROC::roc(data.test$y_loan_defaulter, glm.prob.test)
-y1 <- roc$sensitivities
-x1 <- 1-roc$specificities
+roc_1 <- roc(data.test$y_loan_defaulter, glm.prob.test.1)
+roc_2 <- roc(data.test$y_loan_defaulter, glm.prob.test.2)
+
+y1 <- roc_1$sensitivities
+x1 <- 1-roc_1$specificities
+
+y2 <- roc_2$sensitivities
+x2 <- 1-roc_2$specificities
 
 plot(x1, y1,  type="n",
-     xlab = "1 - Especificidade", 
-     ylab= "Sensitividade")
-lines(x1, y1,lwd=3,lty=1, col="purple") 
+     xlab = "False Positive Rate (Specificities)", 
+     ylab= "True Positive Rate (Sensitivities)")
+
+lines(x1, y1,lwd=3,lty=1, col="red") 
+lines(x2, y2,lwd=3,lty=1, col="blue")
+
+abline(0,1, lty=2)
 
 # accuracy metrics -------------------------------------------------------------------
 
-fitted.results <- ifelse(glm.prob.test > 0.5,1,0)
+threshold <- 0.1
 
-misClasificError <- mean(fitted.results != data.test$y_loan_defaulter)
-print(paste('Accuracy', 1 - misClasificError))
+fitted.results.2 <- ifelse(glm.prob.test.2 > threshold ,1 ,0)
+
+misClasificError <- mean(fitted.results.2 != data.test$y_loan_defaulter)
+
+misClassCount <- misclassCounts(fitted.results.2, data.test$y_loan_defaulter)
+
+paste('Model General Accuracy of: ', round((1 - misClassCount$metrics['ER']) * 100, 2), '%', sep = '')
+paste('True Positive Rate of    : ', round(misClassCount$metrics['TPR'] * 100, 2), '%', sep = '')
+
+kable(misClassCount$conf.matrix)
+
+
