@@ -124,7 +124,7 @@ temp$y_loan_defaulter = as.numeric(temp$y_loan_defaulter)
 
 We ended up having a data set with 39 variables.
 
-```{r variables}
+```{r variables, echo=FALSE}
 kable(tibble(variables = names(temp)))
 ```
 
@@ -164,7 +164,7 @@ VIF_Table_Before <- tibble(variable = names(VIF$idiags[,1]),
 kable(VIF_Table_Before)
 ```
 
-```{r plot_correl, out.width = '100%', echo=FALSE}
+```{r plot_correl, out.width = '100%', echo=TRUE}
 ggplot(VIF_Table_Before, aes(x = fct_reorder(variable, VIF), y = log(VIF), label = round(VIF, 2))) + 
   geom_point(stat='identity', fill="black", size=15)  +
   geom_segment(aes(y = 0, 
@@ -237,7 +237,9 @@ VIF_Table_After <- tibble(variable = names(VIF$idiags[,1]),
 kable(VIF_Table_After)
 ```
 
-```{r plot_correl_2, out.width = '100%', echo=FALSE}
+Plot of VIF values:
+
+```{r plot_correl_2, out.width = '100%', echo=TRUE}
 ggplot(VIF_Table_After, aes(x = fct_reorder(variable, VIF), y = log(VIF), label = round(VIF, 2))) + 
   geom_point(stat='identity', fill="black", size=15)  +
   geom_segment(aes(y = 0, 
@@ -258,7 +260,11 @@ ggplot(VIF_Table_After, aes(x = fct_reorder(variable, VIF), y = log(VIF), label 
        subtitle="Checking for multicolinearity in X's variables.
        Variables with VIF more than 5 will 
        be droped from the model")
+```
 
+Correlation Matrix Plot: no Variable with correlation more than 0.6.
+
+```{r plot_correl_3, out.width = '100%', echo=TRUE}
 cor_mtx <- cor(vars.quant)
 
 ggcorrplot(cor_mtx, hc.order = TRUE, 
@@ -313,7 +319,8 @@ With the final cleaned dataset, we got from below steps we fit our Logistic Regr
 model_1 <- glm(data = data.train, formula = y_loan_defaulter ~ .,
                  family= binomial(link='logit'))
 
-names(model_1$coefficients) <- stringr::str_sub(names(model_1$coefficients), 1, 35)
+# jut truncating variable names to 30 char to fit nicely in the screen.
+names(model_1$coefficients) <- stringr::str_sub(names(model_1$coefficients), 1, 30)
 
 summary(model_1)
 ```
@@ -325,7 +332,8 @@ model_2 <- glm(data = data.train, formula = y_loan_defaulter ~ x_loan_amount +
                  x_loan_duration + x_has_card + x_prop_interest_credited,
                  family= binomial(link='logit'))
 
-names(model_2$coefficients) <- stringr::str_sub(names(model_2$coefficients), 1, 35)
+# jut truncating variable names to 30 char to fit nicely in the screen.
+names(model_2$coefficients) <- stringr::str_sub(names(model_2$coefficients), 1, 30)
 
 summary(model_2)
 ```
@@ -419,7 +427,6 @@ Finally we look more closely to the model 2 accuracy:
 
 To perform this task, we start by defining a threshold to assign the observation to each class, and them calculate the General Accuracy and the True Positive Rate.
 We start our analysis with a threshold of 0.5
-
 
 ```{r accuracy_2_T_0.5, echo=TRUE}
 threshold <- 0.5
