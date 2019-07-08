@@ -993,7 +993,7 @@ $(document).ready(function () {
 </div>
 <div id="fit-the-logistic-model" class="section level2">
 <h2><span class="header-section-number">2.5</span> Fit the logistic model</h2>
-<p>With the final cleaned dataset, we got from below steps we fit our Logistic Regression Y_loan_defaulter on all x variables.</p>
+<p>With the final cleaned dataset, we got from above steps we fit our Logistic Regression Y_loan_defaulter on all x variables.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1">model_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">glm</span>(<span class="dt">data =</span> data.train, <span class="dt">formula =</span> y_loan_defaulter <span class="op">~</span><span class="st"> </span>.,</a>
 <a class="sourceLine" id="cb9-2" title="2">                 <span class="dt">family=</span> <span class="kw">binomial</span>(<span class="dt">link=</span><span class="st">&#39;logit&#39;</span>))</a>
 <a class="sourceLine" id="cb9-3" title="3"></a>
