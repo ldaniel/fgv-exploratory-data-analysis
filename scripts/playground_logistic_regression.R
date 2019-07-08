@@ -218,8 +218,8 @@ glm.prob.test <- predict(model, newdata = data.test, type= "response")
 glm.train <- hmeasure::HMeasure(data.train$y_loan_defaulter, glm.prob.train)
 glm.test  <- hmeasure::HMeasure(data.test$y_loan_defaulter, glm.prob.test)
 
-glm.train$metrics
-glm.test$metrics
+t(glm.train$metrics)
+t(glm.test$metrics)
 
 ## boxplot ---------------------------------------------------------------------------
 boxplot(glm.prob.test ~ data.test$y_loan_defaulter, col= c("red", "green"), 
