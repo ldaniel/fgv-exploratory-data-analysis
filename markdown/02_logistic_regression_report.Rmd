@@ -334,14 +334,14 @@ We then evaluate the metrics in the model for Train and Test data:
 glm.train.1 <- HMeasure(data.train$y_loan_defaulter, glm.prob.train.1)
 glm.test.1  <- HMeasure(data.test$y_loan_defaulter, glm.prob.test.1)
 
-kable(glm.train.1$metrics)
-kable(glm.test.1$metrics)
+kable(t(glm.train.1$metrics))
+kable(t(glm.test.1$metrics))
 
 glm.train.2 <- HMeasure(data.train$y_loan_defaulter, glm.prob.train.2)
 glm.test.2 <- HMeasure(data.test$y_loan_defaulter, glm.prob.test.2)
 
-kable(glm.train.2$metrics)
-kable(glm.test.2$metrics)
+kable(t(glm.train.2$metrics))
+kable(t(glm.test.2$metrics))
 ```
 
 Then, we look a boxplot chart to see how well our model split the observation into our explained variable:

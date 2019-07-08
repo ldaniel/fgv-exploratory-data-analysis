@@ -1016,234 +1016,402 @@ $(document).ready(function () {
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" title="1">glm.train<span class="fl">.1</span> &lt;-<span class="st"> </span><span class="kw">HMeasure</span>(data.train<span class="op">$</span>y_loan_defaulter, glm.prob.train<span class="fl">.1</span>)</a>
 <a class="sourceLine" id="cb15-2" title="2">glm.test<span class="fl">.1</span>  &lt;-<span class="st"> </span><span class="kw">HMeasure</span>(data.test<span class="op">$</span>y_loan_defaulter, glm.prob.test<span class="fl">.1</span>)</a>
 <a class="sourceLine" id="cb15-3" title="3"></a>
-<a class="sourceLine" id="cb15-4" title="4"><span class="kw">kable</span>(glm.train<span class="fl">.1</span><span class="op">$</span>metrics)</a></code></pre></div>
+<a class="sourceLine" id="cb15-4" title="4"><span class="kw">kable</span>(<span class="kw">t</span>(glm.train<span class="fl">.1</span><span class="op">$</span>metrics))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="right">H</th>
-<th align="right">Gini</th>
-<th align="right">AUC</th>
-<th align="right">AUCH</th>
-<th align="right">KS</th>
-<th align="right">MER</th>
-<th align="right">MWL</th>
-<th align="right">Spec.Sens95</th>
-<th align="right">Sens.Spec95</th>
-<th align="right">ER</th>
-<th align="right">Sens</th>
-<th align="right">Spec</th>
-<th align="right">Precision</th>
-<th align="right">Recall</th>
-<th align="right">TPR</th>
-<th align="right">FPR</th>
-<th align="right">F</th>
-<th align="right">Youden</th>
-<th align="right">TP</th>
-<th align="right">FP</th>
-<th align="right">TN</th>
-<th align="right">FN</th>
+<th align="right">scores</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>scores</td>
+<td>H</td>
 <td align="right">0.3782094</td>
+</tr>
+<tr class="even">
+<td>Gini</td>
 <td align="right">0.6830601</td>
+</tr>
+<tr class="odd">
+<td>AUC</td>
 <td align="right">0.8415301</td>
+</tr>
+<tr class="even">
+<td>AUCH</td>
 <td align="right">0.8567066</td>
+</tr>
+<tr class="odd">
+<td>KS</td>
 <td align="right">0.5430959</td>
+</tr>
+<tr class="even">
+<td>MER</td>
 <td align="right">0.0962343</td>
+</tr>
+<tr class="odd">
+<td>MWL</td>
 <td align="right">0.0870958</td>
+</tr>
+<tr class="even">
+<td>Spec.Sens95</td>
 <td align="right">0.5035129</td>
+</tr>
+<tr class="odd">
+<td>Sens.Spec95</td>
 <td align="right">0.3921569</td>
+</tr>
+<tr class="even">
+<td>ER</td>
 <td align="right">0.1025105</td>
+</tr>
+<tr class="odd">
+<td>Sens</td>
 <td align="right">0.1764706</td>
+</tr>
+<tr class="even">
+<td>Spec</td>
 <td align="right">0.9836066</td>
-<td align="right">0.5625</td>
+</tr>
+<tr class="odd">
+<td>Precision</td>
+<td align="right">0.5625000</td>
+</tr>
+<tr class="even">
+<td>Recall</td>
 <td align="right">0.1764706</td>
+</tr>
+<tr class="odd">
+<td>TPR</td>
 <td align="right">0.1764706</td>
+</tr>
+<tr class="even">
+<td>FPR</td>
 <td align="right">0.0163934</td>
+</tr>
+<tr class="odd">
+<td>F</td>
 <td align="right">0.2686567</td>
+</tr>
+<tr class="even">
+<td>Youden</td>
 <td align="right">0.1600771</td>
-<td align="right">9</td>
-<td align="right">7</td>
-<td align="right">420</td>
-<td align="right">42</td>
+</tr>
+<tr class="odd">
+<td>TP</td>
+<td align="right">9.0000000</td>
+</tr>
+<tr class="even">
+<td>FP</td>
+<td align="right">7.0000000</td>
+</tr>
+<tr class="odd">
+<td>TN</td>
+<td align="right">420.0000000</td>
+</tr>
+<tr class="even">
+<td>FN</td>
+<td align="right">42.0000000</td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">kable</span>(glm.test<span class="fl">.1</span><span class="op">$</span>metrics)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1"><span class="kw">kable</span>(<span class="kw">t</span>(glm.test<span class="fl">.1</span><span class="op">$</span>metrics))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="right">H</th>
-<th align="right">Gini</th>
-<th align="right">AUC</th>
-<th align="right">AUCH</th>
-<th align="right">KS</th>
-<th align="right">MER</th>
-<th align="right">MWL</th>
-<th align="right">Spec.Sens95</th>
-<th align="right">Sens.Spec95</th>
-<th align="right">ER</th>
-<th align="right">Sens</th>
-<th align="right">Spec</th>
-<th align="right">Precision</th>
-<th align="right">Recall</th>
-<th align="right">TPR</th>
-<th align="right">FPR</th>
-<th align="right">F</th>
-<th align="right">Youden</th>
-<th align="right">TP</th>
-<th align="right">FP</th>
-<th align="right">TN</th>
-<th align="right">FN</th>
+<th align="right">scores</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>scores</td>
+<td>H</td>
 <td align="right">0.3436917</td>
+</tr>
+<tr class="even">
+<td>Gini</td>
 <td align="right">0.5642458</td>
+</tr>
+<tr class="odd">
+<td>AUC</td>
 <td align="right">0.7821229</td>
+</tr>
+<tr class="even">
+<td>AUCH</td>
 <td align="right">0.8179888</td>
+</tr>
+<tr class="odd">
+<td>KS</td>
 <td align="right">0.4563128</td>
+</tr>
+<tr class="even">
+<td>MER</td>
 <td align="right">0.0980392</td>
+</tr>
+<tr class="odd">
+<td>MWL</td>
 <td align="right">0.1169262</td>
-<td align="right">0.301676</td>
-<td align="right">0.4</td>
+</tr>
+<tr class="even">
+<td>Spec.Sens95</td>
+<td align="right">0.3016760</td>
+</tr>
+<tr class="odd">
+<td>Sens.Spec95</td>
+<td align="right">0.4000000</td>
+</tr>
+<tr class="even">
+<td>ER</td>
 <td align="right">0.1176471</td>
-<td align="right">0.16</td>
+</tr>
+<tr class="odd">
+<td>Sens</td>
+<td align="right">0.1600000</td>
+</tr>
+<tr class="even">
+<td>Spec</td>
 <td align="right">0.9832402</td>
+</tr>
+<tr class="odd">
+<td>Precision</td>
 <td align="right">0.5714286</td>
-<td align="right">0.16</td>
-<td align="right">0.16</td>
+</tr>
+<tr class="even">
+<td>Recall</td>
+<td align="right">0.1600000</td>
+</tr>
+<tr class="odd">
+<td>TPR</td>
+<td align="right">0.1600000</td>
+</tr>
+<tr class="even">
+<td>FPR</td>
 <td align="right">0.0167598</td>
-<td align="right">0.25</td>
+</tr>
+<tr class="odd">
+<td>F</td>
+<td align="right">0.2500000</td>
+</tr>
+<tr class="even">
+<td>Youden</td>
 <td align="right">0.1432402</td>
-<td align="right">4</td>
-<td align="right">3</td>
-<td align="right">176</td>
-<td align="right">21</td>
+</tr>
+<tr class="odd">
+<td>TP</td>
+<td align="right">4.0000000</td>
+</tr>
+<tr class="even">
+<td>FP</td>
+<td align="right">3.0000000</td>
+</tr>
+<tr class="odd">
+<td>TN</td>
+<td align="right">176.0000000</td>
+</tr>
+<tr class="even">
+<td>FN</td>
+<td align="right">21.0000000</td>
 </tr>
 </tbody>
 </table>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1">glm.train<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="kw">HMeasure</span>(data.train<span class="op">$</span>y_loan_defaulter, glm.prob.train<span class="fl">.2</span>)</a>
 <a class="sourceLine" id="cb17-2" title="2">glm.test<span class="fl">.2</span> &lt;-<span class="st"> </span><span class="kw">HMeasure</span>(data.test<span class="op">$</span>y_loan_defaulter, glm.prob.test<span class="fl">.2</span>)</a>
 <a class="sourceLine" id="cb17-3" title="3"></a>
-<a class="sourceLine" id="cb17-4" title="4"><span class="kw">kable</span>(glm.train<span class="fl">.2</span><span class="op">$</span>metrics)</a></code></pre></div>
+<a class="sourceLine" id="cb17-4" title="4"><span class="kw">kable</span>(<span class="kw">t</span>(glm.train<span class="fl">.2</span><span class="op">$</span>metrics))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="right">H</th>
-<th align="right">Gini</th>
-<th align="right">AUC</th>
-<th align="right">AUCH</th>
-<th align="right">KS</th>
-<th align="right">MER</th>
-<th align="right">MWL</th>
-<th align="right">Spec.Sens95</th>
-<th align="right">Sens.Spec95</th>
-<th align="right">ER</th>
-<th align="right">Sens</th>
-<th align="right">Spec</th>
-<th align="right">Precision</th>
-<th align="right">Recall</th>
-<th align="right">TPR</th>
-<th align="right">FPR</th>
-<th align="right">F</th>
-<th align="right">Youden</th>
-<th align="right">TP</th>
-<th align="right">FP</th>
-<th align="right">TN</th>
-<th align="right">FN</th>
+<th align="right">scores</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>scores</td>
+<td>H</td>
 <td align="right">0.3259694</td>
+</tr>
+<tr class="even">
+<td>Gini</td>
 <td align="right">0.6040777</td>
+</tr>
+<tr class="odd">
+<td>AUC</td>
 <td align="right">0.8020388</td>
+</tr>
+<tr class="even">
+<td>AUCH</td>
 <td align="right">0.8227029</td>
+</tr>
+<tr class="odd">
+<td>KS</td>
 <td align="right">0.5100335</td>
+</tr>
+<tr class="even">
+<td>MER</td>
 <td align="right">0.0941423</td>
+</tr>
+<tr class="odd">
+<td>MWL</td>
 <td align="right">0.0933982</td>
+</tr>
+<tr class="even">
+<td>Spec.Sens95</td>
 <td align="right">0.3161593</td>
+</tr>
+<tr class="odd">
+<td>Sens.Spec95</td>
 <td align="right">0.3333333</td>
+</tr>
+<tr class="even">
+<td>ER</td>
 <td align="right">0.0983264</td>
+</tr>
+<tr class="odd">
+<td>Sens</td>
 <td align="right">0.1568627</td>
+</tr>
+<tr class="even">
+<td>Spec</td>
 <td align="right">0.9906323</td>
+</tr>
+<tr class="odd">
+<td>Precision</td>
 <td align="right">0.6666667</td>
+</tr>
+<tr class="even">
+<td>Recall</td>
 <td align="right">0.1568627</td>
+</tr>
+<tr class="odd">
+<td>TPR</td>
 <td align="right">0.1568627</td>
+</tr>
+<tr class="even">
+<td>FPR</td>
 <td align="right">0.0093677</td>
+</tr>
+<tr class="odd">
+<td>F</td>
 <td align="right">0.2539683</td>
+</tr>
+<tr class="even">
+<td>Youden</td>
 <td align="right">0.1474951</td>
-<td align="right">8</td>
-<td align="right">4</td>
-<td align="right">423</td>
-<td align="right">43</td>
+</tr>
+<tr class="odd">
+<td>TP</td>
+<td align="right">8.0000000</td>
+</tr>
+<tr class="even">
+<td>FP</td>
+<td align="right">4.0000000</td>
+</tr>
+<tr class="odd">
+<td>TN</td>
+<td align="right">423.0000000</td>
+</tr>
+<tr class="even">
+<td>FN</td>
+<td align="right">43.0000000</td>
 </tr>
 </tbody>
 </table>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">kable</span>(glm.test<span class="fl">.2</span><span class="op">$</span>metrics)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" title="1"><span class="kw">kable</span>(<span class="kw">t</span>(glm.test<span class="fl">.2</span><span class="op">$</span>metrics))</a></code></pre></div>
 <table>
 <thead>
 <tr class="header">
 <th></th>
-<th align="right">H</th>
-<th align="right">Gini</th>
-<th align="right">AUC</th>
-<th align="right">AUCH</th>
-<th align="right">KS</th>
-<th align="right">MER</th>
-<th align="right">MWL</th>
-<th align="right">Spec.Sens95</th>
-<th align="right">Sens.Spec95</th>
-<th align="right">ER</th>
-<th align="right">Sens</th>
-<th align="right">Spec</th>
-<th align="right">Precision</th>
-<th align="right">Recall</th>
-<th align="right">TPR</th>
-<th align="right">FPR</th>
-<th align="right">F</th>
-<th align="right">Youden</th>
-<th align="right">TP</th>
-<th align="right">FP</th>
-<th align="right">TN</th>
-<th align="right">FN</th>
+<th align="right">scores</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>scores</td>
-<td align="right">0.426706</td>
+<td>H</td>
+<td align="right">0.4267060</td>
+</tr>
+<tr class="even">
+<td>Gini</td>
 <td align="right">0.6420112</td>
+</tr>
+<tr class="odd">
+<td>AUC</td>
 <td align="right">0.8210056</td>
+</tr>
+<tr class="even">
+<td>AUCH</td>
 <td align="right">0.8521788</td>
+</tr>
+<tr class="odd">
+<td>KS</td>
 <td align="right">0.5450279</td>
+</tr>
+<tr class="even">
+<td>MER</td>
 <td align="right">0.1078431</td>
-<td align="right">0.097847</td>
+</tr>
+<tr class="odd">
+<td>MWL</td>
+<td align="right">0.0978470</td>
+</tr>
+<tr class="even">
+<td>Spec.Sens95</td>
 <td align="right">0.3743017</td>
-<td align="right">0.4</td>
+</tr>
+<tr class="odd">
+<td>Sens.Spec95</td>
+<td align="right">0.4000000</td>
+</tr>
+<tr class="even">
+<td>ER</td>
 <td align="right">0.1176471</td>
-<td align="right">0.16</td>
+</tr>
+<tr class="odd">
+<td>Sens</td>
+<td align="right">0.1600000</td>
+</tr>
+<tr class="even">
+<td>Spec</td>
 <td align="right">0.9832402</td>
+</tr>
+<tr class="odd">
+<td>Precision</td>
 <td align="right">0.5714286</td>
-<td align="right">0.16</td>
-<td align="right">0.16</td>
+</tr>
+<tr class="even">
+<td>Recall</td>
+<td align="right">0.1600000</td>
+</tr>
+<tr class="odd">
+<td>TPR</td>
+<td align="right">0.1600000</td>
+</tr>
+<tr class="even">
+<td>FPR</td>
 <td align="right">0.0167598</td>
-<td align="right">0.25</td>
+</tr>
+<tr class="odd">
+<td>F</td>
+<td align="right">0.2500000</td>
+</tr>
+<tr class="even">
+<td>Youden</td>
 <td align="right">0.1432402</td>
-<td align="right">4</td>
-<td align="right">3</td>
-<td align="right">176</td>
-<td align="right">21</td>
+</tr>
+<tr class="odd">
+<td>TP</td>
+<td align="right">4.0000000</td>
+</tr>
+<tr class="even">
+<td>FP</td>
+<td align="right">3.0000000</td>
+</tr>
+<tr class="odd">
+<td>TN</td>
+<td align="right">176.0000000</td>
+</tr>
+<tr class="even">
+<td>FN</td>
+<td align="right">21.0000000</td>
 </tr>
 </tbody>
 </table>
