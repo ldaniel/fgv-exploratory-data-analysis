@@ -8,9 +8,10 @@ library(stringr)
 library(VIM)
 library(psych)
 library(ggthemes)
-library(leaflet)
 library(feather)
 library(plotly)
+library(leaflet)
+library(geojsonio)
 
 # loading other scripts do be used here ---------------------------------------
 source("./scripts/step_00_config_environment.R")
@@ -167,6 +168,3 @@ leaflet() %>%
   addTiles() %>% 
   setView(lng = 15.3, lat = 49.8, zoom = 7) %>%
   addGeoJSON(czech_regions)
-
-
-
