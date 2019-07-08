@@ -28,8 +28,6 @@ long <- c(14.418540, 15.4730, 14.4416,
 czech_regions_coords <- data.frame(region, lat, long)
 czech_regions_coords %>% mutate_if(is.factor, as.character)
 
-View(czech_regions_coords)
-
 # create account balance table
 account_balance <- arrange(transaction, desc(date), account_id) %>%
   group_by(account_id) %>%
