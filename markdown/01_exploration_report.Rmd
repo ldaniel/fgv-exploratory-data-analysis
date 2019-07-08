@@ -1,4 +1,4 @@
-﻿---
+---
 title: "The exploration's report"
 date: "July, 2019"
 ---
@@ -368,7 +368,7 @@ left_join(account_balance, disposition, by = 'account_id') %>%
 ```{r district_map_exploration, echo=TRUE, out.width = '100%'}
 czech_regions <- read.csv(textConnection(
                    "City,Lat,Long,Pop
-                    prague,50.073658,14.418540,645966
+                    Prague,50.073658,14.418540,645966
                     central Bohemia,49.8175,15.4730,645966
                     South Bohemia,48.9458,14.4416,645966
                     west Bohemia,49.7384,13.3736,645966
@@ -377,11 +377,11 @@ czech_regions <- read.csv(textConnection(
                     south Moravia,48.9545,16.7677,645966
                     north Moravia,49.5938,17.2509,645966"))
 
-leaflet(czech_regions) %>% 
-  addTiles() %>%
-  addCircles(lng = ~Long, 
-             lat = ~Lat, 
-             weight = 2, 
-             radius = ~sqrt(Pop) * 30, 
-             popup = ~City)
+jsonMapFile <- "./map/czech-republic-regions.json"
+czech_regions <- as.json(geojson_read(jsonMapFile))
+
+leaflet() %>% 
+  addTiles() %>% 
+  setView(lng = 15.3, lat = 49.8, zoom = 7) %>%
+  addGeoJSON(czech_regions)
 ```

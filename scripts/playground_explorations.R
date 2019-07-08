@@ -149,41 +149,24 @@ left_join(account_balance, disposition, by = 'account_id') %>%
 
 # Ploting map with district analysis ------------------------------------------
 
-czech_regions <- read.csv(textConnection(
-                   "City,Lat,Long,Pop
-                    prague,50.073658,14.418540,645966
-                    central Bohemia,49.8175,15.4730,645966
-                    South Bohemia,48.9458,14.4416,645966
-                    west Bohemia,49.7384,13.3736,645966
-                    north Bohemia,50.7663,15.0543,645966
-                    east Bohemia,50.0343,15.7812,645966
-                    south Moravia,48.9545,16.7677,645966
-                    north Moravia,49.5938,17.2509,645966"))
+# czech_regions <- read.csv(textConnection(
+#                    "City,Lat,Long,Pop
+#                     Prague,50.073658,14.418540,645966
+#                     central Bohemia,49.8175,15.4730,645966
+#                     South Bohemia,48.9458,14.4416,645966
+#                     west Bohemia,49.7384,13.3736,645966
+#                     north Bohemia,50.7663,15.0543,645966
+#                     east Bohemia,50.0343,15.7812,645966
+#                     south Moravia,48.9545,16.7677,645966
+#                     north Moravia,49.5938,17.2509,645966"))
 
-content <- paste(sep = "<br/>",
-                 "<b><a href='http://www.samurainoodle.com'>Samurai Noodle</a></b>",
-                 "606 5th Ave. S",
-                 "Seattle, WA 98138")
+jsonMapFile <- "./map/czech-republic-regions.json"
+czech_regions <- as.json(geojson_read(jsonMapFile))
 
-leaflet(czech_regions) %>% 
-  addTiles() %>%
-  addLabelOnlyMarkers(
-    lng = 14.418540, lat = 50.073658,
-    label = "Test",
-    labelOptions = labelOptions(noHide = T, direction = "bottom",
-                                style = list(
-                                  "font-family" = "Tahoma",
-                                  "box-shadow" = "3px 3px rgba(0,0,0,0.25)",
-                                  "font-size" = "12px",
-                                  "border-color" = "rgba(0,0,0,0.5)"
-                                )))
+leaflet() %>% 
+  addTiles() %>% 
+  setView(lng = 15.3, lat = 49.8, zoom = 7) %>%
+  addGeoJSON(czech_regions)
 
-leaflet(czech_regions) %>% 
-  addTiles() %>%
-  addCircles(lng = ~Long, 
-             lat = ~Lat, 
-             weight = 2, 
-             radius = ~sqrt(Pop) * 30, 
-             popup = ~City)
 
 
