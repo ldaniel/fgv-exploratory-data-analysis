@@ -437,7 +437,7 @@ left_join(account_balance, disposition, by = 'account_id') %>%
     facet_wrap(~region)
 ```
 
-One interest pattern shows up, moles in prague region tend to have a bigger average account balance them females, and the oposite trend in South, North and West Bohemia.
+One interest pattern shows up, males in prague region tend to have a bigger average account balance them females, and the oposite trend in South, North and West Bohemia.
 
 ## District exploration
 
