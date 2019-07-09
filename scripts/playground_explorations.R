@@ -13,7 +13,7 @@ library(plotly)
 library(leaflet)
 library(geojsonio)
 
-# loading other scripts do be used here ---------------------------------------
+inst# loading other scripts do be used here ---------------------------------------
 source("./scripts/step_00_config_environment.R")
 source("./scripts/step_01_create_functions.R")
 source("./scripts/step_02_data_ingestion.R")
