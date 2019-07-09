@@ -423,7 +423,7 @@ abline(0,1, lty=2)
 ```
 
 By the ROC curve of each model we see that model 2 is a better model.
-It only condider the statistic significant variables.
+It only consider the statistic significant variables.
 
 Finally we look more closely to the model 2 accuracy:
 
