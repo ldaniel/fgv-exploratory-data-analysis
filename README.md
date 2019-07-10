@@ -2,7 +2,7 @@
 
 This project intends to present the work analysis for "Análise Exploratória de Dados" class.
 
-The ideia is Practing R using a real anonymized Czech bank transactions, account info, and loan records released for PKDD'99 Discovery Challenge.
+The ideia is Practicing R using a real anonymized Czech bank transactions, account info, and loan records released for PKDD'99 Discovery Challenge.
 
 See the final website report at: [https://ldaniel.github.io/R_Bank_Berka](https://ldaniel.github.io/R_Bank_Berka).
 
