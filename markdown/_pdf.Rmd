@@ -539,7 +539,7 @@ leaflet(loan_amount_by_region) %>%
              radius = ~sqrt(amount) * 30, 	
              popup = ~region)
 ```
-![Simplified logical data model of Berka Bank.](../images/LoanDistrictAnalysisMap.png)
+![Regions more likely to have defaulters.](../images/LoanDistrictAnalysisMap.png)
 
 *******************************************************************************
 
