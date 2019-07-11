@@ -148,7 +148,7 @@ left_join(account_balance, disposition, by = 'account_id') %>%
     theme_economist() +
     facet_wrap(~region)
 
-# Ploting map with loadn district analysis ------------------------------------------
+# Ploting map with loan district analysis ------------------------------------------
 
 loan_amount_by_region <- select(loan, account_id, amount, defaulter, contract_status) %>% 
   filter(defaulter == TRUE) %>% 
