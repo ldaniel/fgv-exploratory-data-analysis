@@ -4,7 +4,7 @@ This project intends to present the work analysis for "Análise Exploratória de
 
 The ideia is Practicing R using a real anonymized Czech bank transactions, account info, and loan records released for PKDD'99 Discovery Challenge.
 
-See the final website report at: [https://ldaniel.github.io/Exploratory-Data-Analysis/](https://ldaniel.github.io/Exploratory-Data-Analysis/).
+See the final website report at: [https://ldaniel.github.io/fgv-exploratory-data-analysis/](https://ldaniel.github.io/fgv-exploratory-data-analysis/).
 
 ## Professor
 - Gustavo Mirapalheta
